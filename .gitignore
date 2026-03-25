@@ -39,6 +39,13 @@ testem.log
 /typings
 __screenshots__/
 
+# Claude Code
+.claude/settings.local.json
+
+# Playwright
+/test-results/
+/playwright-report/
+
 # System files
 .DS_Store
 Thumbs.db

@@ -38,6 +38,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 - Use signals for local component state
 - Use `computed()` for derived state
+- Use NgRx Signal Store (`@ngrx/signals`) for shared/domain state
 - Keep state transformations pure and predictable
 - Do NOT use `mutate` on signals, use `update` or `set` instead
 
@@ -54,3 +55,32 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Design services around a single responsibility
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
+
+## Project Structure (DDD)
+
+- `src/app/core/` — Shared infrastructure (guards, interceptors, layout)
+- `src/app/shared/` — Shared UI components, utils, pipes, directives
+- `src/app/domains/<domain>/` — Feature domains (bounded contexts)
+  - `feature/` — Smart components / pages
+  - `ui/` — Presentational components
+  - `data-access/` — Services, stores, API calls
+  - `model/` — Interfaces, types, enums
+- Module boundaries are enforced via `@softarc/sheriff-core`
+- Do NOT import across domain boundaries except through barrel exports
+
+## i18n
+
+- Use `@jsverse/transloco` for all user-facing text
+- Default language: German (`de`), also available: English (`en`)
+- Translation files: `public/assets/i18n/{lang}.json`
+
+## Testing
+
+- Unit tests: Vitest (`ng test`)
+- Component/E2E tests: Playwright (`npm run e2e`)
+
+## UI & Styling
+
+- Use PrimeNG components for UI (theme: Aura via `@primeuix/themes`)
+- Use Tailwind CSS for utility styling
+- zone.js is enabled (required for PrimeNG)
