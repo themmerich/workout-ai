@@ -1,19 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, output } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { Select } from 'primeng/select';
-import { ToggleSwitch } from 'primeng/toggleswitch';
-import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../theme';
-
-interface LangOption {
-  label: string;
-  value: string;
-}
 
 @Component({
   selector: 'app-header',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslocoDirective, Select, ToggleSwitch, FormsModule],
+  imports: [TranslocoDirective],
   template: `
     <div
       *transloco="let t"
@@ -28,25 +20,23 @@ interface LangOption {
         <i class="pi pi-bars text-xl leading-none"></i>
       </button>
       <div class="hidden lg:block"></div>
-      <div class="flex items-center gap-4">
-        <p-select
-          [options]="languages"
-          [ngModel]="currentLang"
-          (ngModelChange)="onLanguageChange($event)"
-          optionLabel="label"
-          optionValue="value"
-          [style]="{ width: '100px' }"
-          aria-label="Language"
-        />
-        <div class="flex items-center gap-2">
-          <i class="pi pi-sun text-surface-700 dark:text-surface-200"></i>
-          <p-toggleswitch
-            [ngModel]="themeService.theme() === 'dark'"
-            (ngModelChange)="themeService.toggle()"
-            [attr.aria-label]="themeService.theme() === 'dark' ? t('header.darkMode') : t('header.lightMode')"
-          />
-          <i class="pi pi-moon text-surface-700 dark:text-surface-200"></i>
-        </div>
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          class="cursor-pointer flex items-center justify-center w-10 h-10 rounded-lg bg-transparent border-none text-surface-700 dark:text-surface-200 hover:bg-white/40 dark:hover:bg-surface-700/40 transition-colors"
+          (click)="toggleLanguage()"
+          [attr.aria-label]="t('header.language')"
+        >
+          <span class="text-sm font-bold">{{ langLabel() }}</span>
+        </button>
+        <button
+          type="button"
+          class="cursor-pointer flex items-center justify-center w-10 h-10 rounded-lg bg-transparent border-none text-surface-700 dark:text-surface-200 hover:bg-white/40 dark:hover:bg-surface-700/40 transition-colors"
+          (click)="themeService.toggle()"
+          [attr.aria-label]="themeService.theme() === 'dark' ? t('header.lightMode') : t('header.darkMode')"
+        >
+          <i [class]="themeService.theme() === 'dark' ? 'pi pi-sun' : 'pi pi-moon'" class="text-lg"></i>
+        </button>
       </div>
     </div>
   `,
@@ -56,16 +46,13 @@ export class HeaderComponent {
   private readonly translocoService = inject(TranslocoService);
   readonly toggleSidebar = output<void>();
 
-  protected readonly languages: LangOption[] = [
-    { label: 'DE', value: 'de' },
-    { label: 'EN', value: 'en' },
-  ];
+  protected readonly langLabel = computed(() => {
+    const lang = this.translocoService.getActiveLang();
+    return lang.toUpperCase();
+  });
 
-  protected get currentLang(): string {
-    return this.translocoService.getActiveLang();
-  }
-
-  protected onLanguageChange(lang: string): void {
-    this.translocoService.setActiveLang(lang);
+  protected toggleLanguage(): void {
+    const current = this.translocoService.getActiveLang();
+    this.translocoService.setActiveLang(current === 'de' ? 'en' : 'de');
   }
 }

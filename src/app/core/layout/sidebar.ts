@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { AuthService } from '../auth';
@@ -10,7 +10,7 @@ import { AuthService } from '../auth';
   template: `
     <div
       *transloco="let t"
-      class="w-[280px] backdrop-blur-lg h-screen shrink-0 z-10 border-r select-none bg-white/70 dark:bg-surface-900/70 border-white/30 dark:border-surface-700/30"
+      class="w-[280px] backdrop-blur-lg h-screen shrink-0 z-10 border-r select-none bg-white/70 dark:bg-surface-950 border-white/30 dark:border-surface-700/30"
       [class.hidden]="!visible()"
       [class.lg:block]="!visible()"
       [class.block]="visible()"
@@ -34,7 +34,7 @@ import { AuthService } from '../auth';
         <div class="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
           <a
             routerLink="/"
-            routerLinkActive="bg-white/80 dark:bg-surface-950/50"
+            routerLinkActive="bg-white/80 dark:bg-surface-0/10"
             [routerLinkActiveOptions]="{ exact: true }"
             class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-200 hover:text-surface-900 dark:hover:text-surface-0 hover:bg-white/80 dark:hover:bg-surface-950/50 duration-150 transition-colors group"
             (click)="closeSidebar.emit()"
@@ -44,7 +44,7 @@ import { AuthService } from '../auth';
           </a>
           <a
             routerLink="/user"
-            routerLinkActive="bg-white/80 dark:bg-surface-950/50"
+            routerLinkActive="bg-white/80 dark:bg-surface-0/10"
             class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-200 hover:text-surface-900 dark:hover:text-surface-0 hover:bg-white/80 dark:hover:bg-surface-950/50 duration-150 transition-colors group"
             (click)="closeSidebar.emit()"
           >
@@ -54,7 +54,7 @@ import { AuthService } from '../auth';
           @if (authService.isAdmin()) {
             <a
               routerLink="/settings"
-              routerLinkActive="bg-white/80 dark:bg-surface-950/50"
+              routerLinkActive="bg-white/80 dark:bg-surface-0/10"
               class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-200 hover:text-surface-900 dark:hover:text-surface-0 hover:bg-white/80 dark:hover:bg-surface-950/50 duration-150 transition-colors group"
               (click)="closeSidebar.emit()"
             >
@@ -63,11 +63,52 @@ import { AuthService } from '../auth';
             </a>
           }
         </div>
-        <div class="mt-auto border-t border-white/30 dark:border-surface-700/50 p-3">
-          <div class="flex items-center gap-2">
+        <div class="mt-auto border-t border-white/30 dark:border-surface-700/50">
+          @if (userMenuOpen()) {
+            <ul class="list-none p-2 m-0 overflow-hidden flex flex-col gap-1">
+              <li>
+                <a
+                  class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-200 hover:text-surface-900 dark:hover:text-surface-0 hover:bg-white/80 dark:hover:bg-surface-0/10 transition-colors group"
+                >
+                  <i class="pi pi-user text-base leading-tight text-surface-700 dark:text-surface-200 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+                  <span class="flex-1 text-base font-medium leading-tight">{{ t('sidebar.profile') }}</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  routerLink="/settings"
+                  (click)="closeSidebar.emit(); userMenuOpen.set(false)"
+                  class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-200 hover:text-surface-900 dark:hover:text-surface-0 hover:bg-white/80 dark:hover:bg-surface-0/10 transition-colors group"
+                >
+                  <i class="pi pi-cog text-base leading-tight text-surface-700 dark:text-surface-200 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+                  <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.settings') }}</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-200 hover:text-surface-900 dark:hover:text-surface-0 hover:bg-white/80 dark:hover:bg-surface-0/10 transition-colors group"
+                >
+                  <i class="pi pi-sign-out text-base leading-tight text-surface-700 dark:text-surface-200 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+                  <span class="flex-1 text-base font-medium leading-tight">{{ t('sidebar.signOut') }}</span>
+                </a>
+              </li>
+            </ul>
+          }
+          <button
+            type="button"
+            class="w-full p-3 flex items-center gap-2 border-none bg-transparent cursor-pointer hover:bg-white/80 dark:hover:bg-surface-0/10 transition-colors group"
+            (click)="userMenuOpen.update((v) => !v)"
+            [attr.aria-expanded]="userMenuOpen()"
+            [attr.aria-label]="t('sidebar.userMenu')"
+          >
             <i class="pi pi-user text-xl text-surface-700 dark:text-surface-200"></i>
-            <span class="text-surface-900 dark:text-surface-0 text-base font-medium leading-tight">{{ authService.currentUser().displayName }}</span>
-          </div>
+            <span class="flex-1 text-left text-surface-900 dark:text-surface-0 text-base font-medium leading-tight">{{ authService.currentUser().displayName }}</span>
+            <i
+              class="pi text-base leading-tight text-surface-500 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"
+              [class.pi-chevron-up]="!userMenuOpen()"
+              [class.pi-chevron-down]="userMenuOpen()"
+            ></i>
+          </button>
         </div>
       </div>
     </div>
@@ -75,6 +116,7 @@ import { AuthService } from '../auth';
 })
 export class SidebarComponent {
   protected readonly authService = inject(AuthService);
+  protected readonly userMenuOpen = signal(false);
   readonly visible = input(false);
   readonly closeSidebar = output<void>();
 }
