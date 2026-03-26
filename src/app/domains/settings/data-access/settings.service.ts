@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { LocalStorageService } from '../../../shared';
-import { AppSettings } from '../model';
+import { LocalStorageService } from '../../../shared/utils/local-storage.service';
+import { AppSettings } from '../model/settings.model';
 import { MOCK_SETTINGS } from './settings.mock';
 
 const STORAGE_KEY = 'workout-ai-settings';

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, output } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { ThemeService } from '../theme';
+import { ThemeService } from '../theme/theme.service';
 
 @Component({
   selector: 'app-header',
