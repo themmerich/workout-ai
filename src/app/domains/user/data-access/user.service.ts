@@ -14,4 +14,9 @@ export class UserService {
   getById(id: string): UserProfile | undefined {
     return this.users().find((u) => u.id === id);
   }
+
+  add(user: Omit<UserProfile, 'id'>): void {
+    const id = String(Math.max(...this.users().map((u) => Number(u.id))) + 1);
+    this.users.update((users) => [...users, { ...user, id }]);
+  }
 }

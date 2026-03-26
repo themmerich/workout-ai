@@ -25,12 +25,25 @@
   },
   "user": {
     "title": "User",
+    "username": "Username",
     "name": "Name",
     "email": "Email",
     "role": "Role",
     "roles": {
       "admin": "Administrator",
       "user": "User"
+    },
+    "search": "Search...",
+    "columns": "Columns",
+    "addUser": "New User",
+    "dialog": {
+      "title": "Create New User",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email address"
     }
   },
   "settings": {
