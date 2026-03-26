@@ -25,12 +25,25 @@
   },
   "user": {
     "title": "Benutzer",
+    "username": "Benutzername",
     "name": "Name",
     "email": "E-Mail",
     "role": "Rolle",
     "roles": {
       "admin": "Administrator",
       "user": "Benutzer"
+    },
+    "search": "Suchen...",
+    "columns": "Spalten",
+    "addUser": "Neuer Benutzer",
+    "dialog": {
+      "title": "Neuen Benutzer anlegen",
+      "save": "Speichern",
+      "cancel": "Abbrechen"
+    },
+    "validation": {
+      "required": "Dieses Feld ist erforderlich",
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
     }
   },
   "settings": {
