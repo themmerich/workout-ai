@@ -39,10 +39,21 @@
     "addUser": "Neuer Benutzer",
     "filterByRole": "Nach Rolle filtern",
     "filterBy": "Nach {{field}} filtern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "actions": "Aktionen",
+    "confirmDeleteTitle": "Benutzer löschen",
+    "confirmDelete": "Möchten Sie den Benutzer \"{{name}}\" wirklich löschen?",
+    "createSuccess": "Benutzer wurde erfolgreich angelegt",
+    "updateSuccess": "Benutzer wurde erfolgreich aktualisiert",
+    "deleteSuccess": "Benutzer wurde erfolgreich gelöscht",
+    "deleteError": "Fehler beim Löschen des Benutzers",
     "dialog": {
       "title": "Neuen Benutzer anlegen",
+      "editTitle": "Benutzer bearbeiten",
       "save": "Speichern",
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "delete": "Löschen"
     },
     "validation": {
       "required": "Dieses Feld ist erforderlich",

@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ButtonModule } from 'primeng/button';
@@ -19,7 +26,7 @@ interface RoleOption {
   template: `
     <p-dialog
       *transloco="let t"
-      [header]="t('user.dialog.title')"
+      [header]="user() ? t('user.dialog.editTitle') : t('user.dialog.title')"
       [visible]="visible()"
       (visibleChange)="dialogClosed.emit()"
       [modal]="true"
@@ -80,7 +87,8 @@ export class UserDialogComponent {
   private readonly fb = inject(FormBuilder);
 
   readonly visible = input(false);
-  readonly userSaved = output<Omit<UserProfile, 'id'>>();
+  readonly user = input<UserProfile | null>(null);
+  readonly userSaved = output<UserProfile | Omit<UserProfile, 'id'>>();
   readonly dialogClosed = output<void>();
 
   protected readonly roleOptions: RoleOption[] = [
@@ -95,9 +103,25 @@ export class UserDialogComponent {
     role: ['user', Validators.required],
   });
 
+  constructor() {
+    effect(() => {
+      const userData = this.user();
+      if (userData) {
+        this.form.patchValue(userData);
+      } else {
+        this.form.reset({ role: 'user' });
+      }
+    });
+  }
+
   protected onSubmit(): void {
     if (this.form.valid) {
-      this.userSaved.emit(this.form.getRawValue());
+      const userData = this.user();
+      if (userData) {
+        this.userSaved.emit({ ...this.form.getRawValue(), id: userData.id });
+      } else {
+        this.userSaved.emit(this.form.getRawValue());
+      }
       this.form.reset({ role: 'user' });
     }
   }
