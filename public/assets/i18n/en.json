@@ -39,10 +39,21 @@
     "addUser": "New User",
     "filterByRole": "Filter by role",
     "filterBy": "Filter by {{field}}",
+    "edit": "Edit",
+    "delete": "Delete",
+    "actions": "Actions",
+    "confirmDeleteTitle": "Delete User",
+    "confirmDelete": "Are you sure you want to delete the user \"{{name}}\"?",
+    "createSuccess": "User was successfully created",
+    "updateSuccess": "User was successfully updated",
+    "deleteSuccess": "User was successfully deleted",
+    "deleteError": "Error deleting user",
     "dialog": {
       "title": "Create New User",
+      "editTitle": "Edit User",
       "save": "Save",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "delete": "Delete"
     },
     "validation": {
       "required": "This field is required",

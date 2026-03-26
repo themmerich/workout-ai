@@ -19,4 +19,12 @@ export class UserService {
     const id = String(Math.max(...this.users().map((u) => Number(u.id))) + 1);
     this.users.update((users) => [...users, { ...user, id }]);
   }
+
+  update(user: UserProfile): void {
+    this.users.update((users) => users.map((u) => (u.id === user.id ? user : u)));
+  }
+
+  delete(id: string): void {
+    this.users.update((users) => users.filter((u) => u.id !== id));
+  }
 }
