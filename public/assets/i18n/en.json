@@ -35,7 +35,10 @@
     },
     "search": "Search...",
     "columns": "Columns",
+    "columnsSelected": "{count} columns selected",
     "addUser": "New User",
+    "filterByRole": "Filter by role",
+    "filterBy": "Filter by {{field}}",
     "dialog": {
       "title": "Create New User",
       "save": "Save",

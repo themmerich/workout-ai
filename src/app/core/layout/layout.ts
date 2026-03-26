@@ -9,13 +9,13 @@ import { SidebarComponent } from './sidebar';
   imports: [RouterOutlet, HeaderComponent, SidebarComponent],
   template: `
     <div
-      class="min-h-screen flex relative lg:static bg-surface-0 dark:bg-surface-900 bg-linear-to-br from-blue-100 from-40% via-pink-200 via-80% to-indigo-200 dark:from-surface-900 dark:via-surface-800 dark:to-surface-900"
+      class="h-screen flex relative lg:static overflow-hidden bg-surface-0 dark:bg-surface-900 bg-linear-to-br from-blue-100 from-40% via-pink-200 via-80% to-indigo-200 dark:from-surface-900 dark:via-surface-800 dark:to-surface-900"
     >
       <app-sidebar [visible]="sidebarVisible()" (closeSidebar)="sidebarVisible.set(false)" />
-      <div class="min-h-screen flex flex-col relative flex-auto">
+      <div class="h-screen flex flex-col relative flex-auto">
         <app-header (toggleSidebar)="sidebarVisible.update((v) => !v)" />
-        <div class="p-8 flex flex-col flex-auto">
-          <div class="border-2 border-dashed border-white/30 dark:border-surface-700/50 rounded-2xl bg-white/20 dark:bg-surface-800/20 flex-auto p-6">
+        <div class="p-8 flex flex-col flex-1 min-h-0">
+          <div class="border-2 border-dashed border-white/30 dark:border-surface-700/50 rounded-2xl bg-white/20 dark:bg-surface-800/20 flex-1 min-h-0 p-6 flex flex-col">
             <router-outlet />
           </div>
         </div>
