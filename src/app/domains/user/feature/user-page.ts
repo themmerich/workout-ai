@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { TableModule } from 'primeng/table';
-import { UserService } from '../data-access';
+import { UserService } from '../data-access/user.service';
 
 @Component({
   selector: 'app-user-page',

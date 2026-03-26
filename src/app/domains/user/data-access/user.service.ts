@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { UserProfile } from '../model';
+import { UserProfile } from '../model/user.model';
 import { MOCK_USERS } from './user.mock';
 
 @Injectable({ providedIn: 'root' })

@@ -13,8 +13,8 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 
 import { routes } from './app.routes';
-import { TranslocoHttpLoader } from './core/transloco';
-import { ThemeService } from './core/theme';
+import { TranslocoHttpLoader } from './core/transloco/transloco-http-loader';
+import { ThemeService } from './core/theme/theme.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [

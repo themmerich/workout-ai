@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { AuthService } from '../auth';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-sidebar',
