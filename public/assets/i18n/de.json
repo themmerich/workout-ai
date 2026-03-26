@@ -7,6 +7,11 @@
     "user": "Benutzer",
     "settings": "Einstellungen"
   },
+  "sidebar": {
+    "profile": "Profil",
+    "signOut": "Abmelden",
+    "userMenu": "Benutzermenü"
+  },
   "header": {
     "language": "Sprache",
     "theme": "Design",
