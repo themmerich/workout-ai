@@ -1,0 +1,18 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
+
+@Component({
+  selector: 'app-dashboard-page',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TranslocoDirective],
+  template: `
+    <div *transloco="let t" class="flex flex-col gap-6">
+      <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0">{{ t('dashboard.welcome') }}</h1>
+      <p class="text-surface-600 dark:text-surface-300 text-lg">{{ t('dashboard.description') }}</p>
+      <div class="border-2 border-dashed border-white/30 dark:border-surface-700/50 rounded-2xl bg-white/20 dark:bg-surface-800/20 p-8 min-h-64 flex items-center justify-center">
+        <span class="text-surface-500 dark:text-surface-400">Dashboard Content</span>
+      </div>
+    </div>
+  `,
+})
+export default class DashboardPageComponent {}

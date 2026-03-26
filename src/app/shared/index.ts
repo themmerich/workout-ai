@@ -1,1 +1,1 @@
-export {};
+export { LocalStorageService } from './utils';
