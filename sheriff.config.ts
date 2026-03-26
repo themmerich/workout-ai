@@ -10,6 +10,7 @@ export const sheriffConfig: SheriffConfig = {
     'src/app/core/layout': ['type:core'],
     'src/app/core/auth': ['type:core'],
     'src/app/core/interceptors': ['type:core'],
+    'src/app/core/theme': ['type:core'],
     'src/app/shared': ['type:shared'],
     'src/app/shared/ui': ['type:shared'],
     'src/app/shared/utils': ['type:shared'],
@@ -41,9 +42,9 @@ export const sheriffConfig: SheriffConfig = {
     'type:data-access': ['type:model', 'type:shared', 'type:core'],
     // Models should be self-contained
     'type:model': ['type:shared'],
-    // Shared can only depend on core
-    'type:shared': ['type:core'],
-    // Core has no internal dependencies
-    'type:core': [],
+    // Shared submodules can access each other and core
+    'type:shared': ['type:shared', 'type:core'],
+    // Core submodules can access each other
+    'type:core': ['type:core'],
   },
 };

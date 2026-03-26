@@ -1,5 +1,38 @@
 {
   "app": {
     "title": "Workout AI"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "user": "User",
+    "settings": "Settings"
+  },
+  "header": {
+    "language": "Language",
+    "theme": "Theme",
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome to Workout AI",
+    "description": "Your personal fitness assistant"
+  },
+  "user": {
+    "title": "User",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "roles": {
+      "admin": "Administrator",
+      "user": "User"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Only visible to administrators",
+    "general": "General",
+    "language": "Language",
+    "theme": "Theme"
   }
 }
