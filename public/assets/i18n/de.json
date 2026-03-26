@@ -35,7 +35,10 @@
     },
     "search": "Suchen...",
     "columns": "Spalten",
+    "columnsSelected": "{count} Spalten ausgewählt",
     "addUser": "Neuer Benutzer",
+    "filterByRole": "Nach Rolle filtern",
+    "filterBy": "Nach {{field}} filtern",
     "dialog": {
       "title": "Neuen Benutzer anlegen",
       "save": "Speichern",
