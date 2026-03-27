@@ -57,6 +57,7 @@ export default class UserPageComponent {
     deleteError: 'user.deleteError',
     dialogDelete: 'user.dialog.delete',
     dialogCancel: 'user.dialog.cancel',
+    clearFilters: 'user.clearFilters',
   };
 
   protected getRoleSeverity(role: string): 'warn' | 'info' {

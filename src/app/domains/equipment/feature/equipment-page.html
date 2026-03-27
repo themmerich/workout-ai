@@ -1,0 +1,32 @@
+<div *transloco="let t" class="h-full min-h-0 flex flex-col">
+  <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 shrink-0 mb-6">{{ t('equipment.title') }}</h1>
+  <app-data-table
+    #dataTable
+    [data]="equipmentService.equipment()"
+    [columns]="columns"
+    [translations]="translations"
+    [globalFilterFields]="globalFilterFields"
+    stateKey="equipment"
+    nameField="name"
+    (itemAdd)="onAdd()"
+    (itemEdit)="onEdit($event)"
+    (itemDelete)="onDelete($event)"
+  >
+    <ng-template #cell let-item let-field="field">
+      @if (field === 'category') {
+        <p-tag [value]="t('equipment.categories.' + item[field])" [severity]="getCategorySeverity(item[field])" />
+      } @else if (field === 'weight') {
+        {{ item[field] !== null ? item[field] + ' kg' : '—' }}
+      } @else {
+        {{ item[field] }}
+      }
+    </ng-template>
+  </app-data-table>
+
+  <app-equipment-dialog
+    [visible]="dialogVisible()"
+    [equipment]="editingEquipment()"
+    (equipmentSaved)="onSaveEquipment($event)"
+    (dialogClosed)="dialogVisible.set(false)"
+  />
+</div>

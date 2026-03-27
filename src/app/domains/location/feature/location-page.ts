@@ -49,6 +49,7 @@ export default class LocationPageComponent {
     deleteError: 'location.deleteError',
     dialogDelete: 'location.dialog.delete',
     dialogCancel: 'location.dialog.cancel',
+    clearFilters: 'location.clearFilters',
   };
 
   protected onAdd(): void {

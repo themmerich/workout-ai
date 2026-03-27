@@ -6,6 +6,7 @@
     "dashboard": "Dashboard",
     "user": "Benutzer",
     "locations": "Standorte",
+    "equipment": "Geräte",
     "settings": "Einstellungen"
   },
   "sidebar": {
@@ -49,6 +50,7 @@
     "updateSuccess": "Benutzer wurde erfolgreich aktualisiert",
     "deleteSuccess": "Benutzer wurde erfolgreich gelöscht",
     "deleteError": "Fehler beim Löschen des Benutzers",
+    "clearFilters": "Alle Filter zurücksetzen",
     "dialog": {
       "title": "Neuen Benutzer anlegen",
       "editTitle": "Benutzer bearbeiten",
@@ -59,6 +61,48 @@
     "validation": {
       "required": "Dieses Feld ist erforderlich",
       "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
+    }
+  },
+  "equipment": {
+    "title": "Trainingsgeräte",
+    "name": "Name",
+    "category": "Kategorie",
+    "weight": "Gewicht",
+    "categories": {
+      "mobility": "Mobility",
+      "dumbbell": "Kurzhantel",
+      "barbell": "Langhantel",
+      "cardio": "Cardio",
+      "cable": "Kabelzug",
+      "machine": "Maschine",
+      "bodyweight": "Bodyweight",
+      "other": "Sonstiges"
+    },
+    "search": "Suchen...",
+    "columns": "Spalten",
+    "columnsSelected": "{count} Spalten ausgewählt",
+    "addEquipment": "Neues Gerät",
+    "filterBy": "Nach {{field}} filtern",
+    "filterByCategory": "Nach Kategorie filtern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "actions": "Aktionen",
+    "confirmDeleteTitle": "Gerät löschen",
+    "confirmDelete": "Möchten Sie das Gerät \"{{name}}\" wirklich löschen?",
+    "createSuccess": "Gerät wurde erfolgreich angelegt",
+    "updateSuccess": "Gerät wurde erfolgreich aktualisiert",
+    "deleteSuccess": "Gerät wurde erfolgreich gelöscht",
+    "deleteError": "Fehler beim Löschen des Geräts",
+    "clearFilters": "Alle Filter zurücksetzen",
+    "dialog": {
+      "title": "Neues Gerät anlegen",
+      "editTitle": "Gerät bearbeiten",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "delete": "Löschen"
+    },
+    "validation": {
+      "required": "Dieses Feld ist erforderlich"
     }
   },
   "location": {
@@ -85,6 +129,7 @@
     "updateSuccess": "Standort wurde erfolgreich aktualisiert",
     "deleteSuccess": "Standort wurde erfolgreich gelöscht",
     "deleteError": "Fehler beim Löschen des Standorts",
+    "clearFilters": "Alle Filter zurücksetzen",
     "dialog": {
       "title": "Neuen Standort anlegen",
       "editTitle": "Standort bearbeiten",

@@ -30,11 +30,23 @@
         </p-iconfield>
       </ng-template>
       <ng-template #end>
-        <p-button
-          [label]="t(translations().addButton)"
-          icon="pi pi-plus"
-          (onClick)="itemAdd.emit()"
-        />
+        <div class="flex items-center gap-2">
+          <p-button
+            icon="pi pi-filter-slash"
+            severity="secondary"
+            [text]="true"
+            [rounded]="true"
+            (onClick)="onClearFilters()"
+            [attr.aria-label]="t(translations().clearFilters)"
+            [pTooltip]="t(translations().clearFilters)"
+            tooltipPosition="bottom"
+          />
+          <p-button
+            [label]="t(translations().addButton)"
+            icon="pi pi-plus"
+            (onClick)="itemAdd.emit()"
+          />
+        </div>
       </ng-template>
     </p-toolbar>
     <p-table

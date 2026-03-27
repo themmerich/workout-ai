@@ -6,6 +6,7 @@
     "dashboard": "Dashboard",
     "user": "User",
     "locations": "Locations",
+    "equipment": "Equipment",
     "settings": "Settings"
   },
   "sidebar": {
@@ -49,6 +50,7 @@
     "updateSuccess": "User was successfully updated",
     "deleteSuccess": "User was successfully deleted",
     "deleteError": "Error deleting user",
+    "clearFilters": "Clear all filters",
     "dialog": {
       "title": "Create New User",
       "editTitle": "Edit User",
@@ -59,6 +61,48 @@
     "validation": {
       "required": "This field is required",
       "email": "Please enter a valid email address"
+    }
+  },
+  "equipment": {
+    "title": "Equipment",
+    "name": "Name",
+    "category": "Category",
+    "weight": "Weight",
+    "categories": {
+      "mobility": "Mobility",
+      "dumbbell": "Dumbbell",
+      "barbell": "Barbell",
+      "cardio": "Cardio",
+      "cable": "Cable",
+      "machine": "Machine",
+      "bodyweight": "Bodyweight",
+      "other": "Other"
+    },
+    "search": "Search...",
+    "columns": "Columns",
+    "columnsSelected": "{count} columns selected",
+    "addEquipment": "New Equipment",
+    "filterBy": "Filter by {{field}}",
+    "filterByCategory": "Filter by category",
+    "edit": "Edit",
+    "delete": "Delete",
+    "actions": "Actions",
+    "confirmDeleteTitle": "Delete Equipment",
+    "confirmDelete": "Are you sure you want to delete \"{{name}}\"?",
+    "createSuccess": "Equipment was successfully created",
+    "updateSuccess": "Equipment was successfully updated",
+    "deleteSuccess": "Equipment was successfully deleted",
+    "deleteError": "Error deleting equipment",
+    "clearFilters": "Clear all filters",
+    "dialog": {
+      "title": "Create New Equipment",
+      "editTitle": "Edit Equipment",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "validation": {
+      "required": "This field is required"
     }
   },
   "location": {
@@ -85,6 +129,7 @@
     "updateSuccess": "Location was successfully updated",
     "deleteSuccess": "Location was successfully deleted",
     "deleteError": "Error deleting location",
+    "clearFilters": "Clear all filters",
     "dialog": {
       "title": "Create New Location",
       "editTitle": "Edit Location",

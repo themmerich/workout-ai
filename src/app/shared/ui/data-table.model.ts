@@ -28,4 +28,5 @@ export interface DataTableTranslations {
   deleteError: string;
   dialogDelete: string;
   dialogCancel: string;
+  clearFilters: string;
 }
