@@ -1,0 +1,64 @@
+<p-dialog
+  *transloco="let t"
+  [header]="equipment() ? t('equipment.dialog.editTitle') : t('equipment.dialog.title')"
+  [visible]="visible()"
+  (visibleChange)="dialogClosed.emit()"
+  [modal]="true"
+  [style]="{ width: '450px' }"
+>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 pt-6">
+    <div>
+      <p-floatlabel variant="on">
+        <input pInputText id="eq-name" formControlName="name" class="w-full" />
+        <label for="eq-name">{{ t('equipment.name') }} *</label>
+      </p-floatlabel>
+      @if (form.controls.name.touched && form.controls.name.errors?.['required']) {
+        <small class="text-red-500">{{ t('equipment.validation.required') }}</small>
+      }
+    </div>
+    <div>
+      <p-floatlabel variant="on">
+        <p-select
+          formControlName="category"
+          [options]="categoryOptions"
+          inputId="eq-category"
+          appendTo="body"
+          styleClass="w-full"
+        >
+          <ng-template #selectedItem let-selected>
+            {{ t('equipment.categories.' + selected) }}
+          </ng-template>
+          <ng-template #item let-option>
+            {{ t('equipment.categories.' + option) }}
+          </ng-template>
+        </p-select>
+        <label for="eq-category">{{ t('equipment.category') }} *</label>
+      </p-floatlabel>
+    </div>
+    <div>
+      <p-floatlabel variant="on">
+        <p-inputnumber
+          formControlName="weight"
+          inputId="eq-weight"
+          [minFractionDigits]="0"
+          [maxFractionDigits]="1"
+          suffix=" kg"
+          styleClass="w-full"
+        />
+        <label for="eq-weight">{{ t('equipment.weight') }}</label>
+      </p-floatlabel>
+    </div>
+    <div class="flex justify-end gap-2 pt-4">
+      <p-button
+        [label]="t('equipment.dialog.cancel')"
+        severity="secondary"
+        (onClick)="dialogClosed.emit()"
+      />
+      <p-button
+        [label]="t('equipment.dialog.save')"
+        type="submit"
+        [disabled]="form.invalid || !form.dirty"
+      />
+    </div>
+  </form>
+</p-dialog>

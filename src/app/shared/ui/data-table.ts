@@ -23,6 +23,7 @@ import { Select } from 'primeng/select';
 import { Table, TableModule } from 'primeng/table';
 import { Toast } from 'primeng/toast';
 import { Toolbar } from 'primeng/toolbar';
+import { Tooltip } from 'primeng/tooltip';
 import { LocalStorageService } from '../utils/local-storage.service';
 import { DataTableTranslations, TableColumn } from './data-table.model';
 
@@ -45,6 +46,7 @@ import { DataTableTranslations, TableColumn } from './data-table.model';
     TableModule,
     Toast,
     Toolbar,
+    Tooltip,
   ],
   templateUrl: './data-table.html',
 })
@@ -91,6 +93,16 @@ export class DataTableComponent<T extends { id: string } = any> {
   protected getFilterPlaceholder(headerKey: string): string {
     const field = this.transloco.translate(headerKey);
     return this.transloco.translate(this.translations().filterBy, { field });
+  }
+
+  protected onClearFilters(): void {
+    const table = this.dt();
+    if (table) {
+      table.clear();
+    }
+    this.selectedColumns = [...this.columns()];
+    this.storage.remove(this.columnsStorageKey());
+    this.storage.remove(`workout-ai-table-${this.stateKey()}`);
   }
 
   protected onGlobalFilter(event: Event): void {
