@@ -10,19 +10,23 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
+import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { UserProfile } from '../model/user.model';
 
-interface RoleOption {
-  label: string;
-  value: string;
-}
-
 @Component({
   selector: 'app-user-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, TranslocoDirective, Dialog, InputText, Select, ButtonModule],
+  imports: [
+    ReactiveFormsModule,
+    TranslocoDirective,
+    Dialog,
+    FloatLabel,
+    InputText,
+    Select,
+    ButtonModule,
+  ],
   template: `
     <p-dialog
       *transloco="let t"
@@ -32,24 +36,30 @@ interface RoleOption {
       [modal]="true"
       [style]="{ width: '450px' }"
     >
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4 pt-4">
-        <div class="flex flex-col gap-1">
-          <label for="username" class="font-medium text-surface-700 dark:text-surface-200">{{ t('user.username') }}</label>
-          <input pInputText id="username" formControlName="username" />
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 pt-6">
+        <div>
+          <p-floatlabel variant="on">
+            <input pInputText id="username" formControlName="username" class="w-full" />
+            <label for="username">{{ t('user.username') }} *</label>
+          </p-floatlabel>
           @if (form.controls.username.touched && form.controls.username.errors?.['required']) {
             <small class="text-red-500">{{ t('user.validation.required') }}</small>
           }
         </div>
-        <div class="flex flex-col gap-1">
-          <label for="displayName" class="font-medium text-surface-700 dark:text-surface-200">{{ t('user.name') }}</label>
-          <input pInputText id="displayName" formControlName="displayName" />
+        <div>
+          <p-floatlabel variant="on">
+            <input pInputText id="displayName" formControlName="displayName" class="w-full" />
+            <label for="displayName">{{ t('user.name') }} *</label>
+          </p-floatlabel>
           @if (form.controls.displayName.touched && form.controls.displayName.errors?.['required']) {
             <small class="text-red-500">{{ t('user.validation.required') }}</small>
           }
         </div>
-        <div class="flex flex-col gap-1">
-          <label for="email" class="font-medium text-surface-700 dark:text-surface-200">{{ t('user.email') }}</label>
-          <input pInputText id="email" formControlName="email" type="email" />
+        <div>
+          <p-floatlabel variant="on">
+            <input pInputText id="email" formControlName="email" type="email" class="w-full" />
+            <label for="email">{{ t('user.email') }} *</label>
+          </p-floatlabel>
           @if (form.controls.email.touched && form.controls.email.errors?.['required']) {
             <small class="text-red-500">{{ t('user.validation.required') }}</small>
           }
@@ -57,15 +67,23 @@ interface RoleOption {
             <small class="text-red-500">{{ t('user.validation.email') }}</small>
           }
         </div>
-        <div class="flex flex-col gap-1">
-          <label for="role" class="font-medium text-surface-700 dark:text-surface-200">{{ t('user.role') }}</label>
-          <p-select
-            formControlName="role"
-            [options]="roleOptions"
-            optionLabel="label"
-            optionValue="value"
-            inputId="role"
-          />
+        <div>
+          <p-floatlabel variant="on">
+            <p-select
+              formControlName="role"
+              [options]="roleOptions"
+              inputId="role"
+              styleClass="w-full"
+            >
+              <ng-template #selectedItem let-selected>
+                {{ t('user.roles.' + selected) }}
+              </ng-template>
+              <ng-template #item let-option>
+                {{ t('user.roles.' + option) }}
+              </ng-template>
+            </p-select>
+            <label for="role">{{ t('user.role') }} *</label>
+          </p-floatlabel>
         </div>
         <div class="flex justify-end gap-2 pt-4">
           <p-button
@@ -76,7 +94,7 @@ interface RoleOption {
           <p-button
             [label]="t('user.dialog.save')"
             type="submit"
-            [disabled]="form.invalid"
+            [disabled]="form.invalid || !form.dirty"
           />
         </div>
       </form>
@@ -91,10 +109,7 @@ export class UserDialogComponent {
   readonly userSaved = output<UserProfile | Omit<UserProfile, 'id'>>();
   readonly dialogClosed = output<void>();
 
-  protected readonly roleOptions: RoleOption[] = [
-    { label: 'User', value: 'user' },
-    { label: 'Administrator', value: 'admin' },
-  ];
+  protected readonly roleOptions: string[] = ['user', 'admin'];
 
   protected readonly form = this.fb.nonNullable.group({
     username: ['', Validators.required],
