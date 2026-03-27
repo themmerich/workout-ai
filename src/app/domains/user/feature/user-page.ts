@@ -94,6 +94,7 @@ interface Column {
           selectionMode="single"
           [(selection)]="selectedUser"
           dataKey="id"
+          size="small"
           [tableStyle]="{ 'min-width': '30rem' }"
         >
           <ng-template #header>
