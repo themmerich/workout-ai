@@ -1,123 +1,31 @@
-<div *transloco="let t" class="flex flex-col gap-6 h-full min-h-0">
-  <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 shrink-0">{{ t('location.title') }}</h1>
-  <div class="rounded-2xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm overflow-hidden flex flex-col min-h-0 flex-1">
-    <p-toolbar styleClass="border-none bg-transparent shrink-0">
-      <ng-template #start>
-        <p-multiselect
-          [options]="allColumns"
-          [ngModel]="selectedColumns"
-          (ngModelChange)="onColumnsChange($event)"
-          [optionLabel]="'headerKey'"
-          [placeholder]="t('location.columns')"
-          [maxSelectedLabels]="0"
-          [selectedItemsLabel]="t('location.columnsSelected', { count: selectedColumns.length })"
-          [style]="{ 'min-width': '14rem' }"
-        >
-          <ng-template #item let-col>
-            {{ t(col.headerKey) }}
-          </ng-template>
-        </p-multiselect>
-      </ng-template>
-      <ng-template #center>
-        <p-iconfield>
-          <p-inputicon styleClass="pi pi-search" />
-          <input
-            pInputText
-            type="text"
-            [placeholder]="t('location.search')"
-            (input)="onGlobalFilter($event)"
-          />
-        </p-iconfield>
-      </ng-template>
-      <ng-template #end>
-        <p-button
-          [label]="t('location.addLocation')"
-          icon="pi pi-plus"
-          (onClick)="dialogVisible.set(true)"
-        />
-      </ng-template>
-    </p-toolbar>
-    <p-table
-      #dt
-      [value]="locationService.locations()"
-      [scrollable]="true"
-      scrollHeight="flex"
-      [globalFilterFields]="['name', 'street', 'zip', 'city', 'country', 'phone', 'email', 'website']"
-      [showGridlines]="true"
-      [resizableColumns]="true"
-      columnResizeMode="expand"
-      selectionMode="single"
-      [(selection)]="selectedLocation"
-      dataKey="id"
-      size="small"
-      stateStorage="local"
-      stateKey="workout-ai-table-location"
-      [tableStyle]="{ 'min-width': '50rem' }"
-    >
-      <ng-template #header>
-        <tr>
-          @for (col of selectedColumns; track col.field) {
-            <th [pSortableColumn]="col.field" pResizableColumn>
-              {{ t(col.headerKey) }}
-              <p-sortIcon [field]="col.field" />
-              <p-columnFilter [field]="col.field" matchMode="contains" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
-                <ng-template #filter let-value let-filterCallback="filterCallback">
-                  <input
-                    pInputText
-                    type="text"
-                    [ngModel]="value"
-                    (ngModelChange)="filterCallback($event)"
-                    [placeholder]="getFilterPlaceholder(col.headerKey)"
-                    [style]="{ 'min-width': '10rem' }"
-                  />
-                </ng-template>
-              </p-columnFilter>
-            </th>
-          }
-          <th class="text-center" style="width: 5rem">{{ t('location.actions') }}</th>
-        </tr>
-      </ng-template>
-      <ng-template #body let-loc>
-        <tr [pSelectableRow]="loc">
-          @for (col of selectedColumns; track col.field) {
-            @if (col.field === 'website') {
-              <td>
-                @if (loc[col.field]) {
-                  <a [href]="loc[col.field]" target="_blank" rel="noopener" class="text-primary hover:underline">{{ loc[col.field] }}</a>
-                }
-              </td>
-            } @else {
-              <td>{{ loc[col.field] }}</td>
-            }
-          }
-          <td class="text-center">
-            <p-button
-              icon="pi pi-pencil"
-              [rounded]="true"
-              [text]="true"
-              (onClick)="onEditLocation(loc)"
-              [attr.aria-label]="t('location.edit')"
-            />
-            <p-button
-              icon="pi pi-trash"
-              [rounded]="true"
-              [text]="true"
-              severity="danger"
-              (onClick)="onDeleteLocation(loc)"
-              [attr.aria-label]="t('location.delete')"
-            />
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
+<div *transloco="let t" class="h-full min-h-0 flex flex-col">
+  <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 shrink-0 mb-6">{{ t('location.title') }}</h1>
+  <app-data-table
+    #dataTable
+    [data]="locationService.locations()"
+    [columns]="columns"
+    [translations]="translations"
+    [globalFilterFields]="globalFilterFields"
+    stateKey="location"
+    nameField="name"
+    minTableWidth="50rem"
+    (itemAdd)="onAdd()"
+    (itemEdit)="onEdit($event)"
+    (itemDelete)="onDelete($event)"
+  >
+    <ng-template #cell let-item let-field="field">
+      @if (field === 'website' && item[field]) {
+        <a [href]="item[field]" target="_blank" rel="noopener" class="text-primary hover:underline">{{ item[field] }}</a>
+      } @else {
+        {{ item[field] }}
+      }
+    </ng-template>
+  </app-data-table>
 
-  <p-toast />
-  <p-confirmdialog />
   <app-location-dialog
     [visible]="dialogVisible()"
     [location]="editingLocation()"
     (locationSaved)="onSaveLocation($event)"
-    (dialogClosed)="onDialogClosed()"
+    (dialogClosed)="dialogVisible.set(false)"
   />
 </div>

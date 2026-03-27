@@ -30,6 +30,7 @@ export const sheriffConfig: SheriffConfig = {
     'type:data-access': ['type:model', 'type:shared', 'type:core'],
     'type:model': ['type:shared'],
     'type:shared': ['type:shared', 'type:core'],
+    shared: [sameTag, 'type:core'],
     core: [sameTag],
     'type:core': [sameTag],
   },

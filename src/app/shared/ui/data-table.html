@@ -1,0 +1,135 @@
+<div *transloco="let t" class="flex flex-col gap-6 h-full min-h-0">
+  <ng-content select="[tableTitle]"></ng-content>
+  <div class="rounded-2xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm overflow-hidden flex flex-col min-h-0 flex-1">
+    <p-toolbar styleClass="border-none bg-transparent shrink-0">
+      <ng-template #start>
+        <p-multiselect
+          [options]="allColumns"
+          [ngModel]="selectedColumns"
+          (ngModelChange)="onColumnsChange($event)"
+          [optionLabel]="'headerKey'"
+          [placeholder]="t(translations().columns)"
+          [maxSelectedLabels]="0"
+          [selectedItemsLabel]="t(translations().columnsSelected, { count: selectedColumns.length })"
+          [style]="{ 'min-width': '14rem' }"
+        >
+          <ng-template #item let-col>
+            {{ t(col.headerKey) }}
+          </ng-template>
+        </p-multiselect>
+      </ng-template>
+      <ng-template #center>
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
+          <input
+            pInputText
+            type="text"
+            [placeholder]="t(translations().search)"
+            (input)="onGlobalFilter($event)"
+          />
+        </p-iconfield>
+      </ng-template>
+      <ng-template #end>
+        <p-button
+          [label]="t(translations().addButton)"
+          icon="pi pi-plus"
+          (onClick)="itemAdd.emit()"
+        />
+      </ng-template>
+    </p-toolbar>
+    <p-table
+      #dt
+      [value]="data()"
+      [scrollable]="true"
+      scrollHeight="flex"
+      [globalFilterFields]="globalFilterFields()"
+      [showGridlines]="true"
+      [resizableColumns]="true"
+      columnResizeMode="fit"
+      selectionMode="single"
+      [(selection)]="selectedItem"
+      dataKey="id"
+      size="small"
+      stateStorage="local"
+      [stateKey]="'workout-ai-table-' + stateKey()"
+      [tableStyle]="{ 'min-width': minTableWidth() }"
+    >
+      <ng-template #header>
+        <tr>
+          @for (col of selectedColumns; track col.field) {
+            <th [pSortableColumn]="col.field" pResizableColumn>
+              {{ t(col.headerKey) }}
+              <p-sortIcon [field]="col.field" />
+              @if (col.filterMode === 'select' && col.filterOptions) {
+                <p-columnFilter [field]="col.field" matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                  <ng-template #filter let-value let-filterCallback="filterCallback">
+                    <p-select
+                      [ngModel]="value"
+                      (ngModelChange)="filterCallback($event)"
+                      [options]="col.filterOptions!"
+                      optionLabel="label"
+                      optionValue="value"
+                      [placeholder]="col.filterPlaceholderKey ? t(col.filterPlaceholderKey) : getFilterPlaceholder(col.headerKey)"
+                      [showClear]="true"
+                      [style]="{ 'min-width': '10rem' }"
+                    />
+                  </ng-template>
+                </p-columnFilter>
+              } @else {
+                <p-columnFilter [field]="col.field" matchMode="contains" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                  <ng-template #filter let-value let-filterCallback="filterCallback">
+                    <input
+                      pInputText
+                      type="text"
+                      [ngModel]="value"
+                      (ngModelChange)="filterCallback($event)"
+                      [placeholder]="getFilterPlaceholder(col.headerKey)"
+                      [style]="{ 'min-width': '10rem' }"
+                    />
+                  </ng-template>
+                </p-columnFilter>
+              }
+            </th>
+          }
+          <th class="text-center" style="width: 5rem">{{ t(translations().actions) }}</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-item>
+        <tr [pSelectableRow]="item">
+          @for (col of selectedColumns; track col.field) {
+            @if (cellTemplate()) {
+              <td>
+                <ng-container
+                  [ngTemplateOutlet]="cellTemplate()!"
+                  [ngTemplateOutletContext]="{ $implicit: item, field: col.field }"
+                />
+              </td>
+            } @else {
+              <td>{{ $any(item)[col.field] }}</td>
+            }
+          }
+          <td class="text-center">
+            <p-button
+              icon="pi pi-pencil"
+              [rounded]="true"
+              [text]="true"
+              (onClick)="onEdit(item)"
+              [attr.aria-label]="t(translations().edit)"
+            />
+            <p-button
+              icon="pi pi-trash"
+              [rounded]="true"
+              [text]="true"
+              severity="danger"
+              (onClick)="onDelete(item)"
+              [attr.aria-label]="t(translations().delete)"
+            />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <p-toast />
+  <p-confirmdialog />
+</div>

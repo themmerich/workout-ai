@@ -1,150 +1,100 @@
 import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { ConfirmDialog } from 'primeng/confirmdialog';
-import { IconField } from 'primeng/iconfield';
-import { InputIcon } from 'primeng/inputicon';
-import { InputText } from 'primeng/inputtext';
-import { MultiSelect } from 'primeng/multiselect';
-import { Select } from 'primeng/select';
-import { Table, TableModule } from 'primeng/table';
 import { Tag } from 'primeng/tag';
-import { Toast } from 'primeng/toast';
-import { Toolbar } from 'primeng/toolbar';
-import { LocalStorageService } from '../../../shared/utils/local-storage.service';
+import { DataTableComponent } from '../../../shared/ui/data-table';
+import { DataTableTranslations, TableColumn } from '../../../shared/ui/data-table.model';
 import { UserService } from '../data-access/user.service';
 import { UserProfile } from '../model/user.model';
 import { UserDialogComponent } from '../ui/user-dialog';
-
-const COLUMNS_STORAGE_KEY = 'workout-ai-columns-user';
-
-interface Column {
-  field: string;
-  headerKey: string;
-}
 
 @Component({
   selector: 'app-user-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-col h-full min-h-0' },
-  providers: [ConfirmationService, MessageService],
-  imports: [
-    FormsModule,
-    TranslocoDirective,
-    ButtonModule,
-    ConfirmDialog,
-    IconField,
-    InputIcon,
-    InputText,
-    MultiSelect,
-    Select,
-    TableModule,
-    Tag,
-    Toast,
-    Toolbar,
-    UserDialogComponent,
-  ],
+  imports: [TranslocoDirective, Tag, DataTableComponent, UserDialogComponent],
   templateUrl: './user-page.html',
 })
 export default class UserPageComponent {
   protected readonly userService = inject(UserService);
   private readonly transloco = inject(TranslocoService);
-  private readonly confirmationService = inject(ConfirmationService);
-  private readonly messageService = inject(MessageService);
-  private readonly storage = inject(LocalStorageService);
   protected readonly dialogVisible = signal(false);
   protected readonly editingUser = signal<UserProfile | null>(null);
-  protected selectedUser: UserProfile | null = null;
 
-  private readonly dt = viewChild<Table>('dt');
+  private readonly dataTable = viewChild<DataTableComponent<UserProfile>>('dataTable');
 
-  protected readonly allColumns: Column[] = [
+  protected readonly columns: TableColumn[] = [
     { field: 'username', headerKey: 'user.username' },
     { field: 'displayName', headerKey: 'user.name' },
     { field: 'email', headerKey: 'user.email' },
-    { field: 'role', headerKey: 'user.role' },
+    {
+      field: 'role',
+      headerKey: 'user.role',
+      filterMode: 'select',
+      filterPlaceholderKey: 'user.filterByRole',
+      filterOptions: [
+        { label: 'Administrator', value: 'admin' },
+        { label: 'User', value: 'user' },
+      ],
+    },
   ];
 
-  protected selectedColumns: Column[] = this.loadSelectedColumns();
+  protected readonly globalFilterFields = ['username', 'displayName', 'email', 'role'];
 
-  protected onColumnsChange(columns: Column[]): void {
-    this.selectedColumns = columns;
-    this.storage.set(COLUMNS_STORAGE_KEY, columns.map((c) => c.field));
+  protected readonly translations: DataTableTranslations = {
+    columns: 'user.columns',
+    columnsSelected: 'user.columnsSelected',
+    search: 'user.search',
+    addButton: 'user.addUser',
+    actions: 'user.actions',
+    edit: 'user.edit',
+    delete: 'user.delete',
+    filterBy: 'user.filterBy',
+    confirmDeleteTitle: 'user.confirmDeleteTitle',
+    confirmDelete: 'user.confirmDelete',
+    createSuccess: 'user.createSuccess',
+    updateSuccess: 'user.updateSuccess',
+    deleteSuccess: 'user.deleteSuccess',
+    deleteError: 'user.deleteError',
+    dialogDelete: 'user.dialog.delete',
+    dialogCancel: 'user.dialog.cancel',
+  };
+
+  protected getRoleSeverity(role: string): 'warn' | 'info' {
+    return role === 'admin' ? 'warn' : 'info';
   }
 
-  protected getFilterPlaceholder(headerKey: string): string {
-    const field = this.transloco.translate(headerKey);
-    return this.transloco.translate('user.filterBy', { field });
+  protected getRoleLabel(role: string): string {
+    return this.transloco.translate('user.roles.' + role);
   }
 
-  protected onGlobalFilter(event: Event): void {
-    const value = (event.target as HTMLInputElement).value;
-    this.dt()?.filterGlobal(value, 'contains');
+  protected onAdd(): void {
+    this.editingUser.set(null);
+    this.dialogVisible.set(true);
   }
 
-  protected onEditUser(user: UserProfile): void {
+  protected onEdit(user: UserProfile): void {
     this.editingUser.set(user);
     this.dialogVisible.set(true);
   }
 
   protected onSaveUser(user: UserProfile | Omit<UserProfile, 'id'>): void {
-    if ('id' in user) {
-      this.userService.update(user);
-      this.messageService.add({
-        severity: 'success',
-        summary: this.transloco.translate('user.updateSuccess'),
-        life: 3000,
-      });
+    if ('id' in user && user.id) {
+      this.userService.update(user as UserProfile);
+      this.dataTable()?.showSuccess(this.translations.updateSuccess);
     } else {
-      this.userService.add(user);
-      this.messageService.add({
-        severity: 'success',
-        summary: this.transloco.translate('user.createSuccess'),
-        life: 3000,
-      });
+      this.userService.add(user as Omit<UserProfile, 'id'>);
+      this.dataTable()?.showSuccess(this.translations.createSuccess);
     }
-    this.onDialogClosed();
-  }
-
-  protected onDeleteUser(user: UserProfile): void {
-    this.confirmationService.confirm({
-      message: this.transloco.translate('user.confirmDelete', { name: user.displayName }),
-      header: this.transloco.translate('user.confirmDeleteTitle'),
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: this.transloco.translate('user.dialog.delete'),
-      rejectLabel: this.transloco.translate('user.dialog.cancel'),
-      acceptButtonStyleClass: 'p-button-danger',
-      accept: () => {
-        try {
-          this.userService.delete(user.id);
-          this.messageService.add({
-            severity: 'success',
-            summary: this.transloco.translate('user.deleteSuccess'),
-            life: 3000,
-          });
-        } catch {
-          this.messageService.add({
-            severity: 'error',
-            summary: this.transloco.translate('user.deleteError'),
-            life: 5000,
-          });
-        }
-      },
-    });
-  }
-
-  protected onDialogClosed(): void {
     this.dialogVisible.set(false);
     this.editingUser.set(null);
   }
 
-  private loadSelectedColumns(): Column[] {
-    const savedFields = this.storage.get<string[]>(COLUMNS_STORAGE_KEY);
-    if (savedFields) {
-      return this.allColumns.filter((c) => savedFields.includes(c.field));
+  protected onDelete(user: UserProfile): void {
+    try {
+      this.userService.delete(user.id);
+      this.dataTable()?.showSuccess(this.translations.deleteSuccess);
+    } catch {
+      this.dataTable()?.showError(this.translations.deleteError);
     }
-    return [...this.allColumns];
   }
 }
