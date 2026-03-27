@@ -1,9 +1,10 @@
 export interface TableColumn {
   field: string;
   headerKey: string;
-  filterMode?: 'text' | 'select';
+  filterMode?: 'text' | 'select' | 'multiselect';
   filterOptions?: { label: string; value: string }[];
   filterPlaceholderKey?: string;
+  filterSelectedItemsLabelKey?: string;
 }
 
 export interface CellTemplateContext<T = unknown> {

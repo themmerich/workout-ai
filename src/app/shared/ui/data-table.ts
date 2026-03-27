@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, FilterService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { IconField } from 'primeng/iconfield';
@@ -56,6 +56,7 @@ export class DataTableComponent<T extends { id: string } = any> {
   private readonly confirmationService = inject(ConfirmationService);
   private readonly messageService = inject(MessageService);
   private readonly storage = inject(LocalStorageService);
+  private readonly filterService = inject(FilterService);
 
   readonly data = input.required<T[]>();
   readonly columns = input.required<TableColumn[]>();
@@ -80,6 +81,16 @@ export class DataTableComponent<T extends { id: string } = any> {
   }
 
   constructor() {
+    this.filterService.register('arrayIntersect', (value: unknown, filter: unknown): boolean => {
+      if (!filter || !Array.isArray(filter) || filter.length === 0) {
+        return true;
+      }
+      if (!value || !Array.isArray(value)) {
+        return false;
+      }
+      return filter.every((f: unknown) => value.includes(f));
+    });
+
     afterNextRender(() => {
       this.selectedColumns = this.loadSelectedColumns();
     });

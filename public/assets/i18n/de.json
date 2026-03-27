@@ -7,6 +7,7 @@
     "user": "Benutzer",
     "locations": "Standorte",
     "equipment": "Geräte",
+    "exercises": "Übungen",
     "settings": "Einstellungen"
   },
   "sidebar": {
@@ -61,6 +62,55 @@
     "validation": {
       "required": "Dieses Feld ist erforderlich",
       "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
+    }
+  },
+  "exercise": {
+    "title": "Fitnessübungen",
+    "name": "Name",
+    "muscleGroups": "Muskelgruppen",
+    "muscleGroupsSelected": "Muskelgruppen ausgewählt",
+    "muscles": {
+      "chest": "Brust",
+      "back": "Rücken",
+      "shoulders": "Schultern",
+      "biceps": "Bizeps",
+      "triceps": "Trizeps",
+      "forearms": "Unterarme",
+      "abs": "Bauch",
+      "glutes": "Gesäß",
+      "quadriceps": "Oberschenkel (vorne)",
+      "hamstrings": "Oberschenkel (hinten)",
+      "calves": "Waden",
+      "hip-flexors": "Hüftbeuger",
+      "traps": "Trapezmuskel",
+      "lats": "Latissimus"
+    },
+    "search": "Suchen...",
+    "columns": "Spalten",
+    "columnsSelected": "{count} Spalten ausgewählt",
+    "addExercise": "Neue Übung",
+    "filterBy": "Nach {{field}} filtern",
+    "filterByMuscleGroup": "Nach Muskelgruppe filtern",
+    "filterMusclesSelected": "Muskelgruppen ausgewählt",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "actions": "Aktionen",
+    "confirmDeleteTitle": "Übung löschen",
+    "confirmDelete": "Möchten Sie die Übung \"{{name}}\" wirklich löschen?",
+    "createSuccess": "Übung wurde erfolgreich angelegt",
+    "updateSuccess": "Übung wurde erfolgreich aktualisiert",
+    "deleteSuccess": "Übung wurde erfolgreich gelöscht",
+    "deleteError": "Fehler beim Löschen der Übung",
+    "clearFilters": "Alle Filter zurücksetzen",
+    "dialog": {
+      "title": "Neue Übung anlegen",
+      "editTitle": "Übung bearbeiten",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "delete": "Löschen"
+    },
+    "validation": {
+      "required": "Dieses Feld ist erforderlich"
     }
   },
   "equipment": {

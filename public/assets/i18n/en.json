@@ -7,6 +7,7 @@
     "user": "User",
     "locations": "Locations",
     "equipment": "Equipment",
+    "exercises": "Exercises",
     "settings": "Settings"
   },
   "sidebar": {
@@ -61,6 +62,55 @@
     "validation": {
       "required": "This field is required",
       "email": "Please enter a valid email address"
+    }
+  },
+  "exercise": {
+    "title": "Exercises",
+    "name": "Name",
+    "muscleGroups": "Muscle Groups",
+    "muscleGroupsSelected": "muscle groups selected",
+    "muscles": {
+      "chest": "Chest",
+      "back": "Back",
+      "shoulders": "Shoulders",
+      "biceps": "Biceps",
+      "triceps": "Triceps",
+      "forearms": "Forearms",
+      "abs": "Abs",
+      "glutes": "Glutes",
+      "quadriceps": "Quadriceps",
+      "hamstrings": "Hamstrings",
+      "calves": "Calves",
+      "hip-flexors": "Hip Flexors",
+      "traps": "Traps",
+      "lats": "Lats"
+    },
+    "search": "Search...",
+    "columns": "Columns",
+    "columnsSelected": "{count} columns selected",
+    "addExercise": "New Exercise",
+    "filterBy": "Filter by {{field}}",
+    "filterByMuscleGroup": "Filter by muscle group",
+    "filterMusclesSelected": "muscle groups selected",
+    "edit": "Edit",
+    "delete": "Delete",
+    "actions": "Actions",
+    "confirmDeleteTitle": "Delete Exercise",
+    "confirmDelete": "Are you sure you want to delete \"{{name}}\"?",
+    "createSuccess": "Exercise was successfully created",
+    "updateSuccess": "Exercise was successfully updated",
+    "deleteSuccess": "Exercise was successfully deleted",
+    "deleteError": "Error deleting exercise",
+    "clearFilters": "Clear all filters",
+    "dialog": {
+      "title": "Create New Exercise",
+      "editTitle": "Edit Exercise",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "validation": {
+      "required": "This field is required"
     }
   },
   "equipment": {

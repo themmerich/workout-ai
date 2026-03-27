@@ -61,6 +61,15 @@
           <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.equipment') }}</span>
         </a>
         <a
+          routerLink="/exercises"
+          routerLinkActive="bg-white/80 dark:bg-surface-0/10"
+          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-200 hover:text-surface-900 dark:hover:text-surface-0 hover:bg-white/80 dark:hover:bg-surface-0/10 duration-150 transition-colors group"
+          (click)="closeSidebar.emit()"
+        >
+          <i class="pi pi-bolt text-base leading-tight text-surface-700 dark:text-surface-200 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.exercises') }}</span>
+        </a>
+        <a
           routerLink="/settings"
           routerLinkActive="bg-white/80 dark:bg-surface-0/10"
           class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-200 hover:text-surface-900 dark:hover:text-surface-0 hover:bg-white/80 dark:hover:bg-surface-950/50 duration-150 transition-colors group"
