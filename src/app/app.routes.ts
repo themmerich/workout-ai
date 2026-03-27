@@ -16,6 +16,12 @@ export const routes: Routes = [
         loadChildren: () => import('./domains/user/user.routes').then((m) => m.userRoutes),
       },
       {
+        path: 'locations',
+        canActivate: [adminGuard],
+        loadChildren: () =>
+          import('./domains/location/location.routes').then((m) => m.locationRoutes),
+      },
+      {
         path: 'settings',
         canActivate: [adminGuard],
         loadChildren: () => import('./domains/settings/settings.routes').then((m) => m.settingsRoutes),

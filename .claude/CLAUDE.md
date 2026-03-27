@@ -28,7 +28,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use `input()` and `output()` functions instead of decorators
 - Use `computed()` for derived state
 - Set `changeDetection: ChangeDetectionStrategy.OnPush` in `@Component` decorator
-- Prefer inline templates for small components
+- Always use external template files (`templateUrl`), do NOT use inline `template`
 - Prefer Reactive forms instead of Template-driven ones
 - Do NOT use `ngClass`, use `class` bindings instead
 - Do NOT use `ngStyle`, use `style` bindings instead
@@ -65,8 +65,8 @@ You are an expert in TypeScript, Angular, and scalable web application developme
   - `ui/` — Presentational components
   - `data-access/` — Services, stores, API calls
   - `model/` — Interfaces, types, enums
-- Module boundaries are enforced via `@softarc/sheriff-core`
-- Do NOT import across domain boundaries except through barrel exports
+- Module boundaries are enforced via `@softarc/sheriff-core` (barrelless mode)
+- Do NOT use barrel files (`index.ts`), import directly from source files
 
 ## i18n
 
@@ -84,3 +84,53 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Use PrimeNG components for UI (theme: Aura via `@primeuix/themes`)
 - Use Tailwind CSS for utility styling
 - zone.js is enabled (required for PrimeNG)
+
+## Table Pattern (Blueprint)
+
+Use the user table (`domains/user/feature/user-page.ts`) as blueprint for all new tables. Key conventions:
+
+### Table Page Component
+- `host: { class: 'flex flex-col h-full min-h-0' }` for proper scroll containment
+- `providers: [ConfirmationService, MessageService]` at component level
+- Define columns as `Column[]` with `field` and `headerKey` (transloco key)
+- Wrap content in `<div class="flex flex-col gap-6 h-full min-h-0">`
+
+### Toolbar (above table)
+- **Left**: Column toggler (`p-multiselect`) with translated labels and `selectedItemsLabel`
+- **Center**: Global search (`p-iconfield` + `pInputText`)
+- **Right**: Add button (`p-button` with `pi pi-plus`)
+
+### p-table Configuration
+- `[scrollable]="true"` + `scrollHeight="flex"` (no pagination, scroll within frame)
+- `size="small"` for compact rows
+- `[showGridlines]="true"` for column separation
+- `[resizableColumns]="true"` + `columnResizeMode="expand"` + `pResizableColumn` on `<th>`
+- `selectionMode="single"` with `[pSelectableRow]` (no checkboxes)
+- `dataKey="id"`
+
+### Column Filters
+- Use `display="menu"` (overlay popup, no inline filters)
+- Text columns: `matchMode="contains"` with `pInputText`
+- Enum columns (e.g. role): `matchMode="equals"` with `p-select` dropdown using translated options
+- Use `[showMatchModes]="false" [showOperator]="false" [showAddButton]="false"`
+
+### Actions Column
+- Fixed width `style="width: 5rem"`
+- Edit button: `pi pi-pencil`, `[rounded]="true"` `[text]="true"`
+- Delete button: `pi pi-trash`, `[rounded]="true"` `[text]="true"` `severity="danger"`
+- Delete uses `ConfirmationService` with translated labels (`acceptLabel`, `rejectLabel`)
+
+### Toast Notifications
+- `<p-toast />` + `<p-confirmdialog />` in template
+- Success toast on create, update, delete (`life: 3000`)
+- Error toast on failure (`life: 5000`)
+
+### Dialog for Create/Edit
+- Reuse one dialog component for both create and edit
+- Accept `user` input signal (`null` = create, `UserProfile` = edit)
+- Use `effect()` to patch form when user input changes
+- PrimeNG `FloatLabel` with `variant="on"` for all fields
+- Mark mandatory fields with `*` in labels
+- Save button: `[disabled]="form.invalid || !form.dirty"`
+- Emit separate outputs: `userSaved` and `dialogClosed`
+- Do NOT use native DOM event names for outputs (e.g. `save`, `cancel`)

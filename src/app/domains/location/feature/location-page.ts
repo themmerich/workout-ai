@@ -8,17 +8,15 @@ import { IconField } from 'primeng/iconfield';
 import { InputIcon } from 'primeng/inputicon';
 import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
-import { Select } from 'primeng/select';
 import { Table, TableModule } from 'primeng/table';
-import { Tag } from 'primeng/tag';
 import { Toast } from 'primeng/toast';
 import { Toolbar } from 'primeng/toolbar';
 import { LocalStorageService } from '../../../shared/utils/local-storage.service';
-import { UserService } from '../data-access/user.service';
-import { UserProfile } from '../model/user.model';
-import { UserDialogComponent } from '../ui/user-dialog';
+import { LocationService } from '../data-access/location.service';
+import { Location } from '../model/location.model';
+import { LocationDialogComponent } from '../ui/location-dialog';
 
-const COLUMNS_STORAGE_KEY = 'workout-ai-columns-user';
+const COLUMNS_STORAGE_KEY = 'workout-ai-columns-location';
 
 interface Column {
   field: string;
@@ -26,7 +24,7 @@ interface Column {
 }
 
 @Component({
-  selector: 'app-user-page',
+  selector: 'app-location-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-col h-full min-h-0' },
   providers: [ConfirmationService, MessageService],
@@ -39,32 +37,33 @@ interface Column {
     InputIcon,
     InputText,
     MultiSelect,
-    Select,
     TableModule,
-    Tag,
     Toast,
     Toolbar,
-    UserDialogComponent,
+    LocationDialogComponent,
   ],
-  templateUrl: './user-page.html',
+  templateUrl: './location-page.html',
 })
-export default class UserPageComponent {
-  protected readonly userService = inject(UserService);
+export default class LocationPageComponent {
+  protected readonly locationService = inject(LocationService);
   private readonly transloco = inject(TranslocoService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly messageService = inject(MessageService);
   private readonly storage = inject(LocalStorageService);
   protected readonly dialogVisible = signal(false);
-  protected readonly editingUser = signal<UserProfile | null>(null);
-  protected selectedUser: UserProfile | null = null;
+  protected readonly editingLocation = signal<Location | null>(null);
+  protected selectedLocation: Location | null = null;
 
   private readonly dt = viewChild<Table>('dt');
 
   protected readonly allColumns: Column[] = [
-    { field: 'username', headerKey: 'user.username' },
-    { field: 'displayName', headerKey: 'user.name' },
-    { field: 'email', headerKey: 'user.email' },
-    { field: 'role', headerKey: 'user.role' },
+    { field: 'name', headerKey: 'location.name' },
+    { field: 'street', headerKey: 'location.street' },
+    { field: 'zip', headerKey: 'location.zip' },
+    { field: 'city', headerKey: 'location.city' },
+    { field: 'phone', headerKey: 'location.phone' },
+    { field: 'email', headerKey: 'location.email' },
+    { field: 'website', headerKey: 'location.website' },
   ];
 
   protected selectedColumns: Column[] = this.loadSelectedColumns();
@@ -76,7 +75,7 @@ export default class UserPageComponent {
 
   protected getFilterPlaceholder(headerKey: string): string {
     const field = this.transloco.translate(headerKey);
-    return this.transloco.translate('user.filterBy', { field });
+    return this.transloco.translate('location.filterBy', { field });
   }
 
   protected onGlobalFilter(event: Event): void {
@@ -84,50 +83,50 @@ export default class UserPageComponent {
     this.dt()?.filterGlobal(value, 'contains');
   }
 
-  protected onEditUser(user: UserProfile): void {
-    this.editingUser.set(user);
+  protected onEditLocation(location: Location): void {
+    this.editingLocation.set(location);
     this.dialogVisible.set(true);
   }
 
-  protected onSaveUser(user: UserProfile | Omit<UserProfile, 'id'>): void {
-    if ('id' in user) {
-      this.userService.update(user);
+  protected onSaveLocation(location: Location | Omit<Location, 'id'>): void {
+    if ('id' in location) {
+      this.locationService.update(location);
       this.messageService.add({
         severity: 'success',
-        summary: this.transloco.translate('user.updateSuccess'),
+        summary: this.transloco.translate('location.updateSuccess'),
         life: 3000,
       });
     } else {
-      this.userService.add(user);
+      this.locationService.add(location);
       this.messageService.add({
         severity: 'success',
-        summary: this.transloco.translate('user.createSuccess'),
+        summary: this.transloco.translate('location.createSuccess'),
         life: 3000,
       });
     }
     this.onDialogClosed();
   }
 
-  protected onDeleteUser(user: UserProfile): void {
+  protected onDeleteLocation(location: Location): void {
     this.confirmationService.confirm({
-      message: this.transloco.translate('user.confirmDelete', { name: user.displayName }),
-      header: this.transloco.translate('user.confirmDeleteTitle'),
+      message: this.transloco.translate('location.confirmDelete', { name: location.name }),
+      header: this.transloco.translate('location.confirmDeleteTitle'),
       icon: 'pi pi-exclamation-triangle',
-      acceptLabel: this.transloco.translate('user.dialog.delete'),
-      rejectLabel: this.transloco.translate('user.dialog.cancel'),
+      acceptLabel: this.transloco.translate('location.dialog.delete'),
+      rejectLabel: this.transloco.translate('location.dialog.cancel'),
       acceptButtonStyleClass: 'p-button-danger',
       accept: () => {
         try {
-          this.userService.delete(user.id);
+          this.locationService.delete(location.id);
           this.messageService.add({
             severity: 'success',
-            summary: this.transloco.translate('user.deleteSuccess'),
+            summary: this.transloco.translate('location.deleteSuccess'),
             life: 3000,
           });
         } catch {
           this.messageService.add({
             severity: 'error',
-            summary: this.transloco.translate('user.deleteError'),
+            summary: this.transloco.translate('location.deleteError'),
             life: 5000,
           });
         }
@@ -137,7 +136,7 @@ export default class UserPageComponent {
 
   protected onDialogClosed(): void {
     this.dialogVisible.set(false);
-    this.editingUser.set(null);
+    this.editingLocation.set(null);
   }
 
   private loadSelectedColumns(): Column[] {
