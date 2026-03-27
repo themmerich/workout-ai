@@ -12,11 +12,10 @@ import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
-import { Select } from 'primeng/select';
-import { UserProfile } from '../model/user.model';
+import { Location } from '../model/location.model';
 
 @Component({
-  selector: 'app-user-dialog',
+  selector: 'app-location-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     ReactiveFormsModule,
@@ -24,48 +23,49 @@ import { UserProfile } from '../model/user.model';
     Dialog,
     FloatLabel,
     InputText,
-    Select,
     ButtonModule,
   ],
-  templateUrl: './user-dialog.html',
+  templateUrl: './location-dialog.html',
 })
-export class UserDialogComponent {
+export class LocationDialogComponent {
   private readonly fb = inject(FormBuilder);
 
   readonly visible = input(false);
-  readonly user = input<UserProfile | null>(null);
-  readonly userSaved = output<UserProfile | Omit<UserProfile, 'id'>>();
+  readonly location = input<Location | null>(null);
+  readonly locationSaved = output<Location | Omit<Location, 'id'>>();
   readonly dialogClosed = output<void>();
 
-  protected readonly roleOptions: string[] = ['user', 'admin'];
-
   protected readonly form = this.fb.nonNullable.group({
-    username: ['', Validators.required],
-    displayName: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    role: ['user', Validators.required],
+    name: ['', Validators.required],
+    street: ['', Validators.required],
+    zip: ['', Validators.required],
+    city: ['', Validators.required],
+    country: [''],
+    phone: [''],
+    email: ['', Validators.email],
+    website: [''],
   });
 
   constructor() {
     effect(() => {
-      const userData = this.user();
-      if (userData) {
-        this.form.patchValue(userData);
+      const data = this.location();
+      if (data) {
+        this.form.patchValue(data);
       } else {
-        this.form.reset({ role: 'user' });
+        this.form.reset();
       }
     });
   }
 
   protected onSubmit(): void {
     if (this.form.valid) {
-      const userData = this.user();
-      if (userData) {
-        this.userSaved.emit({ ...this.form.getRawValue(), id: userData.id });
+      const data = this.location();
+      if (data) {
+        this.locationSaved.emit({ ...this.form.getRawValue(), id: data.id });
       } else {
-        this.userSaved.emit(this.form.getRawValue());
+        this.locationSaved.emit(this.form.getRawValue());
       }
-      this.form.reset({ role: 'user' });
+      this.form.reset();
     }
   }
 }

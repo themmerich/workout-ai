@@ -5,6 +5,7 @@
   "nav": {
     "dashboard": "Dashboard",
     "user": "User",
+    "locations": "Locations",
     "settings": "Settings"
   },
   "sidebar": {
@@ -51,6 +52,42 @@
     "dialog": {
       "title": "Create New User",
       "editTitle": "Edit User",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email address"
+    }
+  },
+  "location": {
+    "title": "Locations",
+    "name": "Name",
+    "street": "Street",
+    "zip": "Zip",
+    "city": "City",
+    "country": "Country",
+    "phone": "Phone",
+    "email": "Email",
+    "website": "Website",
+    "search": "Search...",
+    "columns": "Columns",
+    "columnsSelected": "{count} columns selected",
+    "addLocation": "New Location",
+    "filterBy": "Filter by {{field}}",
+    "edit": "Edit",
+    "delete": "Delete",
+    "actions": "Actions",
+    "confirmDeleteTitle": "Delete Location",
+    "confirmDelete": "Are you sure you want to delete the location \"{{name}}\"?",
+    "createSuccess": "Location was successfully created",
+    "updateSuccess": "Location was successfully updated",
+    "deleteSuccess": "Location was successfully deleted",
+    "deleteError": "Error deleting location",
+    "dialog": {
+      "title": "Create New Location",
+      "editTitle": "Edit Location",
       "save": "Save",
       "cancel": "Cancel",
       "delete": "Delete"

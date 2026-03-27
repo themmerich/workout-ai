@@ -5,6 +5,7 @@
   "nav": {
     "dashboard": "Dashboard",
     "user": "Benutzer",
+    "locations": "Standorte",
     "settings": "Einstellungen"
   },
   "sidebar": {
@@ -51,6 +52,42 @@
     "dialog": {
       "title": "Neuen Benutzer anlegen",
       "editTitle": "Benutzer bearbeiten",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "delete": "Löschen"
+    },
+    "validation": {
+      "required": "Dieses Feld ist erforderlich",
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
+    }
+  },
+  "location": {
+    "title": "Standorte",
+    "name": "Name",
+    "street": "Straße",
+    "zip": "PLZ",
+    "city": "Stadt",
+    "country": "Land",
+    "phone": "Telefon",
+    "email": "E-Mail",
+    "website": "Webseite",
+    "search": "Suchen...",
+    "columns": "Spalten",
+    "columnsSelected": "{count} Spalten ausgewählt",
+    "addLocation": "Neuer Standort",
+    "filterBy": "Nach {{field}} filtern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "actions": "Aktionen",
+    "confirmDeleteTitle": "Standort löschen",
+    "confirmDelete": "Möchten Sie den Standort \"{{name}}\" wirklich löschen?",
+    "createSuccess": "Standort wurde erfolgreich angelegt",
+    "updateSuccess": "Standort wurde erfolgreich aktualisiert",
+    "deleteSuccess": "Standort wurde erfolgreich gelöscht",
+    "deleteError": "Fehler beim Löschen des Standorts",
+    "dialog": {
+      "title": "Neuen Standort anlegen",
+      "editTitle": "Standort bearbeiten",
       "save": "Speichern",
       "cancel": "Abbrechen",
       "delete": "Löschen"
