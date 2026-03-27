@@ -28,6 +28,12 @@ export const routes: Routes = [
           import('./domains/equipment/equipment.routes').then((m) => m.equipmentRoutes),
       },
       {
+        path: 'exercises',
+        canActivate: [adminGuard],
+        loadChildren: () =>
+          import('./domains/exercise/exercise.routes').then((m) => m.exerciseRoutes),
+      },
+      {
         path: 'settings',
         canActivate: [adminGuard],
         loadChildren: () => import('./domains/settings/settings.routes').then((m) => m.settingsRoutes),

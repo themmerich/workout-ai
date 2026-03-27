@@ -1,0 +1,51 @@
+<p-dialog
+  *transloco="let t"
+  [header]="exercise() ? t('exercise.dialog.editTitle') : t('exercise.dialog.title')"
+  [visible]="visible()"
+  (visibleChange)="dialogClosed.emit()"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 pt-6">
+    <div>
+      <p-floatlabel variant="on">
+        <input pInputText id="ex-name" formControlName="name" class="w-full" />
+        <label for="ex-name">{{ t('exercise.name') }} *</label>
+      </p-floatlabel>
+      @if (form.controls.name.touched && form.controls.name.errors?.['required']) {
+        <small class="text-red-500">{{ t('exercise.validation.required') }}</small>
+      }
+    </div>
+    <div>
+      <p-floatlabel variant="on">
+        <p-multiselect
+          formControlName="muscleGroups"
+          [options]="muscleGroupOptions()"
+          optionLabel="label"
+          optionValue="value"
+          inputId="ex-muscleGroups"
+          appendTo="body"
+          styleClass="w-full"
+          [maxSelectedLabels]="3"
+          [selectedItemsLabel]="'{0} ' + t('exercise.muscleGroupsSelected')"
+        />
+        <label for="ex-muscleGroups">{{ t('exercise.muscleGroups') }} *</label>
+      </p-floatlabel>
+      @if (form.controls.muscleGroups.touched && form.controls.muscleGroups.errors?.['required']) {
+        <small class="text-red-500">{{ t('exercise.validation.required') }}</small>
+      }
+    </div>
+    <div class="flex justify-end gap-2 pt-4">
+      <p-button
+        [label]="t('exercise.dialog.cancel')"
+        severity="secondary"
+        (onClick)="dialogClosed.emit()"
+      />
+      <p-button
+        [label]="t('exercise.dialog.save')"
+        type="submit"
+        [disabled]="form.invalid || !form.dirty"
+      />
+    </div>
+  </form>
+</p-dialog>
