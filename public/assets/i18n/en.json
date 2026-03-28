@@ -68,6 +68,8 @@
     "name": "Name",
     "email": "Email",
     "role": "Role",
+    "password": "Password",
+    "passwordHint": "Admins have a global password. Non-admins have location-specific passwords.",
     "roles": {
       "admin": "Administrator",
       "user": "User"
