@@ -1,3 +1,8 @@
+export interface LocationEquipment {
+  equipmentId: string;
+  quantity: number;
+}
+
 export interface Location {
   id: string;
   name: string;
@@ -8,4 +13,5 @@ export interface Location {
   phone: string;
   email: string;
   website: string;
+  equipment: LocationEquipment[];
 }

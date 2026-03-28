@@ -1,0 +1,51 @@
+<p-dialog
+  *transloco="let t"
+  [header]="entry() ? t('location.dialog.editEquipment') : t('location.dialog.addEquipment')"
+  [visible]="visible()"
+  (visibleChange)="dialogClosed.emit()"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 pt-6">
+    <div>
+      <p-floatlabel variant="on">
+        <p-select
+          formControlName="equipmentId"
+          [options]="equipmentOptions()"
+          optionLabel="label"
+          optionValue="value"
+          inputId="le-equipment"
+          appendTo="body"
+          styleClass="w-full"
+        />
+        <label for="le-equipment">{{ t('location.dialog.equipmentName') }} *</label>
+      </p-floatlabel>
+      @if (form.controls.equipmentId.touched && form.controls.equipmentId.errors?.['required']) {
+        <small class="text-red-500">{{ t('location.validation.required') }}</small>
+      }
+    </div>
+    <div>
+      <p-floatlabel variant="on">
+        <p-inputnumber
+          formControlName="quantity"
+          inputId="le-quantity"
+          [min]="1"
+          styleClass="w-full"
+        />
+        <label for="le-quantity">{{ t('location.dialog.equipmentQuantity') }} *</label>
+      </p-floatlabel>
+    </div>
+    <div class="flex justify-end gap-2 pt-4">
+      <p-button
+        [label]="t('location.dialog.cancel')"
+        severity="secondary"
+        (onClick)="dialogClosed.emit()"
+      />
+      <p-button
+        [label]="t('location.dialog.save')"
+        type="submit"
+        [disabled]="form.invalid || !form.dirty"
+      />
+    </div>
+  </form>
+</p-dialog>
