@@ -1,10 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { DataTableComponent } from '../../../shared/ui/data-table';
 import { DataTableTranslations, TableColumn } from '../../../shared/ui/data-table.model';
 import { LocationService } from '../data-access/location.service';
 import { Location } from '../model/location.model';
 import { LocationDialogComponent } from '../ui/location-dialog';
+
+interface LocationView extends Location {
+  equipmentCount: number;
+  memberCount: number;
+}
 
 @Component({
   selector: 'app-location-page',
@@ -18,7 +23,15 @@ export default class LocationPageComponent {
   protected readonly dialogVisible = signal(false);
   protected readonly editingLocation = signal<Location | null>(null);
 
-  private readonly dataTable = viewChild<DataTableComponent<Location>>('dataTable');
+  private readonly dataTable = viewChild<DataTableComponent<LocationView>>('dataTable');
+
+  protected readonly locationViews = computed<LocationView[]>(() =>
+    this.locationService.locations().map((l) => ({
+      ...l,
+      equipmentCount: l.equipment.length,
+      memberCount: l.members.length,
+    })),
+  );
 
   protected readonly columns: TableColumn[] = [
     { field: 'name', headerKey: 'location.name' },
@@ -28,6 +41,8 @@ export default class LocationPageComponent {
     { field: 'phone', headerKey: 'location.phone' },
     { field: 'email', headerKey: 'location.email' },
     { field: 'website', headerKey: 'location.website' },
+    { field: 'equipmentCount', headerKey: 'location.equipmentCount' },
+    { field: 'memberCount', headerKey: 'location.memberCount' },
   ];
 
   protected readonly globalFilterFields = ['name', 'street', 'zip', 'city', 'country', 'phone', 'email', 'website'];
@@ -57,9 +72,12 @@ export default class LocationPageComponent {
     this.dialogVisible.set(true);
   }
 
-  protected onEdit(location: Location): void {
-    this.editingLocation.set(location);
-    this.dialogVisible.set(true);
+  protected onEdit(view: LocationView): void {
+    const location = this.locationService.getById(view.id);
+    if (location) {
+      this.editingLocation.set(location);
+      this.dialogVisible.set(true);
+    }
   }
 
   protected onSaveLocation(location: Location | Omit<Location, 'id'>): void {
@@ -74,9 +92,9 @@ export default class LocationPageComponent {
     this.editingLocation.set(null);
   }
 
-  protected onDelete(location: Location): void {
+  protected onDelete(view: LocationView): void {
     try {
-      this.locationService.delete(location.id);
+      this.locationService.delete(view.id);
       this.dataTable()?.showSuccess(this.translations.deleteSuccess);
     } catch {
       this.dataTable()?.showError(this.translations.deleteError);

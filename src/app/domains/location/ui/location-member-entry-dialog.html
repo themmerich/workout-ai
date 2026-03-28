@@ -1,0 +1,54 @@
+<p-dialog
+  *transloco="let t"
+  [header]="entry() ? t('location.dialog.editMember') : t('location.dialog.addMember')"
+  [visible]="visible()"
+  (visibleChange)="dialogClosed.emit()"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 pt-6">
+    <div>
+      <p-floatlabel variant="on">
+        <p-select
+          formControlName="userId"
+          [options]="userOptions()"
+          optionLabel="label"
+          optionValue="value"
+          inputId="lm-user"
+          appendTo="body"
+          styleClass="w-full"
+        />
+        <label for="lm-user">{{ t('location.dialog.memberName') }} *</label>
+      </p-floatlabel>
+      @if (form.controls.userId.touched && form.controls.userId.errors?.['required']) {
+        <small class="text-red-500">{{ t('location.validation.required') }}</small>
+      }
+    </div>
+    <div>
+      <p-floatlabel variant="on">
+        <p-select
+          formControlName="role"
+          [options]="roleOptions()"
+          optionLabel="label"
+          optionValue="value"
+          inputId="lm-role"
+          appendTo="body"
+          styleClass="w-full"
+        />
+        <label for="lm-role">{{ t('location.dialog.memberRole') }} *</label>
+      </p-floatlabel>
+    </div>
+    <div class="flex justify-end gap-2 pt-4">
+      <p-button
+        [label]="t('location.dialog.cancel')"
+        severity="secondary"
+        (onClick)="dialogClosed.emit()"
+      />
+      <p-button
+        [label]="t('location.dialog.save')"
+        type="submit"
+        [disabled]="form.invalid || !form.dirty"
+      />
+    </div>
+  </form>
+</p-dialog>
