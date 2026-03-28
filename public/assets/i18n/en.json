@@ -42,8 +42,25 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Welcome to Workout AI",
-    "description": "Your personal fitness assistant"
+    "welcome": "Welcome",
+    "description": "Your personal fitness assistant",
+    "admin": {
+      "locations": "Locations",
+      "users": "Users",
+      "exercises": "Exercises",
+      "equipment": "Equipment",
+      "totalMemberships": "Total Memberships",
+      "userRoles": "Users by Role",
+      "memberRoles": "Members by Role",
+      "equipmentCategories": "Equipment by Category",
+      "exercisesPerMuscle": "Exercises per Muscle Group"
+    },
+    "member": {
+      "subtitle": "Your location: {{location}}",
+      "equipment": "Available Equipment",
+      "members": "Members",
+      "exercises": "Exercises"
+    }
   },
   "user": {
     "title": "User",

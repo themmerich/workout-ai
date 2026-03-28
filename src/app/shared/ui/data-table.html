@@ -70,10 +70,12 @@
       <ng-template #header>
         <tr>
           @for (col of selectedColumns; track col.field) {
-            <th [pSortableColumn]="col.field" pResizableColumn>
+            <th [pSortableColumn]="col.sortable !== false ? col.field : undefined" pResizableColumn [class]="col.headerClass ?? ''">
               {{ t(col.headerKey) }}
-              <p-sortIcon [field]="col.field" />
-              @if (col.filterMode === 'multiselect' && col.filterOptions) {
+              @if (col.sortable !== false) {
+                <p-sortIcon [field]="col.field" />
+              }
+              @if (col.filterable !== false && col.filterMode === 'multiselect' && col.filterOptions) {
                 <p-columnFilter [field]="col.field" matchMode="arrayIntersect" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false" [showApplyButton]="true">
                   <ng-template #filter let-value let-filterCallback="filterCallback">
                     <p-multiselect
@@ -90,7 +92,7 @@
                     />
                   </ng-template>
                 </p-columnFilter>
-              } @else if (col.filterMode === 'select' && col.filterOptions) {
+              } @else if (col.filterable !== false && col.filterMode === 'select' && col.filterOptions) {
                 <p-columnFilter [field]="col.field" matchMode="equals" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                   <ng-template #filter let-value let-filterCallback="filterCallback">
                     <p-select
@@ -105,7 +107,7 @@
                     />
                   </ng-template>
                 </p-columnFilter>
-              } @else {
+              } @else if (col.filterable !== false) {
                 <p-columnFilter [field]="col.field" matchMode="contains" display="menu" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
                   <ng-template #filter let-value let-filterCallback="filterCallback">
                     <input
@@ -128,14 +130,14 @@
         <tr [pSelectableRow]="item">
           @for (col of selectedColumns; track col.field) {
             @if (cellTemplate()) {
-              <td>
+              <td [class]="col.bodyClass ?? ''">
                 <ng-container
                   [ngTemplateOutlet]="cellTemplate()!"
                   [ngTemplateOutletContext]="{ $implicit: item, field: col.field }"
                 />
               </td>
             } @else {
-              <td>{{ $any(item)[col.field] }}</td>
+              <td [class]="col.bodyClass ?? ''">{{ $any(item)[col.field] }}</td>
             }
           }
           <td class="text-center">

@@ -42,8 +42,25 @@
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Willkommen bei Workout AI",
-    "description": "Dein persönlicher Fitness-Assistent"
+    "welcome": "Willkommen",
+    "description": "Dein persönlicher Fitness-Assistent",
+    "admin": {
+      "locations": "Standorte",
+      "users": "Benutzer",
+      "exercises": "Übungen",
+      "equipment": "Geräte",
+      "totalMemberships": "Mitgliedschaften gesamt",
+      "userRoles": "Benutzer nach Rolle",
+      "memberRoles": "Mitglieder nach Rolle",
+      "equipmentCategories": "Geräte nach Kategorie",
+      "exercisesPerMuscle": "Übungen pro Muskelgruppe"
+    },
+    "member": {
+      "subtitle": "Dein Standort: {{location}}",
+      "equipment": "Verfügbare Geräte",
+      "members": "Mitglieder",
+      "exercises": "Übungen"
+    }
   },
   "user": {
     "title": "Benutzer",
