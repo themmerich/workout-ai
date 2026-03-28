@@ -19,6 +19,15 @@
             <p-tag [value]="t('exercise.muscles.' + muscle)" severity="info" />
           }
         </div>
+      } @else if (field === 'equipmentIds') {
+        <div class="flex flex-wrap gap-1">
+          @for (eqId of item[field]; track eqId) {
+            <p-tag [value]="getEquipmentName(eqId)" severity="secondary" />
+          }
+          @if (!item[field] || item[field].length === 0) {
+            <span class="text-surface-400">—</span>
+          }
+        </div>
       } @else {
         {{ item[field] }}
       }

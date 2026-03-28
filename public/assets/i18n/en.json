@@ -69,6 +69,10 @@
     "name": "Name",
     "muscleGroups": "Muscle Groups",
     "muscleGroupsSelected": "muscle groups selected",
+    "equipment": "Equipment",
+    "equipmentSelected": "equipment selected",
+    "filterByEquipment": "Filter by equipment",
+    "filterEquipmentSelected": "equipment selected",
     "muscles": {
       "chest": "Chest",
       "back": "Back",

@@ -18,6 +18,7 @@ export interface Exercise {
   id: string;
   name: string;
   muscleGroups: MuscleGroup[];
+  equipmentIds: string[];
 }
 
 export const MUSCLE_GROUPS: MuscleGroup[] = [
