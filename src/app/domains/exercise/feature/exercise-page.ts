@@ -3,6 +3,7 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Tag } from 'primeng/tag';
 import { DataTableComponent } from '../../../shared/ui/data-table';
 import { DataTableTranslations, TableColumn } from '../../../shared/ui/data-table.model';
+import { EquipmentService } from '../../equipment/data-access/equipment.service';
 import { ExerciseService } from '../data-access/exercise.service';
 import { Exercise, MUSCLE_GROUPS } from '../model/exercise.model';
 import { ExerciseDialogComponent } from '../ui/exercise-dialog';
@@ -16,6 +17,7 @@ import { ExerciseDialogComponent } from '../ui/exercise-dialog';
 })
 export default class ExercisePageComponent {
   protected readonly exerciseService = inject(ExerciseService);
+  protected readonly equipmentService = inject(EquipmentService);
   private readonly transloco = inject(TranslocoService);
   protected readonly dialogVisible = signal(false);
   protected readonly editingExercise = signal<Exercise | null>(null);
@@ -29,6 +31,13 @@ export default class ExercisePageComponent {
     })),
   );
 
+  protected readonly equipmentFilterOptions = computed(() =>
+    this.equipmentService.equipment().map((e) => ({
+      label: e.name,
+      value: e.id,
+    })),
+  );
+
   protected readonly columns = computed<TableColumn[]>(() => [
     { field: 'name', headerKey: 'exercise.name' },
     {
@@ -39,9 +48,17 @@ export default class ExercisePageComponent {
       filterSelectedItemsLabelKey: 'exercise.filterMusclesSelected',
       filterOptions: this.muscleGroupFilterOptions(),
     },
+    {
+      field: 'equipmentIds',
+      headerKey: 'exercise.equipment',
+      filterMode: 'multiselect',
+      filterPlaceholderKey: 'exercise.filterByEquipment',
+      filterSelectedItemsLabelKey: 'exercise.filterEquipmentSelected',
+      filterOptions: this.equipmentFilterOptions(),
+    },
   ]);
 
-  protected readonly globalFilterFields = ['name', 'muscleGroups'];
+  protected readonly globalFilterFields = ['name', 'muscleGroups', 'equipmentIds'];
 
   protected readonly translations: DataTableTranslations = {
     columns: 'exercise.columns',
@@ -62,6 +79,10 @@ export default class ExercisePageComponent {
     dialogCancel: 'exercise.dialog.cancel',
     clearFilters: 'exercise.clearFilters',
   };
+
+  protected getEquipmentName(id: string): string {
+    return this.equipmentService.getById(id)?.name ?? id;
+  }
 
   protected onAdd(): void {
     this.editingExercise.set(null);

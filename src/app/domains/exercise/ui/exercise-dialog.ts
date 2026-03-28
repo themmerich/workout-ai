@@ -14,6 +14,7 @@ import { Dialog } from 'primeng/dialog';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
+import { EquipmentService } from '../../equipment/data-access/equipment.service';
 import { Exercise, MuscleGroup, MUSCLE_GROUPS } from '../model/exercise.model';
 
 interface MuscleGroupOption {
@@ -38,6 +39,7 @@ interface MuscleGroupOption {
 export class ExerciseDialogComponent {
   private readonly fb = inject(FormBuilder);
   private readonly transloco = inject(TranslocoService);
+  private readonly equipmentService = inject(EquipmentService);
 
   readonly visible = input(false);
   readonly exercise = input<Exercise | null>(null);
@@ -51,9 +53,17 @@ export class ExerciseDialogComponent {
     })),
   );
 
+  protected readonly equipmentOptions = computed(() =>
+    this.equipmentService.equipment().map((e) => ({
+      label: e.name,
+      value: e.id,
+    })),
+  );
+
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     muscleGroups: [[] as MuscleGroup[], Validators.required],
+    equipmentIds: [[] as string[]],
   });
 
   constructor() {
@@ -62,7 +72,7 @@ export class ExerciseDialogComponent {
       if (data) {
         this.form.patchValue(data);
       } else {
-        this.form.reset({ muscleGroups: [] });
+        this.form.reset({ muscleGroups: [], equipmentIds: [] });
       }
     });
   }

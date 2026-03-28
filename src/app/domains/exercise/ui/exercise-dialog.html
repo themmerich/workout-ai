@@ -35,6 +35,22 @@
         <small class="text-red-500">{{ t('exercise.validation.required') }}</small>
       }
     </div>
+    <div>
+      <p-floatlabel variant="on">
+        <p-multiselect
+          formControlName="equipmentIds"
+          [options]="equipmentOptions()"
+          optionLabel="label"
+          optionValue="value"
+          inputId="ex-equipment"
+          appendTo="body"
+          styleClass="w-full"
+          [maxSelectedLabels]="3"
+          [selectedItemsLabel]="'{0} ' + t('exercise.equipmentSelected')"
+        />
+        <label for="ex-equipment">{{ t('exercise.equipment') }}</label>
+      </p-floatlabel>
+    </div>
     <div class="flex justify-end gap-2 pt-4">
       <p-button
         [label]="t('exercise.dialog.cancel')"
