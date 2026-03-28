@@ -4,85 +4,126 @@
   [visible]="visible()"
   (visibleChange)="dialogClosed.emit()"
   [modal]="true"
-  [style]="{ width: '500px' }"
+  [style]="{ width: '900px', height: '80vh' }"
+  [contentStyle]="{ display: 'flex', 'flex-direction': 'column', overflow: 'hidden' }"
 >
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 pt-6">
-    <div>
-      <p-floatlabel variant="on">
-        <input pInputText id="loc-name" formControlName="name" class="w-full" />
-        <label for="loc-name">{{ t('location.name') }} *</label>
-      </p-floatlabel>
-      @if (form.controls.name.touched && form.controls.name.errors?.['required']) {
-        <small class="text-red-500">{{ t('location.validation.required') }}</small>
-      }
-    </div>
-    <div>
-      <p-floatlabel variant="on">
-        <input pInputText id="loc-street" formControlName="street" class="w-full" />
-        <label for="loc-street">{{ t('location.street') }} *</label>
-      </p-floatlabel>
-      @if (form.controls.street.touched && form.controls.street.errors?.['required']) {
-        <small class="text-red-500">{{ t('location.validation.required') }}</small>
-      }
-    </div>
-    <div class="flex gap-4">
-      <div class="w-1/3">
-        <p-floatlabel variant="on">
-          <input pInputText id="loc-zip" formControlName="zip" class="w-full" />
-          <label for="loc-zip">{{ t('location.zip') }} *</label>
-        </p-floatlabel>
-        @if (form.controls.zip.touched && form.controls.zip.errors?.['required']) {
-          <small class="text-red-500">{{ t('location.validation.required') }}</small>
-        }
-      </div>
-      <div class="flex-1">
-        <p-floatlabel variant="on">
-          <input pInputText id="loc-city" formControlName="city" class="w-full" />
-          <label for="loc-city">{{ t('location.city') }} *</label>
-        </p-floatlabel>
-        @if (form.controls.city.touched && form.controls.city.errors?.['required']) {
-          <small class="text-red-500">{{ t('location.validation.required') }}</small>
-        }
-      </div>
-    </div>
-    <div>
-      <p-floatlabel variant="on">
-        <input pInputText id="loc-country" formControlName="country" class="w-full" />
-        <label for="loc-country">{{ t('location.country') }}</label>
-      </p-floatlabel>
-    </div>
-    <div>
-      <p-floatlabel variant="on">
-        <input pInputText id="loc-phone" formControlName="phone" class="w-full" />
-        <label for="loc-phone">{{ t('location.phone') }}</label>
-      </p-floatlabel>
-    </div>
-    <div>
-      <p-floatlabel variant="on">
-        <input pInputText id="loc-email" formControlName="email" type="email" class="w-full" />
-        <label for="loc-email">{{ t('location.email') }}</label>
-      </p-floatlabel>
-      @if (form.controls.email.touched && form.controls.email.errors?.['email']) {
-        <small class="text-red-500">{{ t('location.validation.email') }}</small>
-      }
-    </div>
-    <div>
-      <p-floatlabel variant="on">
-        <input pInputText id="loc-website" formControlName="website" class="w-full" />
-        <label for="loc-website">{{ t('location.website') }}</label>
-      </p-floatlabel>
-    </div>
-    <div class="flex justify-end gap-2 pt-4">
-      <p-button
-        [label]="t('location.dialog.cancel')"
-        severity="secondary"
-        (onClick)="dialogClosed.emit()"
-      />
-      <p-button
-        [label]="t('location.dialog.save')"
-        type="submit"
-        [disabled]="form.invalid || !form.dirty"
-      />
-    </div>
-  </form>
+  <p-tabs value="0" class="flex-1 min-h-0 flex flex-col">
+    <p-tablist>
+      <p-tab value="0">{{ t('location.dialog.tabDetails') }}</p-tab>
+      <p-tab value="1">{{ t('location.dialog.tabEquipment') }} ({{ equipmentRows().length }})</p-tab>
+    </p-tablist>
+    <p-tabpanels class="flex-1 min-h-0 flex flex-col">
+      <p-tabpanel value="0">
+        <form [formGroup]="form" class="flex flex-col gap-5 pt-4">
+          <div>
+            <p-floatlabel variant="on">
+              <input pInputText id="loc-name" formControlName="name" class="w-full" />
+              <label for="loc-name">{{ t('location.name') }} *</label>
+            </p-floatlabel>
+            @if (form.controls.name.touched && form.controls.name.errors?.['required']) {
+              <small class="text-red-500">{{ t('location.validation.required') }}</small>
+            }
+          </div>
+          <div>
+            <p-floatlabel variant="on">
+              <input pInputText id="loc-street" formControlName="street" class="w-full" />
+              <label for="loc-street">{{ t('location.street') }} *</label>
+            </p-floatlabel>
+            @if (form.controls.street.touched && form.controls.street.errors?.['required']) {
+              <small class="text-red-500">{{ t('location.validation.required') }}</small>
+            }
+          </div>
+          <div class="flex gap-4">
+            <div class="w-1/3">
+              <p-floatlabel variant="on">
+                <input pInputText id="loc-zip" formControlName="zip" class="w-full" />
+                <label for="loc-zip">{{ t('location.zip') }} *</label>
+              </p-floatlabel>
+              @if (form.controls.zip.touched && form.controls.zip.errors?.['required']) {
+                <small class="text-red-500">{{ t('location.validation.required') }}</small>
+              }
+            </div>
+            <div class="flex-1">
+              <p-floatlabel variant="on">
+                <input pInputText id="loc-city" formControlName="city" class="w-full" />
+                <label for="loc-city">{{ t('location.city') }} *</label>
+              </p-floatlabel>
+              @if (form.controls.city.touched && form.controls.city.errors?.['required']) {
+                <small class="text-red-500">{{ t('location.validation.required') }}</small>
+              }
+            </div>
+          </div>
+          <div>
+            <p-floatlabel variant="on">
+              <input pInputText id="loc-country" formControlName="country" class="w-full" />
+              <label for="loc-country">{{ t('location.country') }}</label>
+            </p-floatlabel>
+          </div>
+          <div>
+            <p-floatlabel variant="on">
+              <input pInputText id="loc-phone" formControlName="phone" class="w-full" />
+              <label for="loc-phone">{{ t('location.phone') }}</label>
+            </p-floatlabel>
+          </div>
+          <div>
+            <p-floatlabel variant="on">
+              <input pInputText id="loc-email" formControlName="email" type="email" class="w-full" />
+              <label for="loc-email">{{ t('location.email') }}</label>
+            </p-floatlabel>
+            @if (form.controls.email.touched && form.controls.email.errors?.['email']) {
+              <small class="text-red-500">{{ t('location.validation.email') }}</small>
+            }
+          </div>
+          <div>
+            <p-floatlabel variant="on">
+              <input pInputText id="loc-website" formControlName="website" class="w-full" />
+              <label for="loc-website">{{ t('location.website') }}</label>
+            </p-floatlabel>
+          </div>
+        </form>
+      </p-tabpanel>
+      <p-tabpanel value="1" class="flex-1 min-h-0 flex flex-col">
+        <app-data-table
+          [data]="equipmentRows()"
+          [columns]="equipmentColumns()"
+          [translations]="equipmentTranslations"
+          [globalFilterFields]="equipmentGlobalFilterFields"
+          stateKey="location-equipment-dialog"
+          nameField="equipmentName"
+          (itemAdd)="onEquipmentAdd()"
+          (itemEdit)="onEquipmentEdit($event)"
+          (itemDelete)="onEquipmentDelete($event)"
+        >
+          <ng-template #cell let-item let-field="field">
+            @if (field === 'equipmentCategory' && item[field]) {
+              <p-tag [value]="getCategoryLabel(item[field])" [severity]="getCategorySeverity(item[field])" />
+            } @else {
+              {{ item[field] }}
+            }
+          </ng-template>
+        </app-data-table>
+
+        <app-location-equipment-entry-dialog
+          [visible]="entryDialogVisible()"
+          [entry]="editingEntry()"
+          [equipmentOptions]="equipmentOptions()"
+          (entrySaved)="onEntrySaved($event)"
+          (dialogClosed)="entryDialogVisible.set(false)"
+        />
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+
+  <div class="flex justify-end gap-2 pt-4 shrink-0">
+    <p-button
+      [label]="t('location.dialog.cancel')"
+      severity="secondary"
+      (onClick)="dialogClosed.emit()"
+    />
+    <p-button
+      [label]="t('location.dialog.save')"
+      (onClick)="onSubmit()"
+      [disabled]="form.invalid || !isFormDirty"
+    />
+  </div>
 </p-dialog>
