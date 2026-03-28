@@ -11,6 +11,7 @@
     <p-tablist>
       <p-tab value="0">{{ t('location.dialog.tabDetails') }}</p-tab>
       <p-tab value="1">{{ t('location.dialog.tabEquipment') }} ({{ equipmentRows().length }})</p-tab>
+      <p-tab value="2">{{ t('location.dialog.tabMembers') }} ({{ memberRows().length }})</p-tab>
     </p-tablist>
     <p-tabpanels class="flex-1 min-h-0 flex flex-col">
       <p-tabpanel value="0">
@@ -109,6 +110,35 @@
           [equipmentOptions]="equipmentOptions()"
           (entrySaved)="onEntrySaved($event)"
           (dialogClosed)="entryDialogVisible.set(false)"
+        />
+      </p-tabpanel>
+      <p-tabpanel value="2" class="flex-1 min-h-0 flex flex-col">
+        <app-data-table
+          [data]="memberRows()"
+          [columns]="memberColumns()"
+          [translations]="memberTranslations"
+          [globalFilterFields]="memberGlobalFilterFields"
+          stateKey="location-members-dialog"
+          nameField="userName"
+          (itemAdd)="onMemberAdd()"
+          (itemEdit)="onMemberEdit($event)"
+          (itemDelete)="onMemberDelete($event)"
+        >
+          <ng-template #cell let-item let-field="field">
+            @if (field === 'role') {
+              <p-tag [value]="getMemberRoleLabel(item[field])" [severity]="getMemberRoleSeverity(item[field])" />
+            } @else {
+              {{ item[field] }}
+            }
+          </ng-template>
+        </app-data-table>
+
+        <app-location-member-entry-dialog
+          [visible]="memberDialogVisible()"
+          [entry]="editingMember()"
+          [userOptions]="userOptions()"
+          (entrySaved)="onMemberSaved($event)"
+          (dialogClosed)="memberDialogVisible.set(false)"
         />
       </p-tabpanel>
     </p-tabpanels>

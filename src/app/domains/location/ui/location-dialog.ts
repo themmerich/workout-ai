@@ -20,11 +20,24 @@ import { EquipmentService } from '../../equipment/data-access/equipment.service'
 import { EquipmentCategory, EQUIPMENT_CATEGORIES } from '../../equipment/model/equipment.model';
 import { DataTableComponent } from '../../../shared/ui/data-table';
 import { DataTableTranslations, TableColumn } from '../../../shared/ui/data-table.model';
-import { Location, LocationEquipment } from '../model/location.model';
+import { UserService } from '../../user/data-access/user.service';
+import { Location, LocationEquipment, LocationMember, LocationMemberRole, LOCATION_MEMBER_ROLES } from '../model/location.model';
 import {
   EquipmentEntryData,
   LocationEquipmentEntryDialogComponent,
 } from './location-equipment-entry-dialog';
+import {
+  MemberEntryData,
+  LocationMemberEntryDialogComponent,
+} from './location-member-entry-dialog';
+
+export interface MemberRow {
+  id: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  role: LocationMemberRole;
+}
 
 export interface EquipmentRow {
   id: string;
@@ -48,12 +61,14 @@ export interface EquipmentRow {
     ButtonModule,
     DataTableComponent,
     LocationEquipmentEntryDialogComponent,
+    LocationMemberEntryDialogComponent,
   ],
   templateUrl: './location-dialog.html',
 })
 export class LocationDialogComponent {
   private readonly fb = inject(FormBuilder);
   private readonly equipmentService = inject(EquipmentService);
+  private readonly userService = inject(UserService);
   private readonly transloco = inject(TranslocoService);
 
   readonly visible = input(false);
@@ -65,6 +80,11 @@ export class LocationDialogComponent {
   protected readonly entryDialogVisible = signal(false);
   protected readonly editingEntry = signal<EquipmentEntryData | null>(null);
   protected equipmentDirty = signal(false);
+
+  protected readonly memberRows = signal<MemberRow[]>([]);
+  protected readonly memberDialogVisible = signal(false);
+  protected readonly editingMember = signal<MemberEntryData | null>(null);
+  protected membersDirty = signal(false);
 
   protected readonly equipmentOptions = computed(() =>
     this.equipmentService.equipment().map((e) => ({
@@ -116,6 +136,54 @@ export class LocationDialogComponent {
 
   protected readonly equipmentGlobalFilterFields = ['equipmentName', 'equipmentCategory'];
 
+  protected readonly userOptions = computed(() =>
+    this.userService.users().map((u) => ({
+      label: u.displayName,
+      value: u.id,
+    })),
+  );
+
+  protected readonly memberRoleFilterOptions = computed(() =>
+    LOCATION_MEMBER_ROLES.map((r) => ({
+      label: this.transloco.translate('location.dialog.memberRoles.' + r),
+      value: r,
+    })),
+  );
+
+  protected readonly memberColumns = computed<TableColumn[]>(() => [
+    { field: 'userName', headerKey: 'location.dialog.memberName' },
+    { field: 'userEmail', headerKey: 'location.dialog.memberEmail' },
+    {
+      field: 'role',
+      headerKey: 'location.dialog.memberRole',
+      filterMode: 'select',
+      filterPlaceholderKey: 'location.dialog.memFilterByRole',
+      filterOptions: this.memberRoleFilterOptions(),
+    },
+  ]);
+
+  protected readonly memberGlobalFilterFields = ['userName', 'userEmail', 'role'];
+
+  protected readonly memberTranslations: DataTableTranslations = {
+    columns: 'location.dialog.memColumns',
+    columnsSelected: 'location.dialog.memColumnsSelected',
+    search: 'location.dialog.memSearch',
+    addButton: 'location.dialog.addMember',
+    actions: 'location.dialog.memActions',
+    edit: 'location.dialog.editMember',
+    delete: 'location.dialog.removeMember',
+    filterBy: 'location.dialog.memFilterBy',
+    confirmDeleteTitle: 'location.dialog.memConfirmDeleteTitle',
+    confirmDelete: 'location.dialog.memConfirmDelete',
+    createSuccess: 'location.dialog.memCreateSuccess',
+    updateSuccess: 'location.dialog.memUpdateSuccess',
+    deleteSuccess: 'location.dialog.memDeleteSuccess',
+    deleteError: 'location.dialog.memDeleteError',
+    dialogDelete: 'location.dialog.memDialogDelete',
+    dialogCancel: 'location.dialog.cancel',
+    clearFilters: 'location.dialog.memClearFilters',
+  };
+
   protected readonly equipmentTranslations: DataTableTranslations = {
     columns: 'location.dialog.eqColumns',
     columnsSelected: 'location.dialog.eqColumnsSelected',
@@ -142,16 +210,19 @@ export class LocationDialogComponent {
       if (data) {
         this.form.patchValue(data);
         this.equipmentRows.set(this.toEquipmentRows(data.equipment));
+        this.memberRows.set(this.toMemberRows(data.members));
       } else {
         this.form.reset();
         this.equipmentRows.set([]);
+        this.memberRows.set([]);
       }
       this.equipmentDirty.set(false);
+      this.membersDirty.set(false);
     });
   }
 
   protected get isFormDirty(): boolean {
-    return this.form.dirty || this.equipmentDirty();
+    return this.form.dirty || this.equipmentDirty() || this.membersDirty();
   }
 
   protected onEquipmentAdd(): void {
@@ -200,21 +271,88 @@ export class LocationDialogComponent {
     return this.categorySeverityMap[category as EquipmentCategory] ?? 'info';
   }
 
+  protected onMemberAdd(): void {
+    this.editingMember.set(null);
+    this.memberDialogVisible.set(true);
+  }
+
+  protected onMemberEdit(row: MemberRow): void {
+    this.editingMember.set({ id: row.id, userId: row.userId, role: row.role });
+    this.memberDialogVisible.set(true);
+  }
+
+  protected onMemberDelete(row: MemberRow): void {
+    this.memberRows.update((rows) => rows.filter((r) => r.id !== row.id));
+    this.membersDirty.set(true);
+  }
+
+  protected onMemberSaved(entry: MemberEntryData): void {
+    const user = this.userService.getById(entry.userId);
+    const row: MemberRow = {
+      id: entry.id,
+      userId: entry.userId,
+      userName: user?.displayName ?? entry.userId,
+      userEmail: user?.email ?? '',
+      role: entry.role,
+    };
+
+    this.memberRows.update((rows) => {
+      const existing = rows.findIndex((r) => r.id === entry.id);
+      if (existing >= 0) {
+        return rows.map((r, i) => (i === existing ? row : r));
+      }
+      return [...rows, row];
+    });
+
+    this.memberDialogVisible.set(false);
+    this.editingMember.set(null);
+    this.membersDirty.set(true);
+  }
+
+  protected getMemberRoleLabel(role: string): string {
+    return this.transloco.translate('location.dialog.memberRoles.' + role);
+  }
+
+  protected getMemberRoleSeverity(role: string): 'warn' | 'info' | 'success' {
+    switch (role) {
+      case 'owner': return 'warn';
+      case 'trainer': return 'success';
+      default: return 'info';
+    }
+  }
+
   protected onSubmit(): void {
     if (this.form.valid) {
       const data = this.location();
       const equipment: LocationEquipment[] = this.equipmentRows()
         .filter((r) => r.equipmentId)
         .map((r) => ({ equipmentId: r.equipmentId, quantity: r.quantity }));
+      const members: LocationMember[] = this.memberRows()
+        .filter((r) => r.userId)
+        .map((r) => ({ userId: r.userId, role: r.role }));
 
       if (data) {
-        this.locationSaved.emit({ ...this.form.getRawValue(), id: data.id, equipment });
+        this.locationSaved.emit({ ...this.form.getRawValue(), id: data.id, equipment, members });
       } else {
-        this.locationSaved.emit({ ...this.form.getRawValue(), equipment });
+        this.locationSaved.emit({ ...this.form.getRawValue(), equipment, members });
       }
       this.form.reset();
       this.equipmentRows.set([]);
+      this.memberRows.set([]);
     }
+  }
+
+  private toMemberRows(members: LocationMember[]): MemberRow[] {
+    return members.map((m) => {
+      const user = this.userService.getById(m.userId);
+      return {
+        id: crypto.randomUUID(),
+        userId: m.userId,
+        userName: user?.displayName ?? m.userId,
+        userEmail: user?.email ?? '',
+        role: m.role,
+      };
+    });
   }
 
   private toEquipmentRows(equipment: LocationEquipment[]): EquipmentRow[] {
