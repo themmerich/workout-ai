@@ -165,8 +165,7 @@
     "weight": "Gewicht",
     "categories": {
       "mobility": "Mobility",
-      "dumbbell": "Kurzhantel",
-      "barbell": "Langhantel",
+      "dumbbell": "Hantel",
       "cardio": "Cardio",
       "cable": "Kabelzug",
       "machine": "Maschine",
@@ -245,6 +244,7 @@
       "equipmentName": "Gerät",
       "equipmentCategory": "Kategorie",
       "equipmentQuantity": "Anzahl",
+      "equipmentWeight": "Gewicht (kg)",
       "selectEquipment": "Gerät auswählen",
       "noEquipment": "Keine Geräte zugewiesen",
       "eqColumns": "Spalten",

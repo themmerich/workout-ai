@@ -1,9 +1,9 @@
 import { NgTemplateOutlet } from '@angular/common';
 import {
-  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   contentChild,
+  effect,
   inject,
   input,
   output,
@@ -91,8 +91,11 @@ export class DataTableComponent<T extends { id: string } = any> {
       return filter.every((f: unknown) => value.includes(f));
     });
 
-    afterNextRender(() => {
-      this.selectedColumns = this.loadSelectedColumns();
+    effect(() => {
+      const cols = this.columns();
+      if (cols.length > 0 && this.selectedColumns.length === 0) {
+        this.selectedColumns = this.loadSelectedColumns();
+      }
     });
   }
 

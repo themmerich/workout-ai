@@ -11,7 +11,6 @@ import { TranslocoDirective } from '@jsverse/transloco';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
 import { FloatLabel } from 'primeng/floatlabel';
-import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { Equipment, EquipmentCategory, EQUIPMENT_CATEGORIES } from '../model/equipment.model';
@@ -24,7 +23,6 @@ import { Equipment, EquipmentCategory, EQUIPMENT_CATEGORIES } from '../model/equ
     TranslocoDirective,
     Dialog,
     FloatLabel,
-    InputNumber,
     InputText,
     Select,
     ButtonModule,
@@ -44,7 +42,6 @@ export class EquipmentDialogComponent {
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
     category: ['dumbbell' as EquipmentCategory, Validators.required],
-    weight: [null as number | null],
   });
 
   constructor() {

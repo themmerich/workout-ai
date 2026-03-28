@@ -15,8 +15,6 @@
     <ng-template #cell let-item let-field="field">
       @if (field === 'category') {
         <p-tag [value]="t('equipment.categories.' + item[field])" [severity]="getCategorySeverity(item[field])" />
-      } @else if (field === 'weight') {
-        {{ item[field] !== null ? item[field] + ' kg' : '—' }}
       } @else {
         {{ item[field] }}
       }
