@@ -11,8 +11,8 @@ export const MOCK_LOCATIONS: Location[] = [
       { equipmentId: '17', quantity: 1 }, { equipmentId: '19', quantity: 6 }, { equipmentId: '21', quantity: 10 },
     ],
     members: [
-      { userId: '1', role: 'owner' }, { userId: '6', role: 'trainer' },
-      { userId: '2', role: 'member' }, { userId: '4', role: 'member' }, { userId: '5', role: 'member' },
+      { userId: '1', role: 'owner', password: 'admin' }, { userId: '6', role: 'trainer', password: 'lschneider' },
+      { userId: '2', role: 'member', password: 'jdoe' }, { userId: '4', role: 'member', password: 'amueller' }, { userId: '5', role: 'member', password: 'tweber' },
     ],
   },
   {
@@ -25,8 +25,8 @@ export const MOCK_LOCATIONS: Location[] = [
       { equipmentId: '18', quantity: 2 }, { equipmentId: '22', quantity: 2 }, { equipmentId: '23', quantity: 1 },
     ],
     members: [
-      { userId: '1', role: 'owner' }, { userId: '3', role: 'trainer' }, { userId: '7', role: 'trainer' },
-      { userId: '2', role: 'member' }, { userId: '8', role: 'member' },
+      { userId: '1', role: 'owner', password: 'admin' }, { userId: '3', role: 'trainer', password: 'bsmith' }, { userId: '7', role: 'trainer', password: 'mfischer' },
+      { userId: '2', role: 'member', password: 'jdoe' }, { userId: '8', role: 'member', password: 'swagner' },
     ],
   },
   {
@@ -40,9 +40,9 @@ export const MOCK_LOCATIONS: Location[] = [
       { equipmentId: '24', quantity: 4 }, { equipmentId: '25', quantity: 4 },
     ],
     members: [
-      { userId: '6', role: 'owner' }, { userId: '1', role: 'trainer' },
-      { userId: '3', role: 'member' }, { userId: '5', role: 'member' }, { userId: '9', role: 'member' },
-      { userId: '10', role: 'member' },
+      { userId: '6', role: 'owner', password: 'lschneider' }, { userId: '1', role: 'trainer', password: 'admin' },
+      { userId: '3', role: 'member', password: 'bsmith' }, { userId: '5', role: 'member', password: 'tweber' }, { userId: '9', role: 'member', password: 'phoffmann' },
+      { userId: '10', role: 'member', password: 'kbauer' },
     ],
   },
   {
@@ -54,7 +54,7 @@ export const MOCK_LOCATIONS: Location[] = [
       { equipmentId: '16', quantity: 1 }, { equipmentId: '17', quantity: 1 }, { equipmentId: '20', quantity: 3 },
     ],
     members: [
-      { userId: '4', role: 'owner' }, { userId: '7', role: 'member' },
+      { userId: '4', role: 'owner', password: 'amueller' }, { userId: '7', role: 'member', password: 'mfischer' },
     ],
   },
   {
@@ -66,7 +66,7 @@ export const MOCK_LOCATIONS: Location[] = [
       { equipmentId: '15', quantity: 2 }, { equipmentId: '19', quantity: 8 }, { equipmentId: '21', quantity: 12 },
     ],
     members: [
-      { userId: '3', role: 'owner' }, { userId: '6', role: 'trainer' }, { userId: '8', role: 'member' },
+      { userId: '3', role: 'owner', password: 'bsmith' }, { userId: '6', role: 'trainer', password: 'lschneider' }, { userId: '8', role: 'member', password: 'swagner' },
     ],
   },
   {
@@ -77,7 +77,7 @@ export const MOCK_LOCATIONS: Location[] = [
       { equipmentId: '9', quantity: 3 }, { equipmentId: '11', quantity: 2 },
     ],
     members: [
-      { userId: '5', role: 'owner' }, { userId: '2', role: 'member' }, { userId: '10', role: 'member' },
+      { userId: '5', role: 'owner', password: 'tweber' }, { userId: '2', role: 'member', password: 'jdoe' }, { userId: '10', role: 'member', password: 'kbauer' },
     ],
   },
   {
@@ -89,7 +89,7 @@ export const MOCK_LOCATIONS: Location[] = [
       { equipmentId: '20', quantity: 4 },
     ],
     members: [
-      { userId: '7', role: 'owner' }, { userId: '1', role: 'member' }, { userId: '4', role: 'member' },
+      { userId: '7', role: 'owner', password: 'mfischer' }, { userId: '1', role: 'member', password: 'admin' }, { userId: '4', role: 'member', password: 'amueller' },
     ],
   },
   {
@@ -101,7 +101,7 @@ export const MOCK_LOCATIONS: Location[] = [
       { equipmentId: '15', quantity: 2 }, { equipmentId: '17', quantity: 1 }, { equipmentId: '18', quantity: 1 },
     ],
     members: [
-      { userId: '8', role: 'owner' }, { userId: '3', role: 'trainer' }, { userId: '9', role: 'member' },
+      { userId: '8', role: 'owner', password: 'swagner' }, { userId: '3', role: 'trainer', password: 'bsmith' }, { userId: '9', role: 'member', password: 'phoffmann' },
     ],
   },
   {
@@ -112,7 +112,7 @@ export const MOCK_LOCATIONS: Location[] = [
       { equipmentId: '12', quantity: 3 }, { equipmentId: '15', quantity: 2 }, { equipmentId: '21', quantity: 8 },
     ],
     members: [
-      { userId: '9', role: 'owner' }, { userId: '6', role: 'trainer' },
+      { userId: '9', role: 'owner', password: 'phoffmann' }, { userId: '6', role: 'trainer', password: 'lschneider' },
     ],
   },
   {
@@ -122,7 +122,7 @@ export const MOCK_LOCATIONS: Location[] = [
       { equipmentId: '19', quantity: 4 }, { equipmentId: '20', quantity: 6 }, { equipmentId: '21', quantity: 8 },
     ],
     members: [
-      { userId: '10', role: 'owner' },
+      { userId: '10', role: 'owner', password: 'kbauer' },
     ],
   },
 ];

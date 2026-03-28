@@ -17,6 +17,7 @@
           inputId="lm-user"
           appendTo="body"
           styleClass="w-full"
+          (ngModelChange)="onUserChange($event)"
         />
         <label for="lm-user">{{ t('location.dialog.memberName') }} *</label>
       </p-floatlabel>
@@ -37,6 +38,15 @@
         />
         <label for="lm-role">{{ t('location.dialog.memberRole') }} *</label>
       </p-floatlabel>
+    </div>
+    <div>
+      <p-floatlabel variant="on">
+        <input pInputText id="lm-password" formControlName="password" type="password" class="w-full" />
+        <label for="lm-password">{{ t('location.dialog.memberPassword') }} *</label>
+      </p-floatlabel>
+      @if (form.controls.password.touched && form.controls.password.errors?.['required']) {
+        <small class="text-red-500">{{ t('location.validation.required') }}</small>
+      }
     </div>
     <div class="flex justify-end gap-2 pt-4">
       <p-button

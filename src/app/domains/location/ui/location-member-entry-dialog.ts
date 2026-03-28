@@ -12,13 +12,16 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
 import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
+import { UserService } from '../../user/data-access/user.service';
 import { LOCATION_MEMBER_ROLES, LocationMemberRole } from '../model/location.model';
 
 export interface MemberEntryData {
   id: string;
   userId: string;
   role: LocationMemberRole;
+  password: string;
 }
 
 @Component({
@@ -29,6 +32,7 @@ export interface MemberEntryData {
     TranslocoDirective,
     Dialog,
     FloatLabel,
+    InputText,
     Select,
     ButtonModule,
   ],
@@ -37,6 +41,7 @@ export interface MemberEntryData {
 export class LocationMemberEntryDialogComponent {
   private readonly fb = inject(FormBuilder);
   private readonly transloco = inject(TranslocoService);
+  private readonly userService = inject(UserService);
 
   readonly visible = input(false);
   readonly entry = input<MemberEntryData | null>(null);
@@ -54,17 +59,25 @@ export class LocationMemberEntryDialogComponent {
   protected readonly form = this.fb.nonNullable.group({
     userId: ['', Validators.required],
     role: ['member' as LocationMemberRole, Validators.required],
+    password: ['', Validators.required],
   });
 
   constructor() {
     effect(() => {
       const data = this.entry();
       if (data) {
-        this.form.patchValue({ userId: data.userId, role: data.role });
+        this.form.patchValue({ userId: data.userId, role: data.role, password: data.password });
       } else {
-        this.form.reset({ userId: '', role: 'member' });
+        this.form.reset({ userId: '', role: 'member', password: '' });
       }
     });
+  }
+
+  protected onUserChange(userId: string): void {
+    const user = this.userService.getById(userId);
+    if (user && !this.form.controls.password.dirty) {
+      this.form.controls.password.setValue(user.username);
+    }
   }
 
   protected onSubmit(): void {
@@ -75,8 +88,9 @@ export class LocationMemberEntryDialogComponent {
         id: data?.id ?? crypto.randomUUID(),
         userId: formValue.userId,
         role: formValue.role,
+        password: formValue.password,
       });
-      this.form.reset({ userId: '', role: 'member' });
+      this.form.reset({ userId: '', role: 'member', password: '' });
     }
   }
 }

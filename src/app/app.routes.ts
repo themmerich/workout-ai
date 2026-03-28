@@ -40,4 +40,8 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: '**',
+    loadComponent: () => import('./core/not-found/not-found-page'),
+  },
 ];

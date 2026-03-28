@@ -2,6 +2,11 @@
   "app": {
     "title": "Workout AI"
   },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "message": "Die gesuchte Seite konnte leider nicht gefunden werden.",
+    "backHome": "Zurück zur Startseite"
+  },
   "nav": {
     "dashboard": "Dashboard",
     "user": "Benutzer",
@@ -230,6 +235,7 @@
       "memberName": "Name",
       "memberEmail": "E-Mail",
       "memberRole": "Rolle",
+      "memberPassword": "Passwort",
       "memberRoles": {
         "owner": "Besitzer",
         "trainer": "Trainer",
