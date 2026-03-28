@@ -35,7 +35,7 @@ export default class LocationPageComponent {
   );
 
   protected readonly columns: TableColumn[] = [
-    { field: 'logo', headerKey: 'location.logo' },
+    { field: 'logo', headerKey: 'location.logo', sortable: false, filterable: false, headerClass: 'text-center', bodyClass: '!flex !justify-center !items-center' },
     { field: 'name', headerKey: 'location.name' },
     { field: 'street', headerKey: 'location.street' },
     { field: 'zip', headerKey: 'location.zip' },

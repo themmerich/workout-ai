@@ -5,6 +5,10 @@ export interface TableColumn {
   filterOptions?: { label: string; value: string }[];
   filterPlaceholderKey?: string;
   filterSelectedItemsLabelKey?: string;
+  sortable?: boolean;
+  filterable?: boolean;
+  headerClass?: string;
+  bodyClass?: string;
 }
 
 export interface CellTemplateContext<T = unknown> {

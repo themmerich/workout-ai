@@ -2,10 +2,10 @@
   class="h-screen flex relative lg:static overflow-hidden bg-linear-to-br from-blue-100 from-40% via-pink-200 via-80% to-indigo-200 dark:from-surface-900 dark:to-surface-500"
 >
   <app-sidebar [visible]="sidebarVisible()" (closeSidebar)="sidebarVisible.set(false)" />
-  <div class="h-screen flex flex-col relative flex-auto">
+  <div class="h-screen flex flex-col relative flex-auto min-w-0">
     <app-header (toggleSidebar)="sidebarVisible.update((v) => !v)" />
-    <div class="p-8 flex flex-col flex-1 min-h-0">
-      <div class="border-2 border-dashed border-white/30 dark:border-white/20 rounded-2xl bg-white/20 dark:bg-white/10 flex-1 min-h-0 p-6 flex flex-col">
+    <div class="p-4 lg:p-8 flex flex-col flex-1 min-h-0">
+      <div class="border-2 border-dashed border-white/30 dark:border-white/20 rounded-2xl bg-white/20 dark:bg-white/10 flex-1 min-h-0 p-4 lg:p-6 flex flex-col overflow-hidden">
         <router-outlet />
       </div>
     </div>
