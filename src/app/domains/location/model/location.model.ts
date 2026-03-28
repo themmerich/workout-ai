@@ -10,6 +10,7 @@ export const LOCATION_MEMBER_ROLES: LocationMemberRole[] = ['owner', 'trainer', 
 export interface LocationMember {
   userId: string;
   role: LocationMemberRole;
+  password: string;
 }
 
 export interface LocationLogo {

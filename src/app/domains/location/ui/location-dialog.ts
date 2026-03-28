@@ -38,6 +38,7 @@ export interface MemberRow {
   userName: string;
   userEmail: string;
   role: LocationMemberRole;
+  password: string;
 }
 
 export interface EquipmentRow {
@@ -311,7 +312,7 @@ export class LocationDialogComponent {
   }
 
   protected onMemberEdit(row: MemberRow): void {
-    this.editingMember.set({ id: row.id, userId: row.userId, role: row.role });
+    this.editingMember.set({ id: row.id, userId: row.userId, role: row.role, password: row.password });
     this.memberDialogVisible.set(true);
   }
 
@@ -328,6 +329,7 @@ export class LocationDialogComponent {
       userName: user?.displayName ?? entry.userId,
       userEmail: user?.email ?? '',
       role: entry.role,
+      password: entry.password,
     };
 
     this.memberRows.update((rows) => {
@@ -363,7 +365,7 @@ export class LocationDialogComponent {
         .map((r) => ({ equipmentId: r.equipmentId, quantity: r.quantity }));
       const members: LocationMember[] = this.memberRows()
         .filter((r) => r.userId)
-        .map((r) => ({ userId: r.userId, role: r.role }));
+        .map((r) => ({ userId: r.userId, role: r.role, password: r.password }));
       const logo: LocationLogo = { color: this.logoColor(), imageUrl: this.logoImageUrl() };
 
       if (data) {
@@ -386,6 +388,7 @@ export class LocationDialogComponent {
         userName: user?.displayName ?? m.userId,
         userEmail: user?.email ?? '',
         role: m.role,
+        password: m.password,
       };
     });
   }

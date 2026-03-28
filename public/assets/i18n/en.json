@@ -2,6 +2,11 @@
   "app": {
     "title": "Workout AI"
   },
+  "notFound": {
+    "title": "Page Not Found",
+    "message": "Sorry, we couldn't find the page you're looking for.",
+    "backHome": "Back to Home"
+  },
   "nav": {
     "dashboard": "Dashboard",
     "user": "User",
@@ -230,6 +235,7 @@
       "memberName": "Name",
       "memberEmail": "Email",
       "memberRole": "Role",
+      "memberPassword": "Password",
       "memberRoles": {
         "owner": "Owner",
         "trainer": "Trainer",
