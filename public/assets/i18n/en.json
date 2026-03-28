@@ -2,6 +2,20 @@
   "app": {
     "title": "Workout AI"
   },
+  "login": {
+    "subtitle": "Sign in to your account",
+    "username": "Username",
+    "password": "Password",
+    "location": "Location",
+    "submit": "Sign In",
+    "errors": {
+      "userNotFound": "User not found",
+      "invalidPassword": "Invalid password",
+      "locationRequired": "Please select a location",
+      "locationNotFound": "Location not found",
+      "notMember": "You are not a member of this location"
+    }
+  },
   "notFound": {
     "title": "Page Not Found",
     "message": "Sorry, we couldn't find the page you're looking for.",

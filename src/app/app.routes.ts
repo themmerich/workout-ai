@@ -1,11 +1,17 @@
 import { Routes } from '@angular/router';
 import { adminGuard } from './core/auth/admin.guard';
+import { authGuard } from './core/auth/auth.guard';
 import { LayoutComponent } from './core/layout/layout';
 
 export const routes: Routes = [
   {
+    path: 'login',
+    loadComponent: () => import('./core/login/login-page'),
+  },
+  {
     path: '',
     component: LayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',

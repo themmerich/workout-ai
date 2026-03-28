@@ -7,4 +7,6 @@ export interface AppUser {
   email: string;
   role: UserRole;
   avatarUrl: string;
+  locationId: string | null;
+  locationName: string | null;
 }

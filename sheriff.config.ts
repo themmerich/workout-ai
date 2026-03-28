@@ -34,7 +34,7 @@ export const sheriffConfig: SheriffConfig = {
     'type:model': ['type:shared'],
     'type:shared': ['type:shared', 'type:core'],
     shared: [sameTag, 'type:core'],
-    core: [sameTag],
-    'type:core': [sameTag],
+    core: [sameTag, 'domain:user', 'domain:location', 'type:shared'],
+    'type:core': [sameTag, 'domain:user', 'domain:location', 'type:shared'],
   },
 };
