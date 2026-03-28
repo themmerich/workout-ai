@@ -5,8 +5,9 @@ import {
   inject,
   input,
   output,
+  signal,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
@@ -19,6 +20,7 @@ import { UserProfile } from '../model/user.model';
   selector: 'app-user-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    FormsModule,
     ReactiveFormsModule,
     TranslocoDirective,
     Dialog,
@@ -37,35 +39,81 @@ export class UserDialogComponent {
   readonly userSaved = output<UserProfile | Omit<UserProfile, 'id'>>();
   readonly dialogClosed = output<void>();
 
-  protected readonly roleOptions: string[] = ['user', 'admin'];
+  protected readonly isAdmin = signal(false);
+  protected readonly selectedRole = signal('user');
+  protected formDirty = signal(false);
+
+  protected readonly roleOptions = [
+    { label: 'user', value: 'user' },
+    { label: 'admin', value: 'admin' },
+  ];
 
   protected readonly form = this.fb.nonNullable.group({
     username: ['', Validators.required],
     displayName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    role: ['user', Validators.required],
+    password: [''],
   });
 
   constructor() {
     effect(() => {
       const userData = this.user();
       if (userData) {
-        this.form.patchValue(userData);
+        this.form.patchValue({
+          username: userData.username,
+          displayName: userData.displayName,
+          email: userData.email,
+          password: userData.password ?? '',
+        });
+        this.selectedRole.set(userData.role);
+        this.isAdmin.set(userData.role === 'admin');
       } else {
-        this.form.reset({ role: 'user' });
+        this.form.reset({ password: '' });
+        this.selectedRole.set('user');
+        this.isAdmin.set(false);
       }
+      this.formDirty.set(false);
     });
+  }
+
+  protected onRoleChange(role: string): void {
+    this.selectedRole.set(role);
+    this.isAdmin.set(role === 'admin');
+    this.formDirty.set(true);
+    if (role === 'admin' && !this.form.controls.password.value) {
+      this.form.controls.password.setValue(this.form.controls.username.value);
+    }
+    if (role !== 'admin') {
+      this.form.controls.password.setValue('');
+    }
+  }
+
+  protected get isDirty(): boolean {
+    return this.form.dirty || this.formDirty();
   }
 
   protected onSubmit(): void {
     if (this.form.valid) {
       const userData = this.user();
+      const formValue = this.form.getRawValue();
+      const role = this.selectedRole();
+      const result = {
+        username: formValue.username,
+        displayName: formValue.displayName,
+        email: formValue.email,
+        role,
+        password: role === 'admin' ? formValue.password : undefined,
+      };
+
       if (userData) {
-        this.userSaved.emit({ ...this.form.getRawValue(), id: userData.id });
+        this.userSaved.emit({ ...result, id: userData.id });
       } else {
-        this.userSaved.emit(this.form.getRawValue());
+        this.userSaved.emit(result);
       }
-      this.form.reset({ role: 'user' });
+      this.form.reset({ password: '' });
+      this.selectedRole.set('user');
+      this.isAdmin.set(false);
+      this.formDirty.set(false);
     }
   }
 }
