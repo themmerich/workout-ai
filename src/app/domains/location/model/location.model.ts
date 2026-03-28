@@ -12,9 +12,20 @@ export interface LocationMember {
   role: LocationMemberRole;
 }
 
+export interface LocationLogo {
+  color: string;
+  imageUrl: string | null;
+}
+
+export const LOGO_COLORS: string[] = [
+  '#6366f1', '#8b5cf6', '#ec4899', '#ef4444', '#f97316',
+  '#eab308', '#22c55e', '#14b8a6', '#06b6d4', '#3b82f6',
+];
+
 export interface Location {
   id: string;
   name: string;
+  logo: LocationLogo;
   street: string;
   zip: string;
   city: string;

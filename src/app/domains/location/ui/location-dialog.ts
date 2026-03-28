@@ -21,7 +21,8 @@ import { EquipmentCategory, EQUIPMENT_CATEGORIES } from '../../equipment/model/e
 import { DataTableComponent } from '../../../shared/ui/data-table';
 import { DataTableTranslations, TableColumn } from '../../../shared/ui/data-table.model';
 import { UserService } from '../../user/data-access/user.service';
-import { Location, LocationEquipment, LocationMember, LocationMemberRole, LOCATION_MEMBER_ROLES } from '../model/location.model';
+import { Location, LocationEquipment, LocationLogo, LocationMember, LocationMemberRole, LOCATION_MEMBER_ROLES, LOGO_COLORS } from '../model/location.model';
+import { LocationLogoComponent } from './location-logo';
 import {
   EquipmentEntryData,
   LocationEquipmentEntryDialogComponent,
@@ -62,6 +63,7 @@ export interface EquipmentRow {
     DataTableComponent,
     LocationEquipmentEntryDialogComponent,
     LocationMemberEntryDialogComponent,
+    LocationLogoComponent,
   ],
   templateUrl: './location-dialog.html',
 })
@@ -75,6 +77,10 @@ export class LocationDialogComponent {
   readonly location = input<Location | null>(null);
   readonly locationSaved = output<Location | Omit<Location, 'id'>>();
   readonly dialogClosed = output<void>();
+
+  protected readonly logoColors = LOGO_COLORS;
+  protected readonly logoColor = signal(LOGO_COLORS[0]);
+  protected readonly logoImageUrl = signal<string | null>(null);
 
   protected readonly equipmentRows = signal<EquipmentRow[]>([]);
   protected readonly entryDialogVisible = signal(false);
@@ -209,16 +215,44 @@ export class LocationDialogComponent {
       const data = this.location();
       if (data) {
         this.form.patchValue(data);
+        this.logoColor.set(data.logo?.color ?? LOGO_COLORS[0]);
+        this.logoImageUrl.set(data.logo?.imageUrl ?? null);
         this.equipmentRows.set(this.toEquipmentRows(data.equipment));
         this.memberRows.set(this.toMemberRows(data.members));
       } else {
         this.form.reset();
+        this.logoColor.set(LOGO_COLORS[0]);
+        this.logoImageUrl.set(null);
         this.equipmentRows.set([]);
         this.memberRows.set([]);
       }
       this.equipmentDirty.set(false);
       this.membersDirty.set(false);
     });
+  }
+
+  protected onLogoFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.logoImageUrl.set(reader.result as string);
+        this.equipmentDirty.set(true);
+      };
+      reader.readAsDataURL(file);
+    }
+    input.value = '';
+  }
+
+  protected onLogoImageRemove(): void {
+    this.logoImageUrl.set(null);
+    this.equipmentDirty.set(true);
+  }
+
+  protected onLogoColorChange(color: string): void {
+    this.logoColor.set(color);
+    this.equipmentDirty.set(true);
   }
 
   protected get isFormDirty(): boolean {
@@ -330,11 +364,12 @@ export class LocationDialogComponent {
       const members: LocationMember[] = this.memberRows()
         .filter((r) => r.userId)
         .map((r) => ({ userId: r.userId, role: r.role }));
+      const logo: LocationLogo = { color: this.logoColor(), imageUrl: this.logoImageUrl() };
 
       if (data) {
-        this.locationSaved.emit({ ...this.form.getRawValue(), id: data.id, equipment, members });
+        this.locationSaved.emit({ ...this.form.getRawValue(), id: data.id, logo, equipment, members });
       } else {
-        this.locationSaved.emit({ ...this.form.getRawValue(), equipment, members });
+        this.locationSaved.emit({ ...this.form.getRawValue(), logo, equipment, members });
       }
       this.form.reset();
       this.equipmentRows.set([]);
