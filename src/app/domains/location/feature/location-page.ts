@@ -5,6 +5,7 @@ import { DataTableTranslations, TableColumn } from '../../../shared/ui/data-tabl
 import { LocationService } from '../data-access/location.service';
 import { Location } from '../model/location.model';
 import { LocationDialogComponent } from '../ui/location-dialog';
+import { LocationLogoComponent } from '../ui/location-logo';
 
 interface LocationView extends Location {
   equipmentCount: number;
@@ -15,7 +16,7 @@ interface LocationView extends Location {
   selector: 'app-location-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-col h-full min-h-0' },
-  imports: [TranslocoDirective, DataTableComponent, LocationDialogComponent],
+  imports: [TranslocoDirective, DataTableComponent, LocationDialogComponent, LocationLogoComponent],
   templateUrl: './location-page.html',
 })
 export default class LocationPageComponent {
@@ -34,6 +35,7 @@ export default class LocationPageComponent {
   );
 
   protected readonly columns: TableColumn[] = [
+    { field: 'logo', headerKey: 'location.logo' },
     { field: 'name', headerKey: 'location.name' },
     { field: 'street', headerKey: 'location.street' },
     { field: 'zip', headerKey: 'location.zip' },

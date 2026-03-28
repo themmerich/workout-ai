@@ -14,7 +14,9 @@
     (itemDelete)="onDelete($event)"
   >
     <ng-template #cell let-item let-field="field">
-      @if (field === 'website' && item[field]) {
+      @if (field === 'logo') {
+        <app-location-logo [logo]="item['logo']" [name]="item['name']" [size]="32" />
+      } @else if (field === 'website' && item[field]) {
         <a [href]="item[field]" target="_blank" rel="noopener" class="text-primary hover:underline">{{ item[field] }}</a>
       } @else {
         {{ item[field] }}

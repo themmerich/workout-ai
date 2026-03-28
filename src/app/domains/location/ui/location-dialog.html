@@ -17,6 +17,58 @@
       <p-tabpanel value="0">
         <form [formGroup]="form" class="flex flex-col gap-5 pt-4">
           <div>
+            <div class="flex items-center gap-4">
+              <app-location-logo
+                [logo]="{ color: logoColor(), imageUrl: logoImageUrl() }"
+                [name]="form.controls.name.value"
+                [size]="56"
+              />
+              <div class="flex flex-col gap-2">
+                <div class="flex gap-1">
+                  @for (color of logoColors; track color) {
+                    <button
+                      type="button"
+                      class="w-6 h-6 rounded-full cursor-pointer border-2 transition-all"
+                      [style.background-color]="color"
+                      [class.border-white]="logoColor() === color"
+                      [class.border-transparent]="logoColor() !== color"
+                      [class.scale-110]="logoColor() === color"
+                      (click)="onLogoColorChange(color)"
+                      [attr.aria-label]="color"
+                    ></button>
+                  }
+                </div>
+                <div class="flex items-center gap-2">
+                  <p-button
+                    [label]="t('location.dialog.uploadImage')"
+                    icon="pi pi-upload"
+                    size="small"
+                    severity="secondary"
+                    (onClick)="logoFileInput.click()"
+                  />
+                  @if (logoImageUrl()) {
+                    <p-button
+                      icon="pi pi-times"
+                      size="small"
+                      severity="danger"
+                      [text]="true"
+                      [rounded]="true"
+                      (onClick)="onLogoImageRemove()"
+                      [attr.aria-label]="t('location.dialog.removeImage')"
+                    />
+                  }
+                  <input
+                    #logoFileInput
+                    type="file"
+                    accept="image/*"
+                    class="hidden"
+                    (change)="onLogoFileSelected($event)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
             <p-floatlabel variant="on">
               <input pInputText id="loc-name" formControlName="name" class="w-full" />
               <label for="loc-name">{{ t('location.name') }} *</label>

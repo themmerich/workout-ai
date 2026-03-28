@@ -1,11 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Tag } from 'primeng/tag';
+import { LocationService } from '../../location/data-access/location.service';
 import { DataTableComponent } from '../../../shared/ui/data-table';
 import { DataTableTranslations, TableColumn } from '../../../shared/ui/data-table.model';
 import { UserService } from '../data-access/user.service';
 import { UserProfile } from '../model/user.model';
 import { UserDialogComponent } from '../ui/user-dialog';
+
+interface UserView extends UserProfile {
+  locationIds: string[];
+  locationNames: string[];
+}
 
 @Component({
   selector: 'app-user-page',
@@ -16,13 +22,35 @@ import { UserDialogComponent } from '../ui/user-dialog';
 })
 export default class UserPageComponent {
   protected readonly userService = inject(UserService);
+  private readonly locationService = inject(LocationService);
   private readonly transloco = inject(TranslocoService);
   protected readonly dialogVisible = signal(false);
   protected readonly editingUser = signal<UserProfile | null>(null);
 
-  private readonly dataTable = viewChild<DataTableComponent<UserProfile>>('dataTable');
+  private readonly dataTable = viewChild<DataTableComponent<UserView>>('dataTable');
 
-  protected readonly columns: TableColumn[] = [
+  protected readonly userViews = computed<UserView[]>(() => {
+    const locations = this.locationService.locations();
+    return this.userService.users().map((user) => {
+      const userLocations = locations.filter((l) =>
+        l.members.some((m) => m.userId === user.id),
+      );
+      return {
+        ...user,
+        locationIds: userLocations.map((l) => l.id),
+        locationNames: userLocations.map((l) => l.name),
+      };
+    });
+  });
+
+  protected readonly locationFilterOptions = computed(() =>
+    this.locationService.locations().map((l) => ({
+      label: l.name,
+      value: l.id,
+    })),
+  );
+
+  protected readonly columns = computed<TableColumn[]>(() => [
     { field: 'username', headerKey: 'user.username' },
     { field: 'displayName', headerKey: 'user.name' },
     { field: 'email', headerKey: 'user.email' },
@@ -32,13 +60,21 @@ export default class UserPageComponent {
       filterMode: 'select',
       filterPlaceholderKey: 'user.filterByRole',
       filterOptions: [
-        { label: 'Administrator', value: 'admin' },
-        { label: 'User', value: 'user' },
+        { label: this.transloco.translate('user.roles.admin'), value: 'admin' },
+        { label: this.transloco.translate('user.roles.user'), value: 'user' },
       ],
     },
-  ];
+    {
+      field: 'locationIds',
+      headerKey: 'user.locations',
+      filterMode: 'multiselect',
+      filterPlaceholderKey: 'user.filterByLocation',
+      filterSelectedItemsLabelKey: 'user.filterLocationsSelected',
+      filterOptions: this.locationFilterOptions(),
+    },
+  ]);
 
-  protected readonly globalFilterFields = ['username', 'displayName', 'email', 'role'];
+  protected readonly globalFilterFields = ['username', 'displayName', 'email', 'role', 'locationNames'];
 
   protected readonly translations: DataTableTranslations = {
     columns: 'user.columns',
@@ -73,9 +109,12 @@ export default class UserPageComponent {
     this.dialogVisible.set(true);
   }
 
-  protected onEdit(user: UserProfile): void {
-    this.editingUser.set(user);
-    this.dialogVisible.set(true);
+  protected onEdit(view: UserView): void {
+    const user = this.userService.getById(view.id);
+    if (user) {
+      this.editingUser.set(user);
+      this.dialogVisible.set(true);
+    }
   }
 
   protected onSaveUser(user: UserProfile | Omit<UserProfile, 'id'>): void {
@@ -90,9 +129,9 @@ export default class UserPageComponent {
     this.editingUser.set(null);
   }
 
-  protected onDelete(user: UserProfile): void {
+  protected onDelete(view: UserView): void {
     try {
-      this.userService.delete(user.id);
+      this.userService.delete(view.id);
       this.dataTable()?.showSuccess(this.translations.deleteSuccess);
     } catch {
       this.dataTable()?.showError(this.translations.deleteError);

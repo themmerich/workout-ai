@@ -2,8 +2,8 @@
   <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 shrink-0 mb-6">{{ t('user.title') }}</h1>
   <app-data-table
     #dataTable
-    [data]="userService.users()"
-    [columns]="columns"
+    [data]="userViews()"
+    [columns]="columns()"
     [translations]="translations"
     [globalFilterFields]="globalFilterFields"
     stateKey="user"
@@ -15,6 +15,15 @@
     <ng-template #cell let-item let-field="field">
       @if (field === 'role') {
         <p-tag [value]="getRoleLabel(item[field])" [severity]="getRoleSeverity(item[field])" />
+      } @else if (field === 'locationIds') {
+        <div class="flex flex-wrap gap-1">
+          @for (name of item['locationNames']; track name) {
+            <p-tag [value]="name" severity="secondary" />
+          }
+          @if (!item['locationNames'] || item['locationNames'].length === 0) {
+            <span class="text-surface-400">—</span>
+          }
+        </div>
       } @else {
         {{ item[field] }}
       }
