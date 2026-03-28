@@ -35,19 +35,6 @@
         <label for="eq-category">{{ t('equipment.category') }} *</label>
       </p-floatlabel>
     </div>
-    <div>
-      <p-floatlabel variant="on">
-        <p-inputnumber
-          formControlName="weight"
-          inputId="eq-weight"
-          [minFractionDigits]="0"
-          [maxFractionDigits]="1"
-          suffix=" kg"
-          styleClass="w-full"
-        />
-        <label for="eq-weight">{{ t('equipment.weight') }}</label>
-      </p-floatlabel>
-    </div>
     <div class="flex justify-end gap-2 pt-4">
       <p-button
         [label]="t('equipment.dialog.cancel')"

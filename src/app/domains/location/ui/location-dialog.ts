@@ -47,6 +47,7 @@ export interface EquipmentRow {
   equipmentName: string;
   equipmentCategory: string;
   quantity: number;
+  weight: number | null;
 }
 
 @Component({
@@ -97,6 +98,7 @@ export class LocationDialogComponent {
     this.equipmentService.equipment().map((e) => ({
       label: e.name,
       value: e.id,
+      category: e.category,
     })),
   );
 
@@ -128,12 +130,12 @@ export class LocationDialogComponent {
       filterOptions: this.categoryFilterOptions(),
     },
     { field: 'quantity', headerKey: 'location.dialog.equipmentQuantity' },
+    { field: 'weight', headerKey: 'location.dialog.equipmentWeight' },
   ]);
 
   private readonly categorySeverityMap: Record<EquipmentCategory, 'info' | 'warn' | 'success' | 'secondary' | 'contrast'> = {
     mobility: 'info',
     dumbbell: 'warn',
-    barbell: 'warn',
     cardio: 'success',
     cable: 'secondary',
     machine: 'secondary',
@@ -266,7 +268,7 @@ export class LocationDialogComponent {
   }
 
   protected onEquipmentEdit(row: EquipmentRow): void {
-    this.editingEntry.set({ id: row.id, equipmentId: row.equipmentId, quantity: row.quantity });
+    this.editingEntry.set({ id: row.id, equipmentId: row.equipmentId, quantity: row.quantity, weight: row.weight });
     this.entryDialogVisible.set(true);
   }
 
@@ -283,6 +285,7 @@ export class LocationDialogComponent {
       equipmentName: eq?.name ?? entry.equipmentId,
       equipmentCategory: eq?.category ?? '',
       quantity: entry.quantity,
+      weight: entry.weight,
     };
 
     this.equipmentRows.update((rows) => {
@@ -362,7 +365,7 @@ export class LocationDialogComponent {
       const data = this.location();
       const equipment: LocationEquipment[] = this.equipmentRows()
         .filter((r) => r.equipmentId)
-        .map((r) => ({ equipmentId: r.equipmentId, quantity: r.quantity }));
+        .map((r) => ({ equipmentId: r.equipmentId, quantity: r.quantity, weight: r.weight }));
       const members: LocationMember[] = this.memberRows()
         .filter((r) => r.userId)
         .map((r) => ({ userId: r.userId, role: r.role, password: r.password }));
@@ -402,6 +405,7 @@ export class LocationDialogComponent {
         equipmentName: eq?.name ?? le.equipmentId,
         equipmentCategory: eq?.category ?? '',
         quantity: le.quantity,
+        weight: le.weight,
       };
     });
   }

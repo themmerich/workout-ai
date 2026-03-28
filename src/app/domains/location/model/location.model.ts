@@ -1,6 +1,7 @@
 export interface LocationEquipment {
   equipmentId: string;
   quantity: number;
+  weight: number | null;
 }
 
 export type LocationMemberRole = 'owner' | 'trainer' | 'member';

@@ -166,7 +166,6 @@
     "categories": {
       "mobility": "Mobility",
       "dumbbell": "Dumbbell",
-      "barbell": "Barbell",
       "cardio": "Cardio",
       "cable": "Cable",
       "machine": "Machine",
@@ -245,6 +244,7 @@
       "equipmentName": "Equipment",
       "equipmentCategory": "Category",
       "equipmentQuantity": "Quantity",
+      "equipmentWeight": "Weight (kg)",
       "selectEquipment": "Select equipment",
       "noEquipment": "No equipment assigned",
       "eqColumns": "Columns",

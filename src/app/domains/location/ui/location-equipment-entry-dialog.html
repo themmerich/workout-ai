@@ -35,6 +35,21 @@
         <label for="le-quantity">{{ t('location.dialog.equipmentQuantity') }} *</label>
       </p-floatlabel>
     </div>
+    @if (showWeight()) {
+      <div>
+        <p-floatlabel variant="on">
+          <p-inputnumber
+            formControlName="weight"
+            inputId="le-weight"
+            [minFractionDigits]="0"
+            [maxFractionDigits]="1"
+            suffix=" kg"
+            styleClass="w-full"
+          />
+          <label for="le-weight">{{ t('location.dialog.equipmentWeight') }}</label>
+        </p-floatlabel>
+      </div>
+    }
     <div class="flex justify-end gap-2 pt-4">
       <p-button
         [label]="t('location.dialog.cancel')"

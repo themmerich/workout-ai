@@ -31,8 +31,7 @@ export default class EquipmentPageComponent {
       filterPlaceholderKey: 'equipment.filterByCategory',
       filterOptions: [
         { label: 'Mobility', value: 'mobility' },
-        { label: 'Kurzhantel', value: 'dumbbell' },
-        { label: 'Langhantel', value: 'barbell' },
+        { label: 'Hantel', value: 'dumbbell' },
         { label: 'Cardio', value: 'cardio' },
         { label: 'Kabelzug', value: 'cable' },
         { label: 'Maschine', value: 'machine' },
@@ -40,10 +39,9 @@ export default class EquipmentPageComponent {
         { label: 'Sonstiges', value: 'other' },
       ],
     },
-    { field: 'weight', headerKey: 'equipment.weight' },
   ];
 
-  protected readonly globalFilterFields = ['name', 'category', 'weight'];
+  protected readonly globalFilterFields = ['name', 'category'];
 
   protected readonly translations: DataTableTranslations = {
     columns: 'equipment.columns',
@@ -68,7 +66,6 @@ export default class EquipmentPageComponent {
   private readonly categorySeverityMap: Record<EquipmentCategory, 'info' | 'warn' | 'success' | 'secondary' | 'contrast'> = {
     mobility: 'info',
     dumbbell: 'warn',
-    barbell: 'warn',
     cardio: 'success',
     cable: 'secondary',
     machine: 'secondary',
