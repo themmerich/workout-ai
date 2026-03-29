@@ -1,0 +1,31 @@
+<div *transloco="let t" class="flex flex-col gap-6 h-full min-h-0">
+  <h1 class="text-2xl font-bold text-surface-900 dark:text-surface-0 shrink-0">{{ t('myLocation.members.title') }}</h1>
+  <app-data-table
+    [data]="memberRows()"
+    [columns]="columns()"
+    [translations]="translations"
+    [globalFilterFields]="globalFilterFields"
+    stateKey="my-location-members"
+    nameField="userName"
+    (itemAdd)="onAdd()"
+    (itemEdit)="onEdit($event)"
+    (itemDelete)="onDelete($event)"
+  >
+    <ng-template #cell let-item let-field="field">
+      @if (field === 'role') {
+        <p-tag [value]="getRoleLabel(item[field])" [severity]="getRoleSeverity(item[field])" />
+      } @else {
+        {{ item[field] }}
+      }
+    </ng-template>
+  </app-data-table>
+
+  <p-toast />
+  <app-location-member-entry-dialog
+    [visible]="dialogVisible()"
+    [entry]="editingMember()"
+    [userOptions]="userOptions()"
+    (entrySaved)="onMemberSaved($event)"
+    (dialogClosed)="dialogVisible.set(false)"
+  />
+</div>

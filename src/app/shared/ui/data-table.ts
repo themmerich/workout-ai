@@ -65,6 +65,8 @@ export class DataTableComponent<T extends { id: string } = any> {
   readonly globalFilterFields = input.required<string[]>();
   readonly nameField = input<string>('name');
   readonly minTableWidth = input('30rem');
+  readonly readOnly = input(false);
+  readonly showAdd = input(true);
 
   readonly itemAdd = output<void>();
   readonly itemEdit = output<T>();

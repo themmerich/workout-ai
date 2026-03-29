@@ -9,4 +9,5 @@ export interface AppUser {
   avatarUrl: string;
   locationId: string | null;
   locationName: string | null;
+  locationRole: string | null;
 }

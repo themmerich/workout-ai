@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { adminGuard } from './core/auth/admin.guard';
 import { authGuard } from './core/auth/auth.guard';
+import { ownerGuard } from './core/auth/owner.guard';
 import { LayoutComponent } from './core/layout/layout';
 
 export const routes: Routes = [
@@ -19,6 +20,7 @@ export const routes: Routes = [
       },
       {
         path: 'user',
+        canActivate: [adminGuard],
         loadChildren: () => import('./domains/user/user.routes').then((m) => m.userRoutes),
       },
       {
@@ -38,6 +40,21 @@ export const routes: Routes = [
         canActivate: [adminGuard],
         loadChildren: () =>
           import('./domains/exercise/exercise.routes').then((m) => m.exerciseRoutes),
+      },
+      {
+        path: 'my-location',
+        canActivate: [ownerGuard],
+        loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationDetailsRoutes),
+      },
+      {
+        path: 'my-members',
+        canActivate: [ownerGuard],
+        loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationMembersRoutes),
+      },
+      {
+        path: 'my-equipment',
+        canActivate: [ownerGuard],
+        loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationEquipmentRoutes),
       },
       {
         path: 'settings',

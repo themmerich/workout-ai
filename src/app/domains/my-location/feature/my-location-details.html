@@ -1,0 +1,132 @@
+<div *transloco="let t" class="flex flex-col gap-4 overflow-y-auto h-full">
+  @if (location()) {
+    <form [formGroup]="form" (ngSubmit)="onSave()" class="flex flex-col gap-4">
+      <!-- Logo & Name -->
+      <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-6">
+        <div class="flex items-center gap-6">
+          <app-location-logo
+            [logo]="{ color: logoColor(), imageUrl: logoImageUrl() }"
+            [name]="form.controls.name.value"
+            [size]="80"
+          />
+          <div class="flex-1 flex flex-col gap-3">
+            <p-floatlabel variant="on">
+              <input pInputText id="ml-name" formControlName="name" class="w-full text-xl" />
+              <label for="ml-name">{{ t('location.name') }} *</label>
+            </p-floatlabel>
+            <div class="flex items-center gap-3">
+              <div class="flex gap-1">
+                @for (color of logoColors; track color) {
+                  <button
+                    type="button"
+                    class="w-6 h-6 rounded-full cursor-pointer border-2 transition-all"
+                    [style.background-color]="color"
+                    [class.border-white]="logoColor() === color"
+                    [class.border-transparent]="logoColor() !== color"
+                    [class.scale-110]="logoColor() === color"
+                    (click)="onLogoColorChange(color)"
+                    [attr.aria-label]="color"
+                  ></button>
+                }
+              </div>
+              <div class="h-4 w-px bg-surface-300 dark:bg-surface-600"></div>
+              <p-button
+                [label]="t('myLocation.details.uploadImage')"
+                icon="pi pi-upload"
+                size="small"
+                severity="secondary"
+                [text]="true"
+                (onClick)="logoFileInput.click()"
+              />
+              @if (logoImageUrl()) {
+                <p-button
+                  icon="pi pi-times"
+                  size="small"
+                  severity="danger"
+                  [text]="true"
+                  [rounded]="true"
+                  (onClick)="onLogoImageRemove()"
+                  [attr.aria-label]="t('myLocation.details.removeImage')"
+                />
+              }
+              <input
+                #logoFileInput
+                type="file"
+                accept="image/*"
+                class="hidden"
+                (change)="onLogoFileSelected($event)"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <!-- Address -->
+        <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
+          <div class="flex items-center gap-2 mb-4">
+            <i class="pi pi-map-marker text-base text-surface-500 dark:text-surface-400"></i>
+            <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('myLocation.details.address') }}</span>
+          </div>
+          <div class="flex flex-col gap-4">
+            <p-floatlabel variant="on">
+              <input pInputText id="ml-street" formControlName="street" class="w-full" />
+              <label for="ml-street">{{ t('location.street') }} *</label>
+            </p-floatlabel>
+            <div class="flex gap-3">
+              <div class="w-1/3">
+                <p-floatlabel variant="on">
+                  <input pInputText id="ml-zip" formControlName="zip" class="w-full" />
+                  <label for="ml-zip">{{ t('location.zip') }} *</label>
+                </p-floatlabel>
+              </div>
+              <div class="flex-1">
+                <p-floatlabel variant="on">
+                  <input pInputText id="ml-city" formControlName="city" class="w-full" />
+                  <label for="ml-city">{{ t('location.city') }} *</label>
+                </p-floatlabel>
+              </div>
+            </div>
+            <p-floatlabel variant="on">
+              <input pInputText id="ml-country" formControlName="country" class="w-full" />
+              <label for="ml-country">{{ t('location.country') }}</label>
+            </p-floatlabel>
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
+          <div class="flex items-center gap-2 mb-4">
+            <i class="pi pi-envelope text-base text-surface-500 dark:text-surface-400"></i>
+            <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('myLocation.details.contact') }}</span>
+          </div>
+          <div class="flex flex-col gap-4">
+            <p-floatlabel variant="on">
+              <input pInputText id="ml-phone" formControlName="phone" class="w-full" />
+              <label for="ml-phone">{{ t('location.phone') }}</label>
+            </p-floatlabel>
+            <p-floatlabel variant="on">
+              <input pInputText id="ml-email" formControlName="email" type="email" class="w-full" />
+              <label for="ml-email">{{ t('location.email') }}</label>
+            </p-floatlabel>
+            <p-floatlabel variant="on">
+              <input pInputText id="ml-website" formControlName="website" class="w-full" />
+              <label for="ml-website">{{ t('location.website') }}</label>
+            </p-floatlabel>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save -->
+      <div class="flex justify-end">
+        <p-button
+          [label]="t('myLocation.details.save')"
+          icon="pi pi-check"
+          type="submit"
+          [disabled]="form.invalid || !isDirty"
+        />
+      </div>
+    </form>
+    <p-toast />
+  }
+</div>
