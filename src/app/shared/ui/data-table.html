@@ -41,11 +41,13 @@
             [pTooltip]="t(translations().clearFilters)"
             tooltipPosition="bottom"
           />
-          <p-button
-            [label]="t(translations().addButton)"
-            icon="pi pi-plus"
-            (onClick)="itemAdd.emit()"
-          />
+          @if (showAdd()) {
+            <p-button
+              [label]="t(translations().addButton)"
+              icon="pi pi-plus"
+              (onClick)="itemAdd.emit()"
+            />
+          }
         </div>
       </ng-template>
     </p-toolbar>
@@ -123,7 +125,9 @@
               }
             </th>
           }
-          <th class="text-center" style="width: 5rem">{{ t(translations().actions) }}</th>
+          @if (!readOnly()) {
+            <th class="text-center" style="width: 5rem">{{ t(translations().actions) }}</th>
+          }
         </tr>
       </ng-template>
       <ng-template #body let-item>
@@ -140,23 +144,25 @@
               <td [class]="col.bodyClass ?? ''">{{ $any(item)[col.field] }}</td>
             }
           }
-          <td class="text-center">
-            <p-button
-              icon="pi pi-pencil"
-              [rounded]="true"
-              [text]="true"
-              (onClick)="onEdit(item)"
-              [attr.aria-label]="t(translations().edit)"
-            />
-            <p-button
-              icon="pi pi-trash"
-              [rounded]="true"
-              [text]="true"
-              severity="danger"
-              (onClick)="onDelete(item)"
-              [attr.aria-label]="t(translations().delete)"
-            />
-          </td>
+          @if (!readOnly()) {
+            <td class="text-center">
+              <p-button
+                icon="pi pi-pencil"
+                [rounded]="true"
+                [text]="true"
+                (onClick)="onEdit(item)"
+                [attr.aria-label]="t(translations().edit)"
+              />
+              <p-button
+                icon="pi pi-trash"
+                [rounded]="true"
+                [text]="true"
+                severity="danger"
+                (onClick)="onDelete(item)"
+                [attr.aria-label]="t(translations().delete)"
+              />
+            </td>
+          }
         </tr>
       </ng-template>
     </p-table>

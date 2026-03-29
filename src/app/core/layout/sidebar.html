@@ -37,16 +37,45 @@
         <i class="pi pi-home text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
         <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.dashboard') }}</span>
       </a>
-      <a
-        routerLink="/user"
-        routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
-        class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
-        (click)="closeSidebar.emit()"
-      >
-        <i class="pi pi-user text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
-        <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.user') }}</span>
-      </a>
+      @if (authService.isOwner()) {
+        <a
+          routerLink="/my-location"
+          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
+          (click)="closeSidebar.emit()"
+        >
+          <i class="pi pi-building text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myLocation') }}</span>
+        </a>
+        <a
+          routerLink="/my-members"
+          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
+          (click)="closeSidebar.emit()"
+        >
+          <i class="pi pi-users text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myMembers') }}</span>
+        </a>
+        <a
+          routerLink="/my-equipment"
+          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
+          (click)="closeSidebar.emit()"
+        >
+          <i class="pi pi-wrench text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myEquipment') }}</span>
+        </a>
+      }
       @if (authService.isAdmin()) {
+        <a
+          routerLink="/user"
+          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
+          (click)="closeSidebar.emit()"
+        >
+          <i class="pi pi-user text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.user') }}</span>
+        </a>
         <a
           routerLink="/locations"
           routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"

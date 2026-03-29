@@ -13,6 +13,7 @@ export class AuthService {
   readonly currentUser = signal<AppUser | null>(null);
   readonly isLoggedIn = computed(() => this.currentUser() !== null);
   readonly isAdmin = computed(() => this.currentUser()?.role === 'admin');
+  readonly isOwner = computed(() => this.currentUser()?.locationRole === 'owner');
 
   login(username: string, password: string, locationId: string | null): string | null {
     const user = this.userService.getAll().find((u) => u.username === username);
@@ -33,6 +34,7 @@ export class AuthService {
         avatarUrl: '',
         locationId: null,
         locationName: null,
+        locationRole: null,
       });
       return null;
     }
@@ -60,10 +62,11 @@ export class AuthService {
       username: user.username,
       displayName: user.displayName,
       email: user.email,
-      role: member.role as 'admin' | 'user',
+      role: 'user',
       avatarUrl: '',
       locationId: location.id,
       locationName: location.name,
+      locationRole: member.role,
     });
     return null;
   }

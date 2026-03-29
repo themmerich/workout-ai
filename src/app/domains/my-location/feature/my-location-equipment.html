@@ -1,0 +1,33 @@
+<div *transloco="let t" class="flex flex-col gap-6 h-full min-h-0">
+  <h1 class="text-2xl font-bold text-surface-900 dark:text-surface-0 shrink-0">{{ t('myLocation.equipment.title') }}</h1>
+  <app-data-table
+    [data]="equipmentRows()"
+    [columns]="columns()"
+    [translations]="translations"
+    [globalFilterFields]="globalFilterFields"
+    stateKey="my-location-equipment"
+    nameField="equipmentName"
+    (itemAdd)="onAdd()"
+    (itemEdit)="onEdit($event)"
+    (itemDelete)="onDelete($event)"
+  >
+    <ng-template #cell let-item let-field="field">
+      @if (field === 'equipmentCategory' && item[field]) {
+        <p-tag [value]="getCategoryLabel(item[field])" [severity]="getCategorySeverity(item[field])" />
+      } @else if (field === 'weight') {
+        {{ item[field] !== null ? item[field] + ' kg' : '—' }}
+      } @else {
+        {{ item[field] }}
+      }
+    </ng-template>
+  </app-data-table>
+
+  <p-toast />
+  <app-location-equipment-entry-dialog
+    [visible]="dialogVisible()"
+    [entry]="editingEntry()"
+    [equipmentOptions]="equipmentOptions()"
+    (entrySaved)="onEntrySaved($event)"
+    (dialogClosed)="dialogVisible.set(false)"
+  />
+</div>
