@@ -87,10 +87,29 @@
                 </p-floatlabel>
               </div>
             </div>
-            <p-floatlabel variant="on">
-              <input pInputText id="ml-country" formControlName="country" class="w-full" />
-              <label for="ml-country">{{ t('location.country') }}</label>
-            </p-floatlabel>
+            <div class="flex gap-3">
+              <div class="flex-1">
+                <p-floatlabel variant="on">
+                  <input pInputText id="ml-country" formControlName="country" class="w-full" />
+                  <label for="ml-country">{{ t('location.country') }}</label>
+                </p-floatlabel>
+              </div>
+              <div class="flex-1">
+                <p-floatlabel variant="on">
+                  <p-select
+                    formControlName="bundesland"
+                    [options]="bundeslaender"
+                    optionLabel="name"
+                    optionValue="code"
+                    inputId="ml-bundesland"
+                    appendTo="body"
+                    styleClass="w-full"
+                    [showClear]="true"
+                  />
+                  <label for="ml-bundesland">{{ t('location.bundesland') }}</label>
+                </p-floatlabel>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -114,6 +133,49 @@
               <label for="ml-website">{{ t('location.website') }}</label>
             </p-floatlabel>
           </div>
+        </div>
+      </div>
+
+      <!-- Opening Hours -->
+      <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
+        <div class="flex items-center gap-2 mb-4">
+          <i class="pi pi-clock text-base text-surface-500 dark:text-surface-400"></i>
+          <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('myLocation.details.openingHours') }}</span>
+        </div>
+        <div class="flex flex-col gap-2">
+          @for (hour of openingHours(); track hour.day; let i = $index) {
+            <div class="flex items-center gap-3">
+              <span class="w-24 text-sm text-surface-700 dark:text-surface-300 shrink-0">{{ t('myLocation.details.days.' + hour.day) }}</span>
+              <p-checkbox
+                [ngModel]="!hour.closed"
+                (ngModelChange)="hour.closed = !$event; onHoursChange()"
+                [ngModelOptions]="{ standalone: true }"
+                [binary]="true"
+                inputId="day-{{ hour.day }}"
+              />
+              @if (!hour.closed) {
+                <input
+                  pInputText
+                  type="time"
+                  [ngModel]="hour.open"
+                  (ngModelChange)="hour.open = $event; onHoursChange()"
+                  [ngModelOptions]="{ standalone: true }"
+                  class="w-28 text-sm"
+                />
+                <span class="text-surface-500">—</span>
+                <input
+                  pInputText
+                  type="time"
+                  [ngModel]="hour.close"
+                  (ngModelChange)="hour.close = $event; onHoursChange()"
+                  [ngModelOptions]="{ standalone: true }"
+                  class="w-28 text-sm"
+                />
+              } @else {
+                <span class="text-surface-400 text-sm italic">{{ t('myLocation.details.closed') }}</span>
+              }
+            </div>
+          }
         </div>
       </div>
 

@@ -57,6 +57,11 @@ export const routes: Routes = [
         loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationEquipmentRoutes),
       },
       {
+        path: 'my-calendar',
+        canActivate: [ownerGuard],
+        loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationCalendarRoutes),
+      },
+      {
         path: 'settings',
         canActivate: [adminGuard],
         loadChildren: () => import('./domains/settings/settings.routes').then((m) => m.settingsRoutes),

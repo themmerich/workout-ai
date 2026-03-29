@@ -30,6 +30,7 @@
     "myLocation": "My Location",
     "myMembers": "Members",
     "myEquipment": "Equipment",
+    "myCalendar": "Schedule",
     "settings": "Settings"
   },
   "myLocation": {
@@ -40,7 +41,18 @@
       "contact": "Contact",
       "saveSuccess": "Location saved successfully",
       "uploadImage": "Upload Image",
-      "removeImage": "Remove Image"
+      "removeImage": "Remove Image",
+      "openingHours": "Opening Hours",
+      "closed": "Closed",
+      "days": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      }
     },
     "members": {
       "title": "Members",
@@ -91,6 +103,23 @@
       "deleteError": "Error removing equipment",
       "dialogDelete": "Remove",
       "dialogCancel": "Cancel"
+    },
+    "calendar": {
+      "title": "Schedule",
+      "closed": "Closed",
+      "legendRegular": "Regular",
+      "legendException": "Modified",
+      "legendClosed": "Closed",
+      "legendHoliday": "Public Holiday",
+      "markClosed": "Closed all day",
+      "openTime": "Open",
+      "closeTime": "Close",
+      "note": "Note",
+      "saveException": "Save Exception",
+      "removeException": "Remove Exception",
+      "cancel": "Cancel",
+      "saveSuccess": "Exception saved",
+      "removeSuccess": "Exception removed"
     }
   },
   "sidebar": {
@@ -271,6 +300,7 @@
     "zip": "Zip",
     "city": "City",
     "country": "Country",
+    "bundesland": "Federal State",
     "phone": "Phone",
     "email": "Email",
     "website": "Website",

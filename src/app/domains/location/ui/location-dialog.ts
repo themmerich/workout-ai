@@ -14,6 +14,7 @@ import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
+import { Select } from 'primeng/select';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Tag } from 'primeng/tag';
 import { EquipmentService } from '../../equipment/data-access/equipment.service';
@@ -21,7 +22,7 @@ import { EquipmentCategory, EQUIPMENT_CATEGORIES } from '../../equipment/model/e
 import { DataTableComponent } from '../../../shared/ui/data-table';
 import { DataTableTranslations, TableColumn } from '../../../shared/ui/data-table.model';
 import { UserService } from '../../user/data-access/user.service';
-import { Location, LocationEquipment, LocationLogo, LocationMember, LocationMemberRole, LOCATION_MEMBER_ROLES, LOGO_COLORS } from '../model/location.model';
+import { BUNDESLAENDER, defaultOpeningHours, Location, LocationEquipment, LocationLogo, LocationMember, LocationMemberRole, LOCATION_MEMBER_ROLES, LOGO_COLORS } from '../model/location.model';
 import { LocationLogoComponent } from './location-logo';
 import {
   EquipmentEntryData,
@@ -59,6 +60,7 @@ export interface EquipmentRow {
     Dialog,
     FloatLabel,
     InputText,
+    Select,
     Tabs, TabList, Tab, TabPanels, TabPanel,
     Tag,
     ButtonModule,
@@ -81,6 +83,7 @@ export class LocationDialogComponent {
   readonly dialogClosed = output<void>();
 
   protected readonly logoColors = LOGO_COLORS;
+  protected readonly bundeslaender = BUNDESLAENDER;
   protected readonly logoColor = signal(LOGO_COLORS[0]);
   protected readonly logoImageUrl = signal<string | null>(null);
 
@@ -108,6 +111,7 @@ export class LocationDialogComponent {
     zip: ['', Validators.required],
     city: ['', Validators.required],
     country: [''],
+    bundesland: [''],
     phone: [''],
     email: ['', Validators.email],
     website: [''],
@@ -371,10 +375,13 @@ export class LocationDialogComponent {
         .map((r) => ({ userId: r.userId, role: r.role, password: r.password }));
       const logo: LocationLogo = { color: this.logoColor(), imageUrl: this.logoImageUrl() };
 
+      const openingHours = data?.openingHours ?? defaultOpeningHours();
+      const calendarExceptions = data?.calendarExceptions ?? [];
+
       if (data) {
-        this.locationSaved.emit({ ...this.form.getRawValue(), id: data.id, logo, equipment, members });
+        this.locationSaved.emit({ ...this.form.getRawValue(), id: data.id, logo, openingHours, calendarExceptions, equipment, members });
       } else {
-        this.locationSaved.emit({ ...this.form.getRawValue(), logo, equipment, members });
+        this.locationSaved.emit({ ...this.form.getRawValue(), logo, openingHours, calendarExceptions, equipment, members });
       }
       this.form.reset();
       this.equipmentRows.set([]);
