@@ -30,6 +30,7 @@
     "myLocation": "Mein Standort",
     "myMembers": "Mitglieder",
     "myEquipment": "Geräte",
+    "myCalendar": "Termine",
     "settings": "Einstellungen"
   },
   "myLocation": {
@@ -40,7 +41,18 @@
       "contact": "Kontakt",
       "saveSuccess": "Standort wurde erfolgreich gespeichert",
       "uploadImage": "Bild hochladen",
-      "removeImage": "Bild entfernen"
+      "removeImage": "Bild entfernen",
+      "openingHours": "Öffnungszeiten",
+      "closed": "Geschlossen",
+      "days": {
+        "monday": "Montag",
+        "tuesday": "Dienstag",
+        "wednesday": "Mittwoch",
+        "thursday": "Donnerstag",
+        "friday": "Freitag",
+        "saturday": "Samstag",
+        "sunday": "Sonntag"
+      }
     },
     "members": {
       "title": "Mitglieder",
@@ -91,6 +103,23 @@
       "deleteError": "Fehler beim Entfernen",
       "dialogDelete": "Entfernen",
       "dialogCancel": "Abbrechen"
+    },
+    "calendar": {
+      "title": "Termine",
+      "closed": "Geschlossen",
+      "legendRegular": "Regulär",
+      "legendException": "Angepasst",
+      "legendClosed": "Geschlossen",
+      "legendHoliday": "Feiertag",
+      "markClosed": "Ganztägig geschlossen",
+      "openTime": "Öffnung",
+      "closeTime": "Schließung",
+      "note": "Anmerkung",
+      "saveException": "Ausnahme speichern",
+      "removeException": "Ausnahme entfernen",
+      "cancel": "Abbrechen",
+      "saveSuccess": "Ausnahme wurde gespeichert",
+      "removeSuccess": "Ausnahme wurde entfernt"
     }
   },
   "sidebar": {
@@ -271,6 +300,7 @@
     "zip": "PLZ",
     "city": "Stadt",
     "country": "Land",
+    "bundesland": "Bundesland",
     "phone": "Telefon",
     "email": "E-Mail",
     "website": "Webseite",

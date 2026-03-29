@@ -5,6 +5,26 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* FullCalendar weekend highlighting */
+.fc-day-sat,
+.fc-day-sun {
+  background-color: rgba(99, 102, 241, 0.05) !important;
+}
+
+.dark .fc-day-sat,
+.dark .fc-day-sun {
+  background-color: rgba(99, 102, 241, 0.1) !important;
+}
+
+/* FullCalendar today highlighting */
+.fc-day-today {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+.dark .fc-day-today {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+}
+
 @theme inline {
   --color-surface-0: var(--p-surface-0);
   --color-surface-50: var(--p-surface-50);

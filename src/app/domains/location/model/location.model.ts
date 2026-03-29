@@ -24,10 +24,65 @@ export const LOGO_COLORS: string[] = [
   '#eab308', '#22c55e', '#14b8a6', '#06b6d4', '#3b82f6',
 ];
 
+export type Weekday = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+
+export const WEEKDAYS: Weekday[] = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+export interface OpeningHour {
+  day: Weekday;
+  open: string;
+  close: string;
+  closed: boolean;
+}
+
+export interface CalendarException {
+  date: string; // YYYY-MM-DD
+  open: string | null;
+  close: string | null;
+  closed: boolean;
+  note: string;
+}
+
+export function defaultOpeningHours(): OpeningHour[] {
+  return WEEKDAYS.map((day) => ({
+    day,
+    open: day === 'saturday' || day === 'sunday' ? '09:00' : '06:00',
+    close: day === 'saturday' || day === 'sunday' ? '18:00' : '22:00',
+    closed: false,
+  }));
+}
+
+export interface BundeslandOption {
+  code: string;
+  name: string;
+}
+
+export const BUNDESLAENDER: BundeslandOption[] = [
+  { code: 'BW', name: 'Baden-Württemberg' },
+  { code: 'BY', name: 'Bayern' },
+  { code: 'BE', name: 'Berlin' },
+  { code: 'BB', name: 'Brandenburg' },
+  { code: 'HB', name: 'Bremen' },
+  { code: 'HH', name: 'Hamburg' },
+  { code: 'HE', name: 'Hessen' },
+  { code: 'MV', name: 'Mecklenburg-Vorpommern' },
+  { code: 'NI', name: 'Niedersachsen' },
+  { code: 'NW', name: 'Nordrhein-Westfalen' },
+  { code: 'RP', name: 'Rheinland-Pfalz' },
+  { code: 'SL', name: 'Saarland' },
+  { code: 'SN', name: 'Sachsen' },
+  { code: 'ST', name: 'Sachsen-Anhalt' },
+  { code: 'SH', name: 'Schleswig-Holstein' },
+  { code: 'TH', name: 'Thüringen' },
+];
+
 export interface Location {
   id: string;
   name: string;
   logo: LocationLogo;
+  openingHours: OpeningHour[];
+  calendarExceptions: CalendarException[];
+  bundesland: string;
   street: string;
   zip: string;
   city: string;

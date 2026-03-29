@@ -11,3 +11,7 @@ export const myLocationMembersRoutes: Routes = [
 export const myLocationEquipmentRoutes: Routes = [
   { path: '', loadComponent: () => import('./feature/my-location-equipment') },
 ];
+
+export const myLocationCalendarRoutes: Routes = [
+  { path: '', loadComponent: () => import('./feature/my-location-calendar') },
+];

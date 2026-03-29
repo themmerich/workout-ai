@@ -1,0 +1,97 @@
+<div *transloco="let t" class="flex flex-col gap-4 h-full min-h-0">
+  <div class="flex items-center justify-between shrink-0">
+    <h1 class="text-2xl font-bold text-surface-900 dark:text-surface-0">{{ t('myLocation.calendar.title') }}</h1>
+    <div class="flex items-center gap-3 text-xs">
+      <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm bg-green-500 inline-block"></span> {{ t('myLocation.calendar.legendRegular') }}</span>
+      <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm bg-orange-500 inline-block"></span> {{ t('myLocation.calendar.legendException') }}</span>
+      <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm bg-red-500 inline-block"></span> {{ t('myLocation.calendar.legendClosed') }}</span>
+      <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-sm bg-violet-500 inline-block"></span> {{ t('myLocation.calendar.legendHoliday') }}</span>
+    </div>
+  </div>
+  <div class="flex-1 min-h-0 rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-4 overflow-hidden">
+    <full-calendar [options]="calendarOptions()" />
+  </div>
+
+  <p-dialog
+    [header]="editingDate()"
+    [visible]="dialogVisible()"
+    (visibleChange)="dialogVisible.set(false)"
+    [modal]="true"
+    [style]="{ width: '400px' }"
+  >
+    <div class="flex flex-col gap-4 pt-4">
+      <div class="flex items-center gap-3">
+        <p-checkbox
+          [ngModel]="editingClosed()"
+          (ngModelChange)="editingClosed.set($event)"
+          [binary]="true"
+          inputId="exc-closed"
+        />
+        <label for="exc-closed" class="text-surface-700 dark:text-surface-200">{{ t('myLocation.calendar.markClosed') }}</label>
+      </div>
+      @if (!editingClosed()) {
+        <div class="flex items-center gap-3">
+          <p-floatlabel variant="on" class="flex-1">
+            <input
+              pInputText
+              type="time"
+              id="exc-open"
+              [ngModel]="editingOpen()"
+              (ngModelChange)="editingOpen.set($event)"
+              class="w-full"
+            />
+            <label for="exc-open">{{ t('myLocation.calendar.openTime') }}</label>
+          </p-floatlabel>
+          <span class="text-surface-500">—</span>
+          <p-floatlabel variant="on" class="flex-1">
+            <input
+              pInputText
+              type="time"
+              id="exc-close"
+              [ngModel]="editingClose()"
+              (ngModelChange)="editingClose.set($event)"
+              class="w-full"
+            />
+            <label for="exc-close">{{ t('myLocation.calendar.closeTime') }}</label>
+          </p-floatlabel>
+        </div>
+      }
+      <p-floatlabel variant="on">
+        <input
+          pInputText
+          id="exc-note"
+          [ngModel]="editingNote()"
+          (ngModelChange)="editingNote.set($event)"
+          class="w-full"
+        />
+        <label for="exc-note">{{ t('myLocation.calendar.note') }}</label>
+      </p-floatlabel>
+      <div class="flex justify-between pt-2">
+        <div>
+          @if (isException()) {
+            <p-button
+              [label]="t('myLocation.calendar.removeException')"
+              severity="danger"
+              [text]="true"
+              icon="pi pi-trash"
+              (onClick)="onRemoveException()"
+            />
+          }
+        </div>
+        <div class="flex gap-2">
+          <p-button
+            [label]="t('myLocation.calendar.cancel')"
+            severity="secondary"
+            (onClick)="dialogVisible.set(false)"
+          />
+          <p-button
+            [label]="t('myLocation.calendar.saveException')"
+            icon="pi pi-check"
+            (onClick)="onSaveException()"
+          />
+        </div>
+      </div>
+    </div>
+  </p-dialog>
+  <p-toast />
+</div>
