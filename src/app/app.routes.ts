@@ -51,6 +51,12 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'new-workout',
+        canActivate: [locationMemberGuard],
+        loadChildren: () =>
+          import('./domains/workout/workout.routes').then((m) => m.workoutRoutes),
+      },
+      {
         path: 'my-location',
         canActivate: [locationMemberGuard],
         loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationDetailsRoutes),

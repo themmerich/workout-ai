@@ -32,7 +32,34 @@
     "myMembers": "Members",
     "myEquipment": "Equipment",
     "myCalendar": "Schedule",
+    "newWorkout": "New Workout",
     "settings": "Settings"
+  },
+  "workout": {
+    "title": "New Workout",
+    "date": "Date",
+    "time": "Time",
+    "duration": "Duration (min)",
+    "location": "Location",
+    "outdoor": "Outdoor",
+    "exercises": "Exercises",
+    "addExercise": "Add Exercise",
+    "removeExercise": "Remove Exercise",
+    "exerciseGroup": "Exercises",
+    "comboGroup": "Combos",
+    "selectExercise": "Select exercise",
+    "sets": "Sets",
+    "addSet": "Add Set",
+    "removeSet": "Remove Set",
+    "reps": "Reps",
+    "weight": "Weight (kg)",
+    "save": "Save Workout",
+    "saveSuccess": "Workout saved successfully",
+    "validation": {
+      "required": "This field is required",
+      "minOneExercise": "At least one exercise is required",
+      "minOneSet": "At least one set is required"
+    }
   },
   "myLocation": {
     "details": {

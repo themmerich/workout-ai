@@ -1,0 +1,177 @@
+<div *transloco="let t" class="flex flex-col gap-4 overflow-y-auto h-full">
+  <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 shrink-0">{{ t('workout.title') }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+    <!-- Metadata -->
+    <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div>
+          <p-floatlabel variant="on">
+            <p-datepicker
+              formControlName="date"
+              inputId="wo-date"
+              styleClass="w-full"
+              dateFormat="dd.mm.yy"
+              appendTo="body"
+            />
+            <label for="wo-date">{{ t('workout.date') }} *</label>
+          </p-floatlabel>
+        </div>
+        <div>
+          <p-floatlabel variant="on">
+            <input pInputText id="wo-time" formControlName="time" class="w-full" placeholder="HH:mm" />
+            <label for="wo-time">{{ t('workout.time') }}</label>
+          </p-floatlabel>
+        </div>
+        <div>
+          <p-floatlabel variant="on">
+            <p-inputnumber
+              formControlName="durationMinutes"
+              inputId="wo-duration"
+              [min]="1"
+              styleClass="w-full"
+              inputStyleClass="w-full"
+              suffix=" min"
+            />
+            <label for="wo-duration">{{ t('workout.duration') }}</label>
+          </p-floatlabel>
+        </div>
+        <div>
+          <p-floatlabel variant="on">
+            <p-select
+              formControlName="locationId"
+              [options]="locationOptions()"
+              optionLabel="label"
+              optionValue="value"
+              inputId="wo-location"
+              appendTo="body"
+              styleClass="w-full"
+            />
+            <label for="wo-location">{{ t('workout.location') }}</label>
+          </p-floatlabel>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercises -->
+    <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('workout.exercises') }}</span>
+        <p-button
+          [label]="t('workout.addExercise')"
+          icon="pi pi-plus"
+          severity="secondary"
+          size="small"
+          (onClick)="addExercise()"
+        />
+      </div>
+
+      @if (exercisesArray.length === 0) {
+        <p class="text-surface-400 text-sm italic">{{ t('workout.validation.minOneExercise') }}</p>
+      }
+
+      <div formArrayName="exercises" class="flex flex-col gap-4">
+        @for (exerciseCtrl of exercisesArray.controls; track exerciseCtrl; let ei = $index) {
+          <div [formGroupName]="ei" class="rounded-lg border border-surface-200 dark:border-surface-600 p-4">
+            <div class="flex items-start gap-2 mb-3">
+              <div class="flex-1">
+                <p-floatlabel variant="on">
+                  <p-select
+                    formControlName="selection"
+                    [options]="exerciseOptions()"
+                    optionLabel="label"
+                    optionValue="value"
+                    optionGroupLabel="label"
+                    optionGroupChildren="items"
+                    [group]="true"
+                    [inputId]="'wo-exercise-' + ei"
+                    appendTo="body"
+                    styleClass="w-full"
+                    [filter]="true"
+                    filterBy="label"
+                  />
+                  <label [for]="'wo-exercise-' + ei">{{ t('workout.selectExercise') }} *</label>
+                </p-floatlabel>
+              </div>
+              <p-button
+                icon="pi pi-trash"
+                severity="danger"
+                [text]="true"
+                [rounded]="true"
+                (onClick)="removeExercise(ei)"
+                [ariaLabel]="t('workout.removeExercise')"
+              />
+            </div>
+
+            <!-- Sets -->
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-medium text-surface-500 dark:text-surface-400">{{ t('workout.sets') }}</span>
+              <p-button
+                [label]="t('workout.addSet')"
+                icon="pi pi-plus"
+                severity="secondary"
+                [text]="true"
+                size="small"
+                (onClick)="addSet(ei)"
+              />
+            </div>
+            <div formArrayName="sets" class="flex flex-col gap-2">
+              @for (setCtrl of getSetsArray(ei).controls; track setCtrl; let si = $index) {
+                <div [formGroupName]="si" class="flex items-center gap-2">
+                  <span class="text-xs text-surface-400 w-6 text-center shrink-0">{{ si + 1 }}.</span>
+                  <div class="w-32">
+                    <p-floatlabel variant="on">
+                      <p-inputnumber
+                        formControlName="reps"
+                        [inputId]="'wo-reps-' + ei + '-' + si"
+                        [min]="1"
+                        styleClass="w-full"
+                        inputStyleClass="w-full"
+                      />
+                      <label [for]="'wo-reps-' + ei + '-' + si">{{ t('workout.reps') }} *</label>
+                    </p-floatlabel>
+                  </div>
+                  <div class="w-40">
+                    <p-floatlabel variant="on">
+                      <p-inputnumber
+                        formControlName="weightKg"
+                        [inputId]="'wo-weight-' + ei + '-' + si"
+                        [min]="0"
+                        styleClass="w-full"
+                        inputStyleClass="w-full"
+                        suffix=" kg"
+                      />
+                      <label [for]="'wo-weight-' + ei + '-' + si">{{ t('workout.weight') }}</label>
+                    </p-floatlabel>
+                  </div>
+                  <p-button
+                    icon="pi pi-times"
+                    severity="danger"
+                    [text]="true"
+                    [rounded]="true"
+                    size="small"
+                    (onClick)="removeSet(ei, si)"
+                    [ariaLabel]="t('workout.removeSet')"
+                    [disabled]="getSetsArray(ei).length <= 1"
+                  />
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Save -->
+    <div class="flex justify-end">
+      <p-button
+        [label]="t('workout.save')"
+        icon="pi pi-check"
+        type="submit"
+        [disabled]="form.invalid || !form.dirty || exercisesArray.length === 0"
+      />
+    </div>
+  </form>
+
+  <p-toast />
+</div>
