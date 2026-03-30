@@ -8,6 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { emailValidator } from '../../../shared/utils/email.validator';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
@@ -50,8 +51,9 @@ export class UserDialogComponent {
 
   protected readonly form = this.fb.nonNullable.group({
     username: ['', Validators.required],
-    displayName: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    email: ['', [Validators.required, emailValidator()]],
     password: [''],
   });
 
@@ -61,7 +63,8 @@ export class UserDialogComponent {
       if (userData) {
         this.form.patchValue({
           username: userData.username,
-          displayName: userData.displayName,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
           email: userData.email,
           password: userData.password ?? '',
         });
@@ -99,7 +102,8 @@ export class UserDialogComponent {
       const role = this.selectedRole();
       const result = {
         username: formValue.username,
-        displayName: formValue.displayName,
+        firstName: formValue.firstName,
+        lastName: formValue.lastName,
         email: formValue.email,
         role,
         password: role === 'admin' ? formValue.password : undefined,

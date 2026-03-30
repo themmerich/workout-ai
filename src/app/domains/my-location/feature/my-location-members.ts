@@ -49,7 +49,7 @@ export default class MyLocationMembersComponent {
       const u = this.userService.getById(m.userId);
       return {
         id: m.userId,
-        userName: u?.displayName ?? m.userId,
+        userName: u ? `${u.firstName} ${u.lastName}` : m.userId,
         userEmail: u?.email ?? '',
         role: m.role,
         password: m.password,
@@ -59,7 +59,7 @@ export default class MyLocationMembersComponent {
 
   protected readonly userOptions = computed(() =>
     this.userService.users().map((u) => ({
-      label: u.displayName,
+      label: `${u.firstName} ${u.lastName}`,
       value: u.id,
     })),
   );

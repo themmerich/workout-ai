@@ -109,7 +109,15 @@
           <div class="flex gap-4">
             <div class="flex-1">
               <p-floatlabel variant="on">
-                <input pInputText id="loc-country" formControlName="country" class="w-full" />
+                <p-select
+                  formControlName="country"
+                  [options]="countries"
+                  optionLabel="name"
+                  optionValue="code"
+                  inputId="loc-country"
+                  appendTo="body"
+                  styleClass="w-full"
+                />
                 <label for="loc-country">{{ t('location.country') }}</label>
               </p-floatlabel>
             </div>

@@ -3,7 +3,8 @@ export type UserRole = 'admin' | 'user';
 export interface AppUser {
   id: string;
   username: string;
-  displayName: string;
+  firstName: string;
+  lastName: string;
   email: string;
   role: UserRole;
   avatarUrl: string;
