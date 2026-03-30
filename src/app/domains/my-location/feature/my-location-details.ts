@@ -35,6 +35,8 @@ export default class MyLocationDetailsComponent {
   protected readonly openingHours = signal<OpeningHour[]>(defaultOpeningHours());
   protected hoursDirty = signal(false);
 
+  protected readonly isOwner = this.authService.isOwner;
+
   protected readonly location = computed(() => {
     const user = this.authService.currentUser();
     return user?.locationId ? this.locationService.getById(user.locationId) ?? null : null;
@@ -72,6 +74,10 @@ export default class MyLocationDetailsComponent {
 
   protected onHoursChange(): void {
     this.hoursDirty.set(true);
+  }
+
+  protected getBundeslandName(code: string): string {
+    return BUNDESLAENDER.find((b) => b.code === code)?.name ?? code;
   }
 
   protected onLogoColorChange(color: string): void {

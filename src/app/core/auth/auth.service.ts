@@ -14,6 +14,7 @@ export class AuthService {
   readonly isLoggedIn = computed(() => this.currentUser() !== null);
   readonly isAdmin = computed(() => this.currentUser()?.role === 'admin');
   readonly isOwner = computed(() => this.currentUser()?.locationRole === 'owner');
+  readonly hasLocation = computed(() => this.currentUser()?.locationId !== null && this.currentUser()?.locationId !== undefined);
 
   login(username: string, password: string, locationId: string | null): string | null {
     const user = this.userService.getAll().find((u) => u.username === username);
