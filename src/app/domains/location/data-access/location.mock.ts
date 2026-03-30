@@ -129,4 +129,26 @@ export const MOCK_LOCATIONS: Location[] = [
       { userId: '10', role: 'owner', password: 'kbauer' },
     ],
   },
+  {
+    id: '11', name: 'Körperschmiede Schweinfurt', logo: { color: '#eab308', imageUrl: null }, openingHours: defaultOpeningHours(), calendarExceptions: [], bundesland: 'BY', street: 'Schultesstraße 15', zip: '97421', city: 'Schweinfurt',
+    country: 'Deutschland', phone: '+49 9721 8877665', email: 'info@koerperschmiede-sw.de', website: 'https://www.koerperschmiede-sw.de',
+    equipment: [
+      { equipmentId: '1', quantity: 8, weight: 5 }, { equipmentId: '1', quantity: 8, weight: 10 }, { equipmentId: '1', quantity: 8, weight: 15 },
+      { equipmentId: '1', quantity: 6, weight: 20 }, { equipmentId: '1', quantity: 4, weight: 25 }, { equipmentId: '1', quantity: 4, weight: 30 },
+      { equipmentId: '7', quantity: 4, weight: 20 }, { equipmentId: '8', quantity: 2, weight: 10 },
+      { equipmentId: '9', quantity: 4, weight: null }, { equipmentId: '10', quantity: 2, weight: null }, { equipmentId: '11', quantity: 3, weight: null }, { equipmentId: '12', quantity: 2, weight: null },
+      { equipmentId: '13', quantity: 3, weight: null }, { equipmentId: '14', quantity: 1, weight: null },
+      { equipmentId: '15', quantity: 2, weight: null }, { equipmentId: '16', quantity: 1, weight: null }, { equipmentId: '17', quantity: 2, weight: null }, { equipmentId: '18', quantity: 1, weight: null },
+      { equipmentId: '19', quantity: 6, weight: null }, { equipmentId: '20', quantity: 8, weight: null }, { equipmentId: '21', quantity: 10, weight: null },
+      { equipmentId: '22', quantity: 1, weight: null }, { equipmentId: '23', quantity: 1, weight: null }, { equipmentId: '24', quantity: 6, weight: null },
+    ],
+    members: [
+      { userId: '26', role: 'owner', password: 'themmerich' },
+      { userId: '27', role: 'trainer', password: 'svogt' },
+      { userId: '28', role: 'member', password: 'mstein' },
+      { userId: '29', role: 'member', password: 'jlang' },
+      { userId: '30', role: 'member', password: 'pmaier' },
+      { userId: '31', role: 'member', password: 'hemm' },
+    ],
+  },
 ];

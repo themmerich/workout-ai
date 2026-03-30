@@ -157,6 +157,40 @@
       "removeSuccess": "Ausnahme wurde entfernt"
     }
   },
+  "profile": {
+    "title": "Mein Profil",
+    "personalData": "Persönliche Daten",
+    "displayName": "Anzeigename",
+    "email": "E-Mail",
+    "birthDate": "Geburtsdatum",
+    "height": "Größe",
+    "save": "Speichern",
+    "saveSuccess": "Profil wurde erfolgreich gespeichert",
+    "weightTracking": "Gewichtsverlauf",
+    "weightDate": "Datum",
+    "weightKg": "Gewicht",
+    "currentWeight": "Aktuelles Gewicht",
+    "bmi": "BMI",
+    "bmiCategories": {
+      "underweight": "Untergewicht",
+      "slightlyUnderweight": "Leichtes Untergewicht",
+      "normal": "Normalgewicht",
+      "slightlyOverweight": "Leichtes Übergewicht",
+      "overweight": "Übergewicht",
+      "slightlyObese": "Leichte Adipositas",
+      "obese": "Adipositas"
+    },
+    "bmiTooltip": "Einordnung nach WHO:<br/>< 18,5 → Untergewicht<br/>18,5 – 24,9 → Normalgewicht<br/>25 – 29,9 → Übergewicht<br/>≥ 30 → Adipositas",
+    "addWeight": "Gewicht hinzufügen",
+    "weightAdded": "Gewicht wurde gespeichert",
+    "removeWeight": "Eintrag entfernen",
+    "weightRemoved": "Gewichtseintrag wurde entfernt",
+    "noWeightEntries": "Noch keine Gewichtseinträge vorhanden",
+    "validation": {
+      "required": "Dieses Feld ist erforderlich",
+      "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
+    }
+  },
   "sidebar": {
     "profile": "Profil",
     "signOut": "Abmelden",

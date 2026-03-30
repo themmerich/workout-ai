@@ -77,6 +77,10 @@ export const routes: Routes = [
         loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationCalendarRoutes),
       },
       {
+        path: 'profile',
+        loadComponent: () => import('./domains/user/feature/profile-page'),
+      },
+      {
         path: 'settings',
         canActivate: [adminGuard],
         loadChildren: () => import('./domains/settings/settings.routes').then((m) => m.settingsRoutes),

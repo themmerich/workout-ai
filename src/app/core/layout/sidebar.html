@@ -150,6 +150,8 @@
         <ul class="list-none p-2 m-0 overflow-hidden flex flex-col gap-1">
           <li>
             <a
+              routerLink="/profile"
+              (click)="closeSidebar.emit(); userMenuOpen.set(false)"
               class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
             >
               <i class="pi pi-user text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>

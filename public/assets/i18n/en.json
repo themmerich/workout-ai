@@ -157,6 +157,40 @@
       "removeSuccess": "Exception removed"
     }
   },
+  "profile": {
+    "title": "My Profile",
+    "personalData": "Personal Data",
+    "displayName": "Display Name",
+    "email": "Email",
+    "birthDate": "Date of Birth",
+    "height": "Height",
+    "save": "Save",
+    "saveSuccess": "Profile saved successfully",
+    "weightTracking": "Weight Tracking",
+    "weightDate": "Date",
+    "weightKg": "Weight",
+    "currentWeight": "Current Weight",
+    "bmi": "BMI",
+    "bmiCategories": {
+      "underweight": "Underweight",
+      "slightlyUnderweight": "Slightly Underweight",
+      "normal": "Normal weight",
+      "slightlyOverweight": "Slightly Overweight",
+      "overweight": "Overweight",
+      "slightlyObese": "Mild Obesity",
+      "obese": "Obesity"
+    },
+    "bmiTooltip": "Classification by WHO:<br/>< 18.5 → Underweight<br/>18.5 – 24.9 → Normal weight<br/>25 – 29.9 → Overweight<br/>≥ 30 → Obesity",
+    "addWeight": "Add Weight",
+    "weightAdded": "Weight entry saved",
+    "removeWeight": "Remove entry",
+    "weightRemoved": "Weight entry removed",
+    "noWeightEntries": "No weight entries yet",
+    "validation": {
+      "required": "This field is required",
+      "email": "Please enter a valid email address"
+    }
+  },
   "sidebar": {
     "profile": "Profile",
     "signOut": "Sign Out",
