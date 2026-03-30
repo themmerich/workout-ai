@@ -5,7 +5,7 @@ import { DataTableComponent } from '../../../shared/ui/data-table';
 import { DataTableTranslations, TableColumn } from '../../../shared/ui/data-table.model';
 import { EquipmentService } from '../../equipment/data-access/equipment.service';
 import { ExerciseService } from '../data-access/exercise.service';
-import { Exercise, MUSCLE_GROUPS } from '../model/exercise.model';
+import { Exercise, EXERCISE_TYPES, MUSCLE_GROUPS } from '../model/exercise.model';
 import { ExerciseDialogComponent } from '../ui/exercise-dialog';
 
 @Component({
@@ -38,8 +38,22 @@ export default class ExercisePageComponent {
     })),
   );
 
+  protected readonly exerciseTypeFilterOptions = computed(() =>
+    EXERCISE_TYPES.map((t) => ({
+      label: this.transloco.translate('exercise.types.' + t),
+      value: t,
+    })),
+  );
+
   protected readonly columns = computed<TableColumn[]>(() => [
     { field: 'name', headerKey: 'exercise.name' },
+    {
+      field: 'type',
+      headerKey: 'exercise.type',
+      filterMode: 'select',
+      filterPlaceholderKey: 'exercise.filterByType',
+      filterOptions: this.exerciseTypeFilterOptions(),
+    },
     {
       field: 'muscleGroups',
       headerKey: 'exercise.muscleGroups',

@@ -13,7 +13,9 @@
     (itemDelete)="onDelete($event)"
   >
     <ng-template #cell let-item let-field="field">
-      @if (field === 'muscleGroups') {
+      @if (field === 'type') {
+        <p-tag [value]="t('exercise.types.' + item[field])" [severity]="item[field] === 'cardio' ? 'warn' : 'info'" />
+      } @else if (field === 'muscleGroups') {
         <div class="flex flex-wrap gap-1">
           @for (muscle of item[field]; track muscle) {
             <p-tag [value]="t('exercise.muscles.' + muscle)" severity="info" />

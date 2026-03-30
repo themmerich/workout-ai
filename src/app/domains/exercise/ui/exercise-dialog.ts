@@ -14,8 +14,9 @@ import { Dialog } from 'primeng/dialog';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
+import { Select } from 'primeng/select';
 import { EquipmentService } from '../../equipment/data-access/equipment.service';
-import { Exercise, MuscleGroup, MUSCLE_GROUPS } from '../model/exercise.model';
+import { Exercise, ExerciseType, EXERCISE_TYPES, MuscleGroup, MUSCLE_GROUPS } from '../model/exercise.model';
 
 interface MuscleGroupOption {
   label: string;
@@ -32,6 +33,7 @@ interface MuscleGroupOption {
     FloatLabel,
     InputText,
     MultiSelect,
+    Select,
     ButtonModule,
   ],
   templateUrl: './exercise-dialog.html',
@@ -45,6 +47,13 @@ export class ExerciseDialogComponent {
   readonly exercise = input<Exercise | null>(null);
   readonly exerciseSaved = output<Exercise | Omit<Exercise, 'id'>>();
   readonly dialogClosed = output<void>();
+
+  protected readonly exerciseTypeOptions = computed(() =>
+    EXERCISE_TYPES.map((t) => ({
+      label: this.transloco.translate('exercise.types.' + t),
+      value: t,
+    })),
+  );
 
   protected readonly muscleGroupOptions = computed<MuscleGroupOption[]>(() =>
     MUSCLE_GROUPS.map((mg) => ({
@@ -62,6 +71,7 @@ export class ExerciseDialogComponent {
 
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],
+    type: ['strength' as ExerciseType, Validators.required],
     muscleGroups: [[] as MuscleGroup[], Validators.required],
     equipmentIds: [[] as string[]],
   });
@@ -72,7 +82,7 @@ export class ExerciseDialogComponent {
       if (data) {
         this.form.patchValue(data);
       } else {
-        this.form.reset({ muscleGroups: [], equipmentIds: [] });
+        this.form.reset({ type: 'strength', muscleGroups: [], equipmentIds: [] });
       }
     });
   }
@@ -86,7 +96,7 @@ export class ExerciseDialogComponent {
       } else {
         this.exerciseSaved.emit(formValue);
       }
-      this.form.reset({ muscleGroups: [] });
+      this.form.reset({ type: 'strength', muscleGroups: [] });
     }
   }
 }

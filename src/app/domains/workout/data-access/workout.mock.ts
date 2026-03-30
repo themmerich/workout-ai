@@ -85,4 +85,25 @@ export const MOCK_WORKOUTS: Workout[] = [
       },
     ],
   },
+  {
+    id: '4',
+    userId: '2',
+    date: '2026-03-30',
+    time: '07:00',
+    durationMinutes: 40,
+    locationId: null,
+    exercises: [
+      {
+        exerciseId: '29',
+        orderIndex: 0,
+        sets: [],
+        segments: [
+          { durationMinutes: 5, speedKmh: 6, heartRateBpm: 100, caloriesBurned: 40 },
+          { durationMinutes: 20, speedKmh: 8, heartRateBpm: 140, caloriesBurned: 200 },
+          { durationMinutes: 10, speedKmh: 10, heartRateBpm: 160, caloriesBurned: 150 },
+          { durationMinutes: 5, speedKmh: 6, heartRateBpm: 110, caloriesBurned: 40 },
+        ],
+      },
+    ],
+  },
 ];

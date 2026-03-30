@@ -14,9 +14,14 @@ export type MuscleGroup =
   | 'traps'
   | 'lats';
 
+export type ExerciseType = 'strength' | 'cardio';
+
+export const EXERCISE_TYPES: ExerciseType[] = ['strength', 'cardio'];
+
 export interface Exercise {
   id: string;
   name: string;
+  type: ExerciseType;
   muscleGroups: MuscleGroup[];
   equipmentIds: string[];
 }
