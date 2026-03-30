@@ -12,6 +12,7 @@
     <full-calendar [options]="calendarOptions()" />
   </div>
 
+  @if (isOwner()) {
   <p-dialog
     [header]="editingDate()"
     [visible]="dialogVisible()"
@@ -94,4 +95,5 @@
     </div>
   </p-dialog>
   <p-toast />
+  }
 </div>

@@ -10,53 +10,57 @@
             [size]="80"
           />
           <div class="flex-1 flex flex-col gap-3">
-            <p-floatlabel variant="on">
-              <input pInputText id="ml-name" formControlName="name" class="w-full text-xl" />
-              <label for="ml-name">{{ t('location.name') }} *</label>
-            </p-floatlabel>
-            <div class="flex items-center gap-3">
-              <div class="flex gap-1">
-                @for (color of logoColors; track color) {
-                  <button
-                    type="button"
-                    class="w-6 h-6 rounded-full cursor-pointer border-2 transition-all"
-                    [style.background-color]="color"
-                    [class.border-white]="logoColor() === color"
-                    [class.border-transparent]="logoColor() !== color"
-                    [class.scale-110]="logoColor() === color"
-                    (click)="onLogoColorChange(color)"
-                    [attr.aria-label]="color"
-                  ></button>
-                }
-              </div>
-              <div class="h-4 w-px bg-surface-300 dark:bg-surface-600"></div>
-              <p-button
-                [label]="t('myLocation.details.uploadImage')"
-                icon="pi pi-upload"
-                size="small"
-                severity="secondary"
-                [text]="true"
-                (onClick)="logoFileInput.click()"
-              />
-              @if (logoImageUrl()) {
+            @if (isOwner()) {
+              <p-floatlabel variant="on">
+                <input pInputText id="ml-name" formControlName="name" class="w-full text-xl" />
+                <label for="ml-name">{{ t('location.name') }} *</label>
+              </p-floatlabel>
+              <div class="flex items-center gap-3">
+                <div class="flex gap-1">
+                  @for (color of logoColors; track color) {
+                    <button
+                      type="button"
+                      class="w-6 h-6 rounded-full cursor-pointer border-2 transition-all"
+                      [style.background-color]="color"
+                      [class.border-white]="logoColor() === color"
+                      [class.border-transparent]="logoColor() !== color"
+                      [class.scale-110]="logoColor() === color"
+                      (click)="onLogoColorChange(color)"
+                      [attr.aria-label]="color"
+                    ></button>
+                  }
+                </div>
+                <div class="h-4 w-px bg-surface-300 dark:bg-surface-600"></div>
                 <p-button
-                  icon="pi pi-times"
+                  [label]="t('myLocation.details.uploadImage')"
+                  icon="pi pi-upload"
                   size="small"
-                  severity="danger"
+                  severity="secondary"
                   [text]="true"
-                  [rounded]="true"
-                  (onClick)="onLogoImageRemove()"
-                  [attr.aria-label]="t('myLocation.details.removeImage')"
+                  (onClick)="logoFileInput.click()"
                 />
-              }
-              <input
-                #logoFileInput
-                type="file"
-                accept="image/*"
-                class="hidden"
-                (change)="onLogoFileSelected($event)"
-              />
-            </div>
+                @if (logoImageUrl()) {
+                  <p-button
+                    icon="pi pi-times"
+                    size="small"
+                    severity="danger"
+                    [text]="true"
+                    [rounded]="true"
+                    (onClick)="onLogoImageRemove()"
+                    [attr.aria-label]="t('myLocation.details.removeImage')"
+                  />
+                }
+                <input
+                  #logoFileInput
+                  type="file"
+                  accept="image/*"
+                  class="hidden"
+                  (change)="onLogoFileSelected($event)"
+                />
+              </div>
+            } @else {
+              <span class="text-xl font-semibold text-surface-900 dark:text-surface-0">{{ location()!.name }}</span>
+            }
           </div>
         </div>
       </div>
@@ -68,49 +72,62 @@
             <i class="pi pi-map-marker text-base text-surface-500 dark:text-surface-400"></i>
             <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('myLocation.details.address') }}</span>
           </div>
-          <div class="flex flex-col gap-4">
-            <p-floatlabel variant="on">
-              <input pInputText id="ml-street" formControlName="street" class="w-full" />
-              <label for="ml-street">{{ t('location.street') }} *</label>
-            </p-floatlabel>
-            <div class="flex gap-3">
-              <div class="w-1/3">
-                <p-floatlabel variant="on">
-                  <input pInputText id="ml-zip" formControlName="zip" class="w-full" />
-                  <label for="ml-zip">{{ t('location.zip') }} *</label>
-                </p-floatlabel>
+          @if (isOwner()) {
+            <div class="flex flex-col gap-4">
+              <p-floatlabel variant="on">
+                <input pInputText id="ml-street" formControlName="street" class="w-full" />
+                <label for="ml-street">{{ t('location.street') }} *</label>
+              </p-floatlabel>
+              <div class="flex gap-3">
+                <div class="w-1/3">
+                  <p-floatlabel variant="on">
+                    <input pInputText id="ml-zip" formControlName="zip" class="w-full" />
+                    <label for="ml-zip">{{ t('location.zip') }} *</label>
+                  </p-floatlabel>
+                </div>
+                <div class="flex-1">
+                  <p-floatlabel variant="on">
+                    <input pInputText id="ml-city" formControlName="city" class="w-full" />
+                    <label for="ml-city">{{ t('location.city') }} *</label>
+                  </p-floatlabel>
+                </div>
               </div>
-              <div class="flex-1">
-                <p-floatlabel variant="on">
-                  <input pInputText id="ml-city" formControlName="city" class="w-full" />
-                  <label for="ml-city">{{ t('location.city') }} *</label>
-                </p-floatlabel>
+              <div class="flex gap-3">
+                <div class="flex-1">
+                  <p-floatlabel variant="on">
+                    <input pInputText id="ml-country" formControlName="country" class="w-full" />
+                    <label for="ml-country">{{ t('location.country') }}</label>
+                  </p-floatlabel>
+                </div>
+                <div class="flex-1">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      formControlName="bundesland"
+                      [options]="bundeslaender"
+                      optionLabel="name"
+                      optionValue="code"
+                      inputId="ml-bundesland"
+                      appendTo="body"
+                      styleClass="w-full"
+                      [showClear]="true"
+                    />
+                    <label for="ml-bundesland">{{ t('location.bundesland') }}</label>
+                  </p-floatlabel>
+                </div>
               </div>
             </div>
-            <div class="flex gap-3">
-              <div class="flex-1">
-                <p-floatlabel variant="on">
-                  <input pInputText id="ml-country" formControlName="country" class="w-full" />
-                  <label for="ml-country">{{ t('location.country') }}</label>
-                </p-floatlabel>
-              </div>
-              <div class="flex-1">
-                <p-floatlabel variant="on">
-                  <p-select
-                    formControlName="bundesland"
-                    [options]="bundeslaender"
-                    optionLabel="name"
-                    optionValue="code"
-                    inputId="ml-bundesland"
-                    appendTo="body"
-                    styleClass="w-full"
-                    [showClear]="true"
-                  />
-                  <label for="ml-bundesland">{{ t('location.bundesland') }}</label>
-                </p-floatlabel>
-              </div>
+          } @else {
+            <div class="flex flex-col gap-2 text-sm text-surface-700 dark:text-surface-300">
+              <span>{{ location()!.street }}</span>
+              <span>{{ location()!.zip }} {{ location()!.city }}</span>
+              @if (location()!.country) {
+                <span>{{ location()!.country }}</span>
+              }
+              @if (location()!.bundesland) {
+                <span>{{ getBundeslandName(location()!.bundesland) }}</span>
+              }
             </div>
-          </div>
+          }
         </div>
 
         <!-- Contact -->
@@ -119,20 +136,46 @@
             <i class="pi pi-envelope text-base text-surface-500 dark:text-surface-400"></i>
             <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('myLocation.details.contact') }}</span>
           </div>
-          <div class="flex flex-col gap-4">
-            <p-floatlabel variant="on">
-              <input pInputText id="ml-phone" formControlName="phone" class="w-full" />
-              <label for="ml-phone">{{ t('location.phone') }}</label>
-            </p-floatlabel>
-            <p-floatlabel variant="on">
-              <input pInputText id="ml-email" formControlName="email" type="email" class="w-full" />
-              <label for="ml-email">{{ t('location.email') }}</label>
-            </p-floatlabel>
-            <p-floatlabel variant="on">
-              <input pInputText id="ml-website" formControlName="website" class="w-full" />
-              <label for="ml-website">{{ t('location.website') }}</label>
-            </p-floatlabel>
-          </div>
+          @if (isOwner()) {
+            <div class="flex flex-col gap-4">
+              <p-floatlabel variant="on">
+                <input pInputText id="ml-phone" formControlName="phone" class="w-full" />
+                <label for="ml-phone">{{ t('location.phone') }}</label>
+              </p-floatlabel>
+              <p-floatlabel variant="on">
+                <input pInputText id="ml-email" formControlName="email" type="email" class="w-full" />
+                <label for="ml-email">{{ t('location.email') }}</label>
+              </p-floatlabel>
+              <p-floatlabel variant="on">
+                <input pInputText id="ml-website" formControlName="website" class="w-full" />
+                <label for="ml-website">{{ t('location.website') }}</label>
+              </p-floatlabel>
+            </div>
+          } @else {
+            <div class="flex flex-col gap-3 text-sm text-surface-700 dark:text-surface-300">
+              @if (location()!.phone) {
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-phone text-xs text-surface-400"></i>
+                  <span>{{ location()!.phone }}</span>
+                </div>
+              }
+              @if (location()!.email) {
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-envelope text-xs text-surface-400"></i>
+                  <span>{{ location()!.email }}</span>
+                </div>
+              }
+              @if (location()!.website) {
+                <div class="flex items-center gap-2">
+                  <i class="pi pi-globe text-xs text-surface-400"></i>
+                  <span>{{ location()!.website }}</span>
+                </div>
+              }
+              @if (!location()!.phone && !location()!.email && !location()!.website) {
+                <span class="text-surface-400 italic">—</span>
+              }
+            </div>
+          }
         </div>
       </div>
 
@@ -146,49 +189,61 @@
           @for (hour of openingHours(); track hour.day; let i = $index) {
             <div class="flex items-center gap-3">
               <span class="w-24 text-sm text-surface-700 dark:text-surface-300 shrink-0">{{ t('myLocation.details.days.' + hour.day) }}</span>
-              <p-checkbox
-                [ngModel]="!hour.closed"
-                (ngModelChange)="hour.closed = !$event; onHoursChange()"
-                [ngModelOptions]="{ standalone: true }"
-                [binary]="true"
-                inputId="day-{{ hour.day }}"
-              />
-              @if (!hour.closed) {
-                <input
-                  pInputText
-                  type="time"
-                  [ngModel]="hour.open"
-                  (ngModelChange)="hour.open = $event; onHoursChange()"
+              @if (isOwner()) {
+                <p-checkbox
+                  [ngModel]="!hour.closed"
+                  (ngModelChange)="hour.closed = !$event; onHoursChange()"
                   [ngModelOptions]="{ standalone: true }"
-                  class="w-28 text-sm"
+                  [binary]="true"
+                  inputId="day-{{ hour.day }}"
                 />
-                <span class="text-surface-500">—</span>
-                <input
-                  pInputText
-                  type="time"
-                  [ngModel]="hour.close"
-                  (ngModelChange)="hour.close = $event; onHoursChange()"
-                  [ngModelOptions]="{ standalone: true }"
-                  class="w-28 text-sm"
-                />
+                @if (!hour.closed) {
+                  <input
+                    pInputText
+                    type="time"
+                    [ngModel]="hour.open"
+                    (ngModelChange)="hour.open = $event; onHoursChange()"
+                    [ngModelOptions]="{ standalone: true }"
+                    class="w-28 text-sm"
+                  />
+                  <span class="text-surface-500">—</span>
+                  <input
+                    pInputText
+                    type="time"
+                    [ngModel]="hour.close"
+                    (ngModelChange)="hour.close = $event; onHoursChange()"
+                    [ngModelOptions]="{ standalone: true }"
+                    class="w-28 text-sm"
+                  />
+                } @else {
+                  <span class="text-surface-400 text-sm italic">{{ t('myLocation.details.closed') }}</span>
+                }
               } @else {
-                <span class="text-surface-400 text-sm italic">{{ t('myLocation.details.closed') }}</span>
+                @if (!hour.closed) {
+                  <span class="text-sm text-surface-700 dark:text-surface-300">{{ hour.open }} — {{ hour.close }}</span>
+                } @else {
+                  <span class="text-surface-400 text-sm italic">{{ t('myLocation.details.closed') }}</span>
+                }
               }
             </div>
           }
         </div>
       </div>
 
-      <!-- Save -->
-      <div class="flex justify-end">
-        <p-button
-          [label]="t('myLocation.details.save')"
-          icon="pi pi-check"
-          type="submit"
-          [disabled]="form.invalid || !isDirty"
-        />
-      </div>
+      <!-- Save (Owner only) -->
+      @if (isOwner()) {
+        <div class="flex justify-end">
+          <p-button
+            [label]="t('myLocation.details.save')"
+            icon="pi pi-check"
+            type="submit"
+            [disabled]="form.invalid || !isDirty"
+          />
+        </div>
+      }
     </form>
-    <p-toast />
+    @if (isOwner()) {
+      <p-toast />
+    }
   }
 </div>

@@ -43,6 +43,8 @@ export default class MyLocationCalendarComponent {
   protected readonly editingNote = signal('');
   protected readonly isException = signal(false);
 
+  protected readonly isOwner = this.authService.isOwner;
+
   private readonly location = computed(() => {
     const user = this.authService.currentUser();
     return user?.locationId ? this.locationService.getById(user.locationId) ?? null : null;
@@ -157,11 +159,11 @@ export default class MyLocationCalendarComponent {
     locale: this.transloco.getActiveLang(),
     firstDay: 1,
     events: this.calendarEvents(),
-    dateClick: (info: DateClickArg) => this.onDateClick(info),
-    eventClick: (info: EventClickArg) => this.onEventClick(info),
+    dateClick: this.isOwner() ? (info: DateClickArg) => this.onDateClick(info) : undefined,
+    eventClick: this.isOwner() ? (info: EventClickArg) => this.onEventClick(info) : undefined,
+    selectable: this.isOwner(),
     height: '100%',
     editable: false,
-    selectable: true,
     buttonText: this.transloco.getActiveLang() === 'de'
       ? { today: 'Heute', month: 'Monat', week: 'Woche' }
       : { today: 'Today', month: 'Month', week: 'Week' },

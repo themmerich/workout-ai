@@ -37,7 +37,7 @@
         <i class="pi pi-home text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
         <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.dashboard') }}</span>
       </a>
-      @if (authService.isOwner()) {
+      @if (authService.hasLocation()) {
         <a
           routerLink="/my-location"
           routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
@@ -47,6 +47,8 @@
           <i class="pi pi-building text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
           <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myLocation') }}</span>
         </a>
+      }
+      @if (authService.isOwner()) {
         <a
           routerLink="/my-members"
           routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
@@ -65,6 +67,8 @@
           <i class="pi pi-wrench text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
           <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myEquipment') }}</span>
         </a>
+      }
+      @if (authService.hasLocation()) {
         <a
           routerLink="/my-calendar"
           routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"

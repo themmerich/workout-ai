@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { adminGuard } from './core/auth/admin.guard';
 import { authGuard } from './core/auth/auth.guard';
+import { locationMemberGuard } from './core/auth/location-member.guard';
 import { ownerGuard } from './core/auth/owner.guard';
 import { LayoutComponent } from './core/layout/layout';
 
@@ -43,7 +44,7 @@ export const routes: Routes = [
       },
       {
         path: 'my-location',
-        canActivate: [ownerGuard],
+        canActivate: [locationMemberGuard],
         loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationDetailsRoutes),
       },
       {
@@ -58,7 +59,7 @@ export const routes: Routes = [
       },
       {
         path: 'my-calendar',
-        canActivate: [ownerGuard],
+        canActivate: [locationMemberGuard],
         loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationCalendarRoutes),
       },
       {
