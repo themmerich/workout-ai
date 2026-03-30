@@ -29,7 +29,8 @@ export class AuthService {
       this.currentUser.set({
         id: user.id,
         username: user.username,
-        displayName: user.displayName,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
         role: 'admin',
         avatarUrl: '',
@@ -61,7 +62,8 @@ export class AuthService {
     this.currentUser.set({
       id: user.id,
       username: user.username,
-      displayName: user.displayName,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       role: 'user',
       avatarUrl: '',

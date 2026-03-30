@@ -2,145 +2,265 @@
   <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 shrink-0">{{ t('profile.title') }}</h1>
 
   @if (userProfile()) {
-    <!-- Personal Data -->
-    <form [formGroup]="form" (ngSubmit)="onSaveProfile()" class="flex flex-col gap-4">
-      <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
-        <div class="flex items-center gap-2 mb-4">
-          <i class="pi pi-user text-base text-surface-500 dark:text-surface-400"></i>
-          <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('profile.personalData') }}</span>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <p-floatlabel variant="on">
-              <input pInputText id="prof-displayName" formControlName="displayName" class="w-full" />
-              <label for="prof-displayName">{{ t('profile.displayName') }} *</label>
-            </p-floatlabel>
-            @if (form.controls.displayName.touched && form.controls.displayName.errors?.['required']) {
-              <small class="text-red-500">{{ t('profile.validation.required') }}</small>
-            }
-          </div>
-          <div>
-            <p-floatlabel variant="on">
-              <input pInputText id="prof-email" formControlName="email" type="email" class="w-full" />
-              <label for="prof-email">{{ t('profile.email') }} *</label>
-            </p-floatlabel>
-            @if (form.controls.email.touched && form.controls.email.errors?.['email']) {
-              <small class="text-red-500">{{ t('profile.validation.email') }}</small>
-            }
-          </div>
-          <div>
-            <p-floatlabel variant="on">
-              <p-datepicker
-                formControlName="birthDate"
-                inputId="prof-birthDate"
-                styleClass="w-full"
-                dateFormat="dd.mm.yy"
-                appendTo="body"
-              />
-              <label for="prof-birthDate">{{ t('profile.birthDate') }}</label>
-            </p-floatlabel>
-          </div>
-          <div>
-            <p-floatlabel variant="on">
-              <p-inputnumber
-                formControlName="heightCm"
-                inputId="prof-height"
-                [min]="50"
-                [max]="250"
-                styleClass="w-full"
-                inputStyleClass="w-full"
-                suffix=" cm"
-              />
-              <label for="prof-height">{{ t('profile.height') }}</label>
-            </p-floatlabel>
-          </div>
-          @if (latestWeight()) {
-            <div>
-              <span class="text-xs text-surface-500 dark:text-surface-400">{{ t('profile.currentWeight') }}</span>
-              <div class="text-base font-semibold text-surface-900 dark:text-surface-0">{{ formatNumber(latestWeight()!.weightKg) }} kg</div>
-            </div>
-            <div>
-              <span class="text-xs text-surface-500 dark:text-surface-400">{{ t('profile.bmi') }}</span>
-              <div class="text-base font-semibold">
-                @if (bmi(); as bmiValue) {
-                  <span [class]="bmiCategory()!.color" [pTooltip]="bmiTooltip()" tooltipPosition="bottom" [escape]="false" tooltipStyleClass="!max-w-80">
-                    {{ formatNumber(bmiValue) }} ({{ t('profile.bmiCategories.' + bmiCategory()!.key) }})
-                  </span>
-                } @else {
-                  <span class="text-surface-400 font-normal">—</span>
-                }
+    <p-tabs value="0" class="flex-1 min-h-0 flex flex-col">
+      <p-tablist>
+        <p-tab value="0">{{ t('profile.tabData') }}</p-tab>
+        <p-tab value="1">{{ t('profile.tabWeight') }}</p-tab>
+      </p-tablist>
+      <p-tabpanels class="flex-1 min-h-0 overflow-y-auto">
+        <!-- Tab: Meine Daten -->
+        <p-tabpanel value="0">
+          <form [formGroup]="form" (ngSubmit)="onSaveProfile()" class="flex flex-col gap-4 pt-2">
+            <!-- Personal -->
+            <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
+              <div class="flex items-center gap-2 mb-4">
+                <i class="pi pi-user text-base text-surface-500 dark:text-surface-400"></i>
+                <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('profile.personalData') }}</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p-floatlabel variant="on">
+                    <p-select
+                      formControlName="salutation"
+                      [options]="salutationOptions()"
+                      optionLabel="label"
+                      optionValue="value"
+                      inputId="prof-salutation"
+                      appendTo="body"
+                      styleClass="w-full"
+                      [showClear]="true"
+                    />
+                    <label for="prof-salutation">{{ t('profile.salutation') }}</label>
+                  </p-floatlabel>
+                </div>
+                <div>
+                  <p-floatlabel variant="on">
+                    <p-select
+                      formControlName="gender"
+                      [options]="genderOptions()"
+                      optionLabel="label"
+                      optionValue="value"
+                      inputId="prof-gender"
+                      appendTo="body"
+                      styleClass="w-full"
+                      [showClear]="true"
+                    />
+                    <label for="prof-gender">{{ t('profile.gender') }}</label>
+                  </p-floatlabel>
+                </div>
+                <div>
+                  <p-floatlabel variant="on">
+                    <input pInputText id="prof-firstName" formControlName="firstName" class="w-full" />
+                    <label for="prof-firstName">{{ t('profile.firstName') }} *</label>
+                  </p-floatlabel>
+                  @if (form.controls.firstName.touched && form.controls.firstName.errors?.['required']) {
+                    <small class="text-red-500">{{ t('profile.validation.required') }}</small>
+                  }
+                </div>
+                <div>
+                  <p-floatlabel variant="on">
+                    <input pInputText id="prof-lastName" formControlName="lastName" class="w-full" />
+                    <label for="prof-lastName">{{ t('profile.lastName') }} *</label>
+                  </p-floatlabel>
+                  @if (form.controls.lastName.touched && form.controls.lastName.errors?.['required']) {
+                    <small class="text-red-500">{{ t('profile.validation.required') }}</small>
+                  }
+                </div>
+                <div>
+                  <p-floatlabel variant="on">
+                    <p-datepicker
+                      formControlName="birthDate"
+                      inputId="prof-birthDate"
+                      styleClass="w-full"
+                      dateFormat="dd.mm.yy"
+                      appendTo="body"
+                      [minDate]="minBirthDate"
+                      [maxDate]="maxBirthDate"
+                      [defaultDate]="defaultBirthDate"
+                    />
+                    <label for="prof-birthDate">{{ t('profile.birthDate') }}</label>
+                  </p-floatlabel>
+                </div>
+                <div>
+                  <p-floatlabel variant="on">
+                    <p-inputnumber
+                      formControlName="heightCm"
+                      inputId="prof-height"
+                      [min]="50"
+                      [max]="250"
+                      styleClass="w-full"
+                      inputStyleClass="w-full"
+                      suffix=" cm"
+                    />
+                    <label for="prof-height">{{ t('profile.height') }}</label>
+                  </p-floatlabel>
+                </div>
               </div>
             </div>
-          }
-        </div>
-      </div>
 
-      <div class="flex justify-end">
-        <p-button
-          [label]="t('profile.save')"
-          icon="pi pi-check"
-          type="submit"
-          [disabled]="form.invalid || !form.dirty"
-        />
-      </div>
-    </form>
+            <!-- Contact -->
+            <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
+              <div class="flex items-center gap-2 mb-4">
+                <i class="pi pi-envelope text-base text-surface-500 dark:text-surface-400"></i>
+                <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('profile.contact') }}</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <p-floatlabel variant="on">
+                    <input pInputText id="prof-email" formControlName="email" type="email" class="w-full" />
+                    <label for="prof-email">{{ t('profile.email') }} *</label>
+                  </p-floatlabel>
+                  @if (form.controls.email.touched && form.controls.email.errors?.['email']) {
+                    <small class="text-red-500">{{ t('profile.validation.email') }}</small>
+                  }
+                </div>
+                <div>
+                  <p-floatlabel variant="on">
+                    <input pInputText id="prof-phone" formControlName="phone" class="w-full" />
+                    <label for="prof-phone">{{ t('profile.phone') }}</label>
+                  </p-floatlabel>
+                </div>
+              </div>
+            </div>
 
-    <!-- Weight Tracking -->
-    <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
-      <div class="flex items-center gap-2 mb-4">
-        <i class="pi pi-chart-line text-base text-surface-500 dark:text-surface-400"></i>
-        <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('profile.weightTracking') }}</span>
-      </div>
+            <!-- Address -->
+            <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
+              <div class="flex items-center gap-2 mb-4">
+                <i class="pi pi-map-marker text-base text-surface-500 dark:text-surface-400"></i>
+                <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('profile.address') }}</span>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2">
+                  <p-floatlabel variant="on">
+                    <input pInputText id="prof-street" formControlName="street" class="w-full" />
+                    <label for="prof-street">{{ t('profile.street') }}</label>
+                  </p-floatlabel>
+                </div>
+                <div>
+                  <p-floatlabel variant="on">
+                    <input pInputText id="prof-zip" formControlName="zip" class="w-full" />
+                    <label for="prof-zip">{{ t('profile.zip') }}</label>
+                  </p-floatlabel>
+                </div>
+                <div>
+                  <p-floatlabel variant="on">
+                    <input pInputText id="prof-city" formControlName="city" class="w-full" />
+                    <label for="prof-city">{{ t('profile.city') }}</label>
+                  </p-floatlabel>
+                </div>
+                <div>
+                  <p-floatlabel variant="on">
+                    <p-select
+                      formControlName="country"
+                      [options]="countries"
+                      optionLabel="name"
+                      optionValue="code"
+                      inputId="prof-country"
+                      appendTo="body"
+                      styleClass="w-full"
+                    />
+                    <label for="prof-country">{{ t('profile.country') }}</label>
+                  </p-floatlabel>
+                </div>
+              </div>
+            </div>
 
-      <div class="flex items-end gap-3 mb-4">
-        <div class="w-44">
-          <p-floatlabel variant="on">
-            <p-datepicker
-              [ngModel]="weightDate()"
-              (ngModelChange)="onWeightDateChange($event)"
-              [ngModelOptions]="{ standalone: true }"
-              inputId="prof-weight-date"
-              styleClass="w-full"
-              dateFormat="dd.mm.yy"
-              appendTo="body"
-            />
-            <label for="prof-weight-date">{{ t('profile.weightDate') }}</label>
-          </p-floatlabel>
-        </div>
-        <div class="w-36">
-          <p-floatlabel variant="on">
-            <p-inputnumber
-              [ngModel]="weightKg()"
-              (ngModelChange)="weightKg.set($event)"
-              (onBlur)="onWeightBlur()"
-              [ngModelOptions]="{ standalone: true }"
-              inputId="prof-weight-kg"
-              [min]="20"
-              [max]="300"
-              [maxFractionDigits]="2"
-              styleClass="w-full"
-              inputStyleClass="w-full"
-              suffix=" kg"
-            />
-            <label for="prof-weight-kg">{{ t('profile.weightKg') }}</label>
-          </p-floatlabel>
-        </div>
-        <p-button
-          [icon]="hasExistingWeight() ? 'pi pi-minus' : 'pi pi-plus'"
-          [severity]="hasExistingWeight() ? 'danger' : 'primary'"
-          (onClick)="onWeightButtonClick()"
-          [ariaLabel]="hasExistingWeight() ? t('profile.removeWeight') : t('profile.addWeight')"
-        />
-      </div>
+            <div class="flex justify-end">
+              <p-button
+                [label]="t('profile.save')"
+                icon="pi pi-check"
+                type="submit"
+                [disabled]="form.invalid || !form.dirty"
+              />
+            </div>
+          </form>
+        </p-tabpanel>
 
-      @if (weightHistory().length > 1) {
-        <div class="h-64">
-          <p-chart type="line" [data]="weightChartData()" [options]="weightChartOptions" height="100%" />
-        </div>
-      } @else if (weightHistory().length === 0) {
-        <p class="text-surface-400 text-sm italic">{{ t('profile.noWeightEntries') }}</p>
-      }
-    </div>
+        <!-- Tab: Gewicht -->
+        <p-tabpanel value="1">
+          <div class="flex flex-col gap-4 pt-2">
+            @if (latestWeight()) {
+              <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <span class="text-xs text-surface-500 dark:text-surface-400">{{ t('profile.currentWeight') }}</span>
+                    <div class="text-base font-semibold text-surface-900 dark:text-surface-0">{{ formatNumber(latestWeight()!.weightKg) }} kg</div>
+                  </div>
+                  <div>
+                    <span class="text-xs text-surface-500 dark:text-surface-400">{{ t('profile.bmi') }}</span>
+                    <div class="text-base font-semibold">
+                      @if (bmi(); as bmiValue) {
+                        <span [class]="bmiCategory()!.color" [pTooltip]="bmiTooltip()" tooltipPosition="bottom" [escape]="false" tooltipStyleClass="!max-w-80">
+                          {{ formatNumber(bmiValue) }} ({{ t('profile.bmiCategories.' + bmiCategory()!.key) }})
+                        </span>
+                      } @else {
+                        <span class="text-surface-400 font-normal">—</span>
+                      }
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
+              <div class="flex items-center gap-2 mb-4">
+                <i class="pi pi-chart-line text-base text-surface-500 dark:text-surface-400"></i>
+                <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('profile.weightTracking') }}</span>
+              </div>
+
+              <div class="flex items-end gap-3 mb-4">
+                <div class="w-44">
+                  <p-floatlabel variant="on">
+                    <p-datepicker
+                      [ngModel]="weightDate()"
+                      (ngModelChange)="onWeightDateChange($event)"
+                      [ngModelOptions]="{ standalone: true }"
+                      inputId="prof-weight-date"
+                      styleClass="w-full"
+                      dateFormat="dd.mm.yy"
+                      appendTo="body"
+                    />
+                    <label for="prof-weight-date">{{ t('profile.weightDate') }}</label>
+                  </p-floatlabel>
+                </div>
+                <div class="w-36">
+                  <p-floatlabel variant="on">
+                    <p-inputnumber
+                      [ngModel]="weightKg()"
+                      (ngModelChange)="weightKg.set($event)"
+                      (onBlur)="onWeightBlur()"
+                      [ngModelOptions]="{ standalone: true }"
+                      inputId="prof-weight-kg"
+                      [min]="20"
+                      [max]="300"
+                      [maxFractionDigits]="2"
+                      styleClass="w-full"
+                      inputStyleClass="w-full"
+                      suffix=" kg"
+                    />
+                    <label for="prof-weight-kg">{{ t('profile.weightKg') }}</label>
+                  </p-floatlabel>
+                </div>
+                <p-button
+                  [icon]="hasExistingWeight() ? 'pi pi-minus' : 'pi pi-plus'"
+                  [severity]="hasExistingWeight() ? 'danger' : 'primary'"
+                  (onClick)="onWeightButtonClick()"
+                  [ariaLabel]="hasExistingWeight() ? t('profile.removeWeight') : t('profile.addWeight')"
+                />
+              </div>
+
+              @if (weightHistory().length > 1) {
+                <div class="h-64">
+                  <p-chart type="line" [data]="weightChartData()" [options]="weightChartOptions" height="100%" />
+                </div>
+              } @else if (weightHistory().length === 0) {
+                <p class="text-surface-400 text-sm italic">{{ t('profile.noWeightEntries') }}</p>
+              }
+            </div>
+          </div>
+        </p-tabpanel>
+      </p-tabpanels>
+    </p-tabs>
 
     <p-toast />
   }

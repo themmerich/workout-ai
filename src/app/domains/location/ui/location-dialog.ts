@@ -9,6 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { emailValidator } from '../../../shared/utils/email.validator';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
@@ -22,6 +23,7 @@ import { EquipmentCategory, EQUIPMENT_CATEGORIES } from '../../equipment/model/e
 import { DataTableComponent } from '../../../shared/ui/data-table';
 import { DataTableTranslations, TableColumn } from '../../../shared/ui/data-table.model';
 import { UserService } from '../../user/data-access/user.service';
+import { COUNTRIES, DEFAULT_COUNTRY } from '../../../shared/utils/countries';
 import { BUNDESLAENDER, defaultOpeningHours, Location, LocationEquipment, LocationLogo, LocationMember, LocationMemberRole, LOCATION_MEMBER_ROLES, LOGO_COLORS } from '../model/location.model';
 import { LocationLogoComponent } from './location-logo';
 import {
@@ -84,6 +86,7 @@ export class LocationDialogComponent {
 
   protected readonly logoColors = LOGO_COLORS;
   protected readonly bundeslaender = BUNDESLAENDER;
+  protected readonly countries = COUNTRIES;
   protected readonly logoColor = signal(LOGO_COLORS[0]);
   protected readonly logoImageUrl = signal<string | null>(null);
 
@@ -110,10 +113,10 @@ export class LocationDialogComponent {
     street: ['', Validators.required],
     zip: ['', Validators.required],
     city: ['', Validators.required],
-    country: [''],
+    country: [DEFAULT_COUNTRY],
     bundesland: [''],
     phone: [''],
-    email: ['', Validators.email],
+    email: ['', emailValidator()],
     website: [''],
   });
 
@@ -151,7 +154,7 @@ export class LocationDialogComponent {
 
   protected readonly userOptions = computed(() =>
     this.userService.users().map((u) => ({
-      label: u.displayName,
+      label: `${u.firstName} ${u.lastName}`,
       value: u.id,
     })),
   );
@@ -333,7 +336,7 @@ export class LocationDialogComponent {
     const row: MemberRow = {
       id: entry.id,
       userId: entry.userId,
-      userName: user?.displayName ?? entry.userId,
+      userName: user ? `${user.firstName} ${user.lastName}` : entry.userId,
       userEmail: user?.email ?? '',
       role: entry.role,
       password: entry.password,
@@ -395,7 +398,7 @@ export class LocationDialogComponent {
       return {
         id: crypto.randomUUID(),
         userId: m.userId,
-        userName: user?.displayName ?? m.userId,
+        userName: user ? `${user.firstName} ${user.lastName}` : m.userId,
         userEmail: user?.email ?? '',
         role: m.role,
         password: m.password,

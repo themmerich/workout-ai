@@ -52,7 +52,8 @@ export default class UserPageComponent {
 
   protected readonly columns = computed<TableColumn[]>(() => [
     { field: 'username', headerKey: 'user.username' },
-    { field: 'displayName', headerKey: 'user.name' },
+    { field: 'firstName', headerKey: 'user.firstName' },
+    { field: 'lastName', headerKey: 'user.lastName' },
     { field: 'email', headerKey: 'user.email' },
     {
       field: 'role',
@@ -74,7 +75,7 @@ export default class UserPageComponent {
     },
   ]);
 
-  protected readonly globalFilterFields = ['username', 'displayName', 'email', 'role', 'locationNames'];
+  protected readonly globalFilterFields = ['username', 'firstName', 'lastName', 'email', 'role', 'locationNames'];
 
   protected readonly translations: DataTableTranslations = {
     columns: 'user.columns',

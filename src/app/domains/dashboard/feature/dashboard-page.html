@@ -1,6 +1,6 @@
 <div *transloco="let t" class="flex flex-col gap-3 overflow-y-auto overflow-x-hidden h-full min-w-0">
   <h1 class="text-xl lg:text-2xl font-bold text-surface-900 dark:text-surface-0 shrink-0">
-    {{ t('dashboard.welcome') }}, {{ currentUser()?.displayName }}
+    {{ t('dashboard.welcome') }}, {{ currentUser()?.firstName }}
   </h1>
 
   @if (isAdmin()) {

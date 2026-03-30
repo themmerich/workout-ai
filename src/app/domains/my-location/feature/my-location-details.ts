@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { COUNTRIES, DEFAULT_COUNTRY } from '../../../shared/utils/countries';
+import { emailValidator } from '../../../shared/utils/email.validator';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -29,6 +31,7 @@ export default class MyLocationDetailsComponent {
 
   protected readonly logoColors = LOGO_COLORS;
   protected readonly bundeslaender = BUNDESLAENDER;
+  protected readonly countries = COUNTRIES;
   protected readonly logoColor = signal(LOGO_COLORS[0]);
   protected readonly logoImageUrl = signal<string | null>(null);
   protected logoDirty = signal(false);
@@ -47,10 +50,10 @@ export default class MyLocationDetailsComponent {
     street: ['', Validators.required],
     zip: ['', Validators.required],
     city: ['', Validators.required],
-    country: [''],
+    country: [DEFAULT_COUNTRY],
     bundesland: [''],
     phone: [''],
-    email: ['', Validators.email],
+    email: ['', emailValidator()],
     website: [''],
   });
 
@@ -74,6 +77,10 @@ export default class MyLocationDetailsComponent {
 
   protected onHoursChange(): void {
     this.hoursDirty.set(true);
+  }
+
+  protected getCountryName(code: string): string {
+    return COUNTRIES.find((c) => c.code === code)?.name ?? code;
   }
 
   protected getBundeslandName(code: string): string {

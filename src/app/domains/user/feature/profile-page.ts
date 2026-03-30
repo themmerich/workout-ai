@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { emailValidator } from '../../../shared/utils/email.validator';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -8,11 +9,14 @@ import { DatePicker } from 'primeng/datepicker';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
+import { Select } from 'primeng/select';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Toast } from 'primeng/toast';
 import { Tooltip } from 'primeng/tooltip';
 import { AuthService } from '../../../core/auth/auth.service';
 import { UserService } from '../data-access/user.service';
-import { UserProfile } from '../model/user.model';
+import { COUNTRIES, DEFAULT_COUNTRY } from '../../../shared/utils/countries';
+import { Gender, GENDERS, Salutation, SALUTATIONS, UserProfile } from '../model/user.model';
 
 @Component({
   selector: 'app-profile-page',
@@ -29,6 +33,8 @@ import { UserProfile } from '../model/user.model';
     FloatLabel,
     InputNumber,
     InputText,
+    Select,
+    Tabs, TabList, Tab, TabPanels, TabPanel,
     Toast,
     Tooltip,
   ],
@@ -46,11 +52,39 @@ export default class ProfilePageComponent {
     return user ? this.userService.getById(user.id) : undefined;
   });
 
-  protected readonly form = this.fb.nonNullable.group({
-    displayName: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    heightCm: [null as number | null],
+  protected readonly salutationOptions = computed(() =>
+    SALUTATIONS.map((s) => ({
+      label: this.transloco.translate('profile.salutations.' + s),
+      value: s,
+    })),
+  );
+
+  protected readonly genderOptions = computed(() =>
+    GENDERS.map((g) => ({
+      label: this.transloco.translate('profile.genders.' + g),
+      value: g,
+    })),
+  );
+
+  protected readonly countries = COUNTRIES;
+
+  protected readonly minBirthDate = new Date(1940, 0, 1);
+  protected readonly maxBirthDate = new Date(2010, 11, 31);
+  protected readonly defaultBirthDate = new Date(1985, 0, 1);
+
+  protected readonly form = this.fb.group({
+    salutation: [null as Salutation | null],
+    gender: [null as Gender | null],
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    email: ['', [Validators.required, emailValidator()]],
     birthDate: [null as Date | null],
+    heightCm: [null as number | null],
+    phone: [''],
+    street: [''],
+    zip: [''],
+    city: [''],
+    country: [DEFAULT_COUNTRY],
   });
 
   protected readonly weightDate = signal<Date>(new Date());
@@ -125,10 +159,18 @@ export default class ProfilePageComponent {
       const profile = this.userProfile();
       if (profile) {
         this.form.patchValue({
-          displayName: profile.displayName,
+          salutation: profile.salutation ?? null,
+          gender: profile.gender ?? null,
+          firstName: profile.firstName,
+          lastName: profile.lastName,
           email: profile.email,
-          heightCm: profile.heightCm ?? null,
           birthDate: profile.birthDate ? new Date(profile.birthDate) : null,
+          heightCm: profile.heightCm ?? null,
+          phone: profile.phone ?? '',
+          street: profile.street ?? '',
+          zip: profile.zip ?? '',
+          city: profile.city ?? '',
+          country: profile.country || DEFAULT_COUNTRY,
         });
         this.refreshWeightHistory(profile);
       }
@@ -178,18 +220,27 @@ export default class ProfilePageComponent {
 
       this.userService.update({
         ...profile,
-        displayName: formValue.displayName,
-        email: formValue.email,
-        heightCm: formValue.heightCm ?? undefined,
+        salutation: formValue.salutation ?? undefined,
+        gender: formValue.gender ?? undefined,
+        firstName: formValue.firstName ?? profile.firstName,
+        lastName: formValue.lastName ?? profile.lastName,
+        email: formValue.email ?? profile.email,
         birthDate: birthDateStr,
+        heightCm: formValue.heightCm ?? undefined,
+        phone: formValue.phone || undefined,
+        street: formValue.street || undefined,
+        zip: formValue.zip || undefined,
+        city: formValue.city || undefined,
+        country: formValue.country || undefined,
       });
 
       const currentUser = this.authService.currentUser();
       if (currentUser) {
         this.authService.currentUser.set({
           ...currentUser,
-          displayName: formValue.displayName,
-          email: formValue.email,
+          firstName: formValue.firstName ?? currentUser.firstName,
+          lastName: formValue.lastName ?? currentUser.lastName,
+          email: formValue.email ?? currentUser.email,
         });
       }
 

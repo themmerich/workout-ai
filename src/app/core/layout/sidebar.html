@@ -188,7 +188,7 @@
         [attr.aria-label]="t('sidebar.userMenu')"
       >
         <i class="pi pi-user text-xl text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
-        <span class="flex-1 text-left text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0 text-base font-medium leading-tight">{{ authService.currentUser()?.displayName }}</span>
+        <span class="flex-1 text-left text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0 text-base font-medium leading-tight">{{ authService.currentUser()?.firstName }} {{ authService.currentUser()?.lastName }}</span>
         <i
           class="pi text-base leading-tight text-surface-500 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"
           [class.pi-chevron-up]="!userMenuOpen()"

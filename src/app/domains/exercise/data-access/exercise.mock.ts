@@ -29,5 +29,5 @@ export const MOCK_EXERCISES: Exercise[] = [
   { id: '26', name: 'Shrugs', type: 'strength', muscleGroups: ['traps'], equipmentIds: ['1'] },
   { id: '27', name: 'Unterarm-Curls', type: 'strength', muscleGroups: ['forearms'], equipmentIds: ['1', '8'] },
   { id: '28', name: 'Hüftbeuger-Stretch', type: 'strength', muscleGroups: ['hip-flexors'], equipmentIds: ['21'] },
-  { id: '29', name: 'Laufen', type: 'cardio', muscleGroups: ['quadriceps', 'hamstrings', 'calves', 'glutes'], equipmentIds: [] },
+  { id: '29', name: 'Laufen', type: 'cardio', muscleGroups: ['quadriceps', 'hamstrings', 'calves', 'glutes', 'hip-flexors'], equipmentIds: ['9'] },
 ];
