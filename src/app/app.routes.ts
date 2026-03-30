@@ -43,6 +43,14 @@ export const routes: Routes = [
           import('./domains/exercise/exercise.routes').then((m) => m.exerciseRoutes),
       },
       {
+        path: 'exercise-combos',
+        canActivate: [adminGuard],
+        loadChildren: () =>
+          import('./domains/exercise-combo/exercise-combo.routes').then(
+            (m) => m.exerciseComboRoutes,
+          ),
+      },
+      {
         path: 'my-location',
         canActivate: [locationMemberGuard],
         loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationDetailsRoutes),
