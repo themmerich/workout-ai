@@ -1,12 +1,20 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { getHolidays } from 'feiertagejs';
 import { ChartModule } from 'primeng/chart';
 import { CardModule } from 'primeng/card';
 import { AuthService } from '../../../core/auth/auth.service';
 import { EquipmentService } from '../../equipment/data-access/equipment.service';
 import { ExerciseService } from '../../exercise/data-access/exercise.service';
 import { LocationService } from '../../location/data-access/location.service';
+import { WEEKDAYS } from '../../location/model/location.model';
 import { UserService } from '../../user/data-access/user.service';
+
+interface TodayScheduleItem {
+  label: string;
+  time: string;
+  type: 'regular' | 'exception' | 'holiday' | 'closed';
+}
 
 @Component({
   selector: 'app-dashboard-page',
@@ -135,4 +143,82 @@ export default class DashboardPageComponent {
   protected readonly locationMemberCount = computed(() =>
     this.currentLocation()?.members.length ?? 0,
   );
+
+  protected readonly locationMemberRoleChartData = computed(() => {
+    const loc = this.currentLocation();
+    if (!loc) return { labels: [], datasets: [{ data: [], backgroundColor: [] }] };
+    const roles = new Map<string, number>();
+    loc.members.forEach((m) => {
+      roles.set(m.role, (roles.get(m.role) ?? 0) + 1);
+    });
+    return {
+      labels: [...roles.keys()].map((r) => this.transloco.translate('location.dialog.memberRoles.' + r)),
+      datasets: [{
+        data: [...roles.values()],
+        backgroundColor: ['#f97316', '#22c55e', '#3b82f6'],
+      }],
+    };
+  });
+
+  protected readonly todaySchedule = computed<TodayScheduleItem[]>(() => {
+    const loc = this.currentLocation();
+    if (!loc) return [];
+
+    const items: TodayScheduleItem[] = [];
+    const today = new Date();
+    const dateStr = today.toISOString().substring(0, 10);
+    const dayIndex = (today.getDay() + 6) % 7;
+    const weekday = WEEKDAYS[dayIndex];
+    const lang = this.transloco.getActiveLang();
+
+    // Check exception
+    const exception = loc.calendarExceptions.find((ex) => ex.date === dateStr);
+    if (exception) {
+      if (exception.closed) {
+        items.push({
+          label: exception.note || this.transloco.translate('dashboard.member.closedToday'),
+          time: '',
+          type: 'closed',
+        });
+      } else {
+        items.push({
+          label: exception.note || this.transloco.translate('dashboard.member.adjustedHours'),
+          time: `${exception.open} - ${exception.close}`,
+          type: 'exception',
+        });
+      }
+    } else {
+      // Regular hours
+      const regular = loc.openingHours.find((h) => h.day === weekday);
+      if (regular && !regular.closed) {
+        items.push({
+          label: this.transloco.translate('dashboard.member.openingHours'),
+          time: `${regular.open} - ${regular.close}`,
+          type: 'regular',
+        });
+      } else {
+        items.push({
+          label: this.transloco.translate('dashboard.member.closedToday'),
+          time: '',
+          type: 'closed',
+        });
+      }
+    }
+
+    // Check holiday
+    if (loc.bundesland) {
+      try {
+        const holidays = getHolidays(today.getFullYear(), loc.bundesland as Parameters<typeof getHolidays>[1]);
+        const holiday = holidays.find((h) => h.dateString === dateStr);
+        if (holiday) {
+          const name = lang === 'de' ? holiday.translate('de') : holiday.translate('en');
+          items.push({ label: name, time: '', type: 'holiday' });
+        }
+      } catch {
+        // Bundesland not supported
+      }
+    }
+
+    return items;
+  });
 }

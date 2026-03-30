@@ -152,7 +152,11 @@
       "subtitle": "Your location: {{location}}",
       "equipment": "Available Equipment",
       "members": "Members",
-      "exercises": "Exercises"
+      "memberRoles": "Members by Role",
+      "todaySchedule": "Today",
+      "openingHours": "Opening Hours",
+      "adjustedHours": "Adjusted Hours",
+      "closedToday": "Closed"
     }
   },
   "user": {

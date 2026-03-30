@@ -84,7 +84,7 @@
       {{ t('dashboard.member.subtitle', { location: currentUser()?.locationName }) }}
     </p>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
       <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-3 flex items-center gap-2">
         <div class="w-9 h-9 rounded-lg bg-orange-500/20 flex items-center justify-center shrink-0">
           <i class="pi pi-wrench text-base text-orange-500"></i>
@@ -103,13 +103,41 @@
           <div class="text-surface-500 dark:text-surface-400 text-xs">{{ t('dashboard.member.members') }}</div>
         </div>
       </div>
-      <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-3 flex items-center gap-2">
-        <div class="w-9 h-9 rounded-lg bg-purple-500/20 flex items-center justify-center shrink-0">
-          <i class="pi pi-bolt text-base text-purple-500"></i>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      <!-- Today's Schedule -->
+      <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-4">
+        <div class="flex items-center gap-2 mb-3">
+          <i class="pi pi-calendar text-base text-surface-500 dark:text-surface-400"></i>
+          <span class="text-xs font-semibold text-surface-900 dark:text-surface-0">{{ t('dashboard.member.todaySchedule') }}</span>
         </div>
-        <div>
-          <div class="text-xl font-bold text-surface-900 dark:text-surface-0">{{ exerciseCount() }}</div>
-          <div class="text-surface-500 dark:text-surface-400 text-xs">{{ t('dashboard.member.exercises') }}</div>
+        <div class="flex flex-col gap-2">
+          @for (item of todaySchedule(); track item.label) {
+            <div class="flex items-center gap-2">
+              @if (item.type === 'regular') {
+                <span class="w-2.5 h-2.5 rounded-full bg-green-500 shrink-0"></span>
+              } @else if (item.type === 'exception') {
+                <span class="w-2.5 h-2.5 rounded-full bg-orange-500 shrink-0"></span>
+              } @else if (item.type === 'holiday') {
+                <span class="w-2.5 h-2.5 rounded-full bg-violet-500 shrink-0"></span>
+              } @else {
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0"></span>
+              }
+              <span class="text-sm text-surface-700 dark:text-surface-300">{{ item.label }}</span>
+              @if (item.time) {
+                <span class="text-sm font-medium text-surface-900 dark:text-surface-0 ml-auto">{{ item.time }}</span>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Members Doughnut -->
+      <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-4 flex flex-col min-h-0 min-w-0">
+        <span class="text-xs font-semibold text-surface-900 dark:text-surface-0 mb-2">{{ t('dashboard.member.memberRoles') }}</span>
+        <div class="flex-1 min-h-0 overflow-hidden">
+          <p-chart type="doughnut" [data]="locationMemberRoleChartData()" [options]="chartOptions" />
         </div>
       </div>
     </div>
