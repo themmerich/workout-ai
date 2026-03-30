@@ -27,6 +27,7 @@
     "locations": "Locations",
     "equipment": "Equipment",
     "exercises": "Exercises",
+    "exerciseCombos": "Exercise Combos",
     "myLocation": "My Location",
     "myMembers": "Members",
     "myEquipment": "Equipment",
@@ -253,6 +254,51 @@
     },
     "validation": {
       "required": "This field is required"
+    }
+  },
+  "exerciseCombo": {
+    "title": "Exercise Combos",
+    "name": "Name",
+    "type": "Type",
+    "exercises": "Exercises",
+    "description": "Description",
+    "timeLimit": "Time Limit (min)",
+    "types": {
+      "amrap": "AMRAP"
+    },
+    "search": "Search...",
+    "columns": "Columns",
+    "columnsSelected": "{count} columns selected",
+    "addCombo": "New Combo",
+    "filterBy": "Filter by {{field}}",
+    "filterByType": "Filter by type",
+    "edit": "Edit",
+    "delete": "Delete",
+    "actions": "Actions",
+    "confirmDeleteTitle": "Delete Combo",
+    "confirmDelete": "Are you sure you want to delete the combo \"{{name}}\"?",
+    "createSuccess": "Combo was successfully created",
+    "updateSuccess": "Combo was successfully updated",
+    "deleteSuccess": "Combo was successfully deleted",
+    "deleteError": "Error deleting combo",
+    "clearFilters": "Clear all filters",
+    "dialog": {
+      "title": "Create New Combo",
+      "editTitle": "Edit Combo",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "addExercise": "Add Exercise",
+      "removeExercise": "Remove",
+      "exercise": "Exercise",
+      "reps": "Reps",
+      "weight": "Weight",
+      "selectExercise": "Select exercise",
+      "minOneExercise": "At least one exercise required"
+    },
+    "validation": {
+      "required": "This field is required",
+      "minExercises": "At least one exercise is required"
     }
   },
   "equipment": {

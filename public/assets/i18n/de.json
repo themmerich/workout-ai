@@ -27,6 +27,7 @@
     "locations": "Standorte",
     "equipment": "Geräte",
     "exercises": "Übungen",
+    "exerciseCombos": "Übungs-Kombinationen",
     "myLocation": "Mein Standort",
     "myMembers": "Mitglieder",
     "myEquipment": "Geräte",
@@ -253,6 +254,51 @@
     },
     "validation": {
       "required": "Dieses Feld ist erforderlich"
+    }
+  },
+  "exerciseCombo": {
+    "title": "Übungs-Kombinationen",
+    "name": "Name",
+    "type": "Typ",
+    "exercises": "Übungen",
+    "description": "Beschreibung",
+    "timeLimit": "Zeitlimit (min)",
+    "types": {
+      "amrap": "AMRAP"
+    },
+    "search": "Suchen...",
+    "columns": "Spalten",
+    "columnsSelected": "{count} Spalten ausgewählt",
+    "addCombo": "Neue Kombination",
+    "filterBy": "Nach {{field}} filtern",
+    "filterByType": "Nach Typ filtern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "actions": "Aktionen",
+    "confirmDeleteTitle": "Kombination löschen",
+    "confirmDelete": "Möchten Sie die Kombination \"{{name}}\" wirklich löschen?",
+    "createSuccess": "Kombination wurde erfolgreich angelegt",
+    "updateSuccess": "Kombination wurde erfolgreich aktualisiert",
+    "deleteSuccess": "Kombination wurde erfolgreich gelöscht",
+    "deleteError": "Fehler beim Löschen der Kombination",
+    "clearFilters": "Alle Filter zurücksetzen",
+    "dialog": {
+      "title": "Neue Kombination anlegen",
+      "editTitle": "Kombination bearbeiten",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "delete": "Löschen",
+      "addExercise": "Übung hinzufügen",
+      "removeExercise": "Entfernen",
+      "exercise": "Übung",
+      "reps": "Wdh.",
+      "weight": "Gewicht",
+      "selectExercise": "Übung auswählen",
+      "minOneExercise": "Mindestens eine Übung erforderlich"
+    },
+    "validation": {
+      "required": "Dieses Feld ist erforderlich",
+      "minExercises": "Mindestens eine Übung ist erforderlich"
     }
   },
   "equipment": {
