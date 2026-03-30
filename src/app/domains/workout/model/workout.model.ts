@@ -3,11 +3,19 @@ export interface WorkoutSet {
   weightKg?: number;
 }
 
+export interface CardioSegment {
+  durationMinutes?: number;
+  speedKmh?: number;
+  heartRateBpm?: number;
+  caloriesBurned?: number;
+}
+
 export interface WorkoutExerciseEntry {
   exerciseId?: string;
   exerciseComboId?: string;
   orderIndex: number;
   sets: WorkoutSet[];
+  segments?: CardioSegment[];
 }
 
 export interface Workout {

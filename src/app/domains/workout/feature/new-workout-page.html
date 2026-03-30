@@ -89,6 +89,7 @@
                     styleClass="w-full"
                     [filter]="true"
                     filterBy="label"
+                    (onChange)="onExerciseSelectionChange(ei)"
                   />
                   <label [for]="'wo-exercise-' + ei">{{ t('workout.selectExercise') }} *</label>
                 </p-floatlabel>
@@ -103,60 +104,145 @@
               />
             </div>
 
-            <!-- Sets -->
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs font-medium text-surface-500 dark:text-surface-400">{{ t('workout.sets') }}</span>
-              <p-button
-                [label]="t('workout.addSet')"
-                icon="pi pi-plus"
-                severity="secondary"
-                [text]="true"
-                size="small"
-                (onClick)="addSet(ei)"
-              />
-            </div>
-            <div formArrayName="sets" class="flex flex-col gap-2">
-              @for (setCtrl of getSetsArray(ei).controls; track setCtrl; let si = $index) {
-                <div [formGroupName]="si" class="flex items-center gap-2">
-                  <span class="text-xs text-surface-400 w-6 text-center shrink-0">{{ si + 1 }}.</span>
-                  <div class="w-32">
-                    <p-floatlabel variant="on">
-                      <p-inputnumber
-                        formControlName="reps"
-                        [inputId]="'wo-reps-' + ei + '-' + si"
-                        [min]="1"
-                        styleClass="w-full"
-                        inputStyleClass="w-full"
-                      />
-                      <label [for]="'wo-reps-' + ei + '-' + si">{{ t('workout.reps') }} *</label>
-                    </p-floatlabel>
+            @if (isCardioExercise(ei)) {
+              <!-- Cardio Segments -->
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium text-surface-500 dark:text-surface-400">{{ t('workout.segments') }}</span>
+                <p-button
+                  [label]="t('workout.addSegment')"
+                  icon="pi pi-plus"
+                  severity="secondary"
+                  [text]="true"
+                  size="small"
+                  (onClick)="addSegment(ei)"
+                />
+              </div>
+              <div formArrayName="segments" class="flex flex-col gap-2">
+                @for (segCtrl of getSegmentsArray(ei).controls; track segCtrl; let si = $index) {
+                  <div [formGroupName]="si" class="flex items-center gap-2">
+                    <span class="text-xs text-surface-400 w-6 text-center shrink-0">{{ si + 1 }}.</span>
+                    <div class="w-28">
+                      <p-floatlabel variant="on">
+                        <p-inputnumber
+                          formControlName="durationMinutes"
+                          [inputId]="'wo-seg-dur-' + ei + '-' + si"
+                          [min]="1"
+                          styleClass="w-full"
+                          inputStyleClass="w-full"
+                          suffix=" min"
+                        />
+                        <label [for]="'wo-seg-dur-' + ei + '-' + si">{{ t('workout.durationMin') }}</label>
+                      </p-floatlabel>
+                    </div>
+                    <div class="w-28">
+                      <p-floatlabel variant="on">
+                        <p-inputnumber
+                          formControlName="speedKmh"
+                          [inputId]="'wo-seg-spd-' + ei + '-' + si"
+                          [min]="0"
+                          [maxFractionDigits]="1"
+                          styleClass="w-full"
+                          inputStyleClass="w-full"
+                          suffix=" km/h"
+                        />
+                        <label [for]="'wo-seg-spd-' + ei + '-' + si">{{ t('workout.speed') }}</label>
+                      </p-floatlabel>
+                    </div>
+                    <div class="w-28">
+                      <p-floatlabel variant="on">
+                        <p-inputnumber
+                          formControlName="heartRateBpm"
+                          [inputId]="'wo-seg-hr-' + ei + '-' + si"
+                          [min]="0"
+                          styleClass="w-full"
+                          inputStyleClass="w-full"
+                          suffix=" bpm"
+                        />
+                        <label [for]="'wo-seg-hr-' + ei + '-' + si">{{ t('workout.heartRate') }}</label>
+                      </p-floatlabel>
+                    </div>
+                    <div class="w-28">
+                      <p-floatlabel variant="on">
+                        <p-inputnumber
+                          formControlName="caloriesBurned"
+                          [inputId]="'wo-seg-kcal-' + ei + '-' + si"
+                          [min]="0"
+                          styleClass="w-full"
+                          inputStyleClass="w-full"
+                          suffix=" kcal"
+                        />
+                        <label [for]="'wo-seg-kcal-' + ei + '-' + si">{{ t('workout.calories') }}</label>
+                      </p-floatlabel>
+                    </div>
+                    <p-button
+                      icon="pi pi-times"
+                      severity="danger"
+                      [text]="true"
+                      [rounded]="true"
+                      size="small"
+                      (onClick)="removeSegment(ei, si)"
+                      [ariaLabel]="t('workout.removeSegment')"
+                      [disabled]="getSegmentsArray(ei).length <= 1"
+                    />
                   </div>
-                  <div class="w-40">
-                    <p-floatlabel variant="on">
-                      <p-inputnumber
-                        formControlName="weightKg"
-                        [inputId]="'wo-weight-' + ei + '-' + si"
-                        [min]="0"
-                        styleClass="w-full"
-                        inputStyleClass="w-full"
-                        suffix=" kg"
-                      />
-                      <label [for]="'wo-weight-' + ei + '-' + si">{{ t('workout.weight') }}</label>
-                    </p-floatlabel>
+                }
+              </div>
+            } @else {
+              <!-- Strength Sets -->
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-medium text-surface-500 dark:text-surface-400">{{ t('workout.sets') }}</span>
+                <p-button
+                  [label]="t('workout.addSet')"
+                  icon="pi pi-plus"
+                  severity="secondary"
+                  [text]="true"
+                  size="small"
+                  (onClick)="addSet(ei)"
+                />
+              </div>
+              <div formArrayName="sets" class="flex flex-col gap-2">
+                @for (setCtrl of getSetsArray(ei).controls; track setCtrl; let si = $index) {
+                  <div [formGroupName]="si" class="flex items-center gap-2">
+                    <span class="text-xs text-surface-400 w-6 text-center shrink-0">{{ si + 1 }}.</span>
+                    <div class="w-32">
+                      <p-floatlabel variant="on">
+                        <p-inputnumber
+                          formControlName="reps"
+                          [inputId]="'wo-reps-' + ei + '-' + si"
+                          [min]="1"
+                          styleClass="w-full"
+                          inputStyleClass="w-full"
+                        />
+                        <label [for]="'wo-reps-' + ei + '-' + si">{{ t('workout.reps') }} *</label>
+                      </p-floatlabel>
+                    </div>
+                    <div class="w-40">
+                      <p-floatlabel variant="on">
+                        <p-inputnumber
+                          formControlName="weightKg"
+                          [inputId]="'wo-weight-' + ei + '-' + si"
+                          [min]="0"
+                          styleClass="w-full"
+                          inputStyleClass="w-full"
+                          suffix=" kg"
+                        />
+                        <label [for]="'wo-weight-' + ei + '-' + si">{{ t('workout.weight') }}</label>
+                      </p-floatlabel>
+                    </div>
+                    <p-button
+                      icon="pi pi-times"
+                      severity="danger"
+                      [text]="true"
+                      [rounded]="true"
+                      size="small"
+                      (onClick)="removeSet(ei, si)"
+                      [ariaLabel]="t('workout.removeSet')"
+                      [disabled]="getSetsArray(ei).length <= 1"
+                    />
                   </div>
-                  <p-button
-                    icon="pi pi-times"
-                    severity="danger"
-                    [text]="true"
-                    [rounded]="true"
-                    size="small"
-                    (onClick)="removeSet(ei, si)"
-                    [ariaLabel]="t('workout.removeSet')"
-                    [disabled]="getSetsArray(ei).length <= 1"
-                  />
-                </div>
-              }
-            </div>
+                }
+              </div>
+            }
           </div>
         }
       </div>

@@ -18,6 +18,20 @@
     </div>
     <div>
       <p-floatlabel variant="on">
+        <p-select
+          formControlName="type"
+          [options]="exerciseTypeOptions()"
+          optionLabel="label"
+          optionValue="value"
+          inputId="ex-type"
+          appendTo="body"
+          styleClass="w-full"
+        />
+        <label for="ex-type">{{ t('exercise.type') }} *</label>
+      </p-floatlabel>
+    </div>
+    <div>
+      <p-floatlabel variant="on">
         <p-multiselect
           formControlName="muscleGroups"
           [options]="muscleGroupOptions()"

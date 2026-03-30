@@ -53,6 +53,13 @@
     "removeSet": "Satz entfernen",
     "reps": "Wdh.",
     "weight": "Gewicht (kg)",
+    "segments": "Segmente",
+    "addSegment": "Segment hinzufügen",
+    "removeSegment": "Segment entfernen",
+    "durationMin": "Dauer (min)",
+    "speed": "km/h",
+    "heartRate": "Herzfreq.",
+    "calories": "kcal",
     "save": "Training speichern",
     "saveSuccess": "Training wurde erfolgreich gespeichert",
     "validation": {
@@ -255,6 +262,12 @@
       "traps": "Trapezmuskel",
       "lats": "Latissimus"
     },
+    "type": "Typ",
+    "types": {
+      "strength": "Kraft",
+      "cardio": "Cardio"
+    },
+    "filterByType": "Nach Typ filtern",
     "search": "Suchen...",
     "columns": "Spalten",
     "columnsSelected": "{count} Spalten ausgewählt",

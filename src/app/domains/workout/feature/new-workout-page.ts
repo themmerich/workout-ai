@@ -90,7 +90,8 @@ export default class NewWorkoutPageComponent {
   protected addExercise(): void {
     const exerciseGroup = this.fb.nonNullable.group({
       selection: ['', Validators.required],
-      sets: this.fb.array<FormGroup>([this.createSetRow()], Validators.required),
+      sets: this.fb.array<FormGroup>([this.createSetRow()]),
+      segments: this.fb.array<FormGroup>([this.createSegmentRow()]),
     });
     this.exercisesArray.push(exerciseGroup);
     this.form.markAsDirty();
@@ -101,8 +102,38 @@ export default class NewWorkoutPageComponent {
     this.form.markAsDirty();
   }
 
+  protected isCardioExercise(exerciseIndex: number): boolean {
+    const selection = this.exercisesArray.at(exerciseIndex).get('selection')?.value as string;
+    if (!selection || !selection.startsWith('exercise:')) return false;
+    const id = selection.split(':')[1];
+    const exercise = this.exerciseService.getById(id);
+    return exercise?.type === 'cardio';
+  }
+
+  protected onExerciseSelectionChange(exerciseIndex: number): void {
+    const isCardio = this.isCardioExercise(exerciseIndex);
+    const setsArray = this.getSetsArray(exerciseIndex);
+    const segmentsArray = this.getSegmentsArray(exerciseIndex);
+
+    if (isCardio) {
+      setsArray.clear();
+      if (segmentsArray.length === 0) {
+        segmentsArray.push(this.createSegmentRow());
+      }
+    } else {
+      segmentsArray.clear();
+      if (setsArray.length === 0) {
+        setsArray.push(this.createSetRow());
+      }
+    }
+  }
+
   protected getSetsArray(exerciseIndex: number): FormArray<FormGroup> {
     return this.exercisesArray.at(exerciseIndex).get('sets') as FormArray<FormGroup>;
+  }
+
+  protected getSegmentsArray(exerciseIndex: number): FormArray<FormGroup> {
+    return this.exercisesArray.at(exerciseIndex).get('segments') as FormArray<FormGroup>;
   }
 
   protected addSet(exerciseIndex: number): void {
@@ -112,6 +143,16 @@ export default class NewWorkoutPageComponent {
 
   protected removeSet(exerciseIndex: number, setIndex: number): void {
     this.getSetsArray(exerciseIndex).removeAt(setIndex);
+    this.form.markAsDirty();
+  }
+
+  protected addSegment(exerciseIndex: number): void {
+    this.getSegmentsArray(exerciseIndex).push(this.createSegmentRow());
+    this.form.markAsDirty();
+  }
+
+  protected removeSegment(exerciseIndex: number, segmentIndex: number): void {
+    this.getSegmentsArray(exerciseIndex).removeAt(segmentIndex);
     this.form.markAsDirty();
   }
 
@@ -130,15 +171,29 @@ export default class NewWorkoutPageComponent {
         (ex: Record<string, unknown>, index: number) => {
           const selection = ex['selection'] as string;
           const [type, id] = selection.split(':');
-          const sets = (ex['sets'] as Record<string, unknown>[]).map((s) => ({
-            reps: s['reps'] as number,
-            weightKg: (s['weightKg'] as number) || undefined,
-          }));
+          const isCardio = type === 'exercise' && this.exerciseService.getById(id)?.type === 'cardio';
+
+          const sets = isCardio
+            ? []
+            : (ex['sets'] as Record<string, unknown>[]).map((s) => ({
+                reps: s['reps'] as number,
+                weightKg: (s['weightKg'] as number) || undefined,
+              }));
+
+          const segments = isCardio
+            ? (ex['segments'] as Record<string, unknown>[]).map((s) => ({
+                durationMinutes: (s['durationMinutes'] as number) || undefined,
+                speedKmh: (s['speedKmh'] as number) || undefined,
+                heartRateBpm: (s['heartRateBpm'] as number) || undefined,
+                caloriesBurned: (s['caloriesBurned'] as number) || undefined,
+              }))
+            : undefined;
 
           return {
             ...(type === 'exercise' ? { exerciseId: id } : { exerciseComboId: id }),
             orderIndex: index,
             sets,
+            segments,
           };
         },
       );
@@ -167,6 +222,15 @@ export default class NewWorkoutPageComponent {
     return this.fb.nonNullable.group({
       reps: [1, [Validators.required, Validators.min(1)]],
       weightKg: [null as number | null],
+    });
+  }
+
+  private createSegmentRow(): FormGroup {
+    return this.fb.nonNullable.group({
+      durationMinutes: [null as number | null],
+      speedKmh: [null as number | null],
+      heartRateBpm: [null as number | null],
+      caloriesBurned: [null as number | null],
     });
   }
 }

@@ -53,6 +53,13 @@
     "removeSet": "Remove Set",
     "reps": "Reps",
     "weight": "Weight (kg)",
+    "segments": "Segments",
+    "addSegment": "Add Segment",
+    "removeSegment": "Remove Segment",
+    "durationMin": "Duration (min)",
+    "speed": "km/h",
+    "heartRate": "Heart Rate",
+    "calories": "kcal",
     "save": "Save Workout",
     "saveSuccess": "Workout saved successfully",
     "validation": {
@@ -255,6 +262,12 @@
       "traps": "Traps",
       "lats": "Lats"
     },
+    "type": "Type",
+    "types": {
+      "strength": "Strength",
+      "cardio": "Cardio"
+    },
+    "filterByType": "Filter by type",
     "search": "Search...",
     "columns": "Columns",
     "columnsSelected": "{count} columns selected",
