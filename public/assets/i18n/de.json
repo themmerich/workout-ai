@@ -32,7 +32,34 @@
     "myMembers": "Mitglieder",
     "myEquipment": "Geräte",
     "myCalendar": "Termine",
+    "newWorkout": "Neues Training",
     "settings": "Einstellungen"
+  },
+  "workout": {
+    "title": "Neues Training",
+    "date": "Datum",
+    "time": "Uhrzeit",
+    "duration": "Dauer (min)",
+    "location": "Ort",
+    "outdoor": "Outdoor",
+    "exercises": "Übungen",
+    "addExercise": "Übung hinzufügen",
+    "removeExercise": "Übung entfernen",
+    "exerciseGroup": "Übungen",
+    "comboGroup": "Kombinationen",
+    "selectExercise": "Übung auswählen",
+    "sets": "Sätze",
+    "addSet": "Satz hinzufügen",
+    "removeSet": "Satz entfernen",
+    "reps": "Wdh.",
+    "weight": "Gewicht (kg)",
+    "save": "Training speichern",
+    "saveSuccess": "Training wurde erfolgreich gespeichert",
+    "validation": {
+      "required": "Dieses Feld ist erforderlich",
+      "minOneExercise": "Mindestens eine Übung ist erforderlich",
+      "minOneSet": "Mindestens ein Satz ist erforderlich"
+    }
   },
   "myLocation": {
     "details": {
