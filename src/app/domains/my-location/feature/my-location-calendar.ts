@@ -54,8 +54,8 @@ export default class MyLocationCalendarComponent {
 
     const events: EventInput[] = [];
     const today = new Date();
-    const start = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-    const end = new Date(today.getFullYear(), today.getMonth() + 3, 0);
+    const start = new Date(today.getFullYear(), 0, 1);
+    const end = new Date(today.getFullYear(), 11, 31);
 
     const exceptionMap = new Map<string, CalendarException>();
     loc.calendarExceptions.forEach((ex) => exceptionMap.set(ex.date, ex));

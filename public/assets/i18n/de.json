@@ -152,7 +152,11 @@
       "subtitle": "Dein Standort: {{location}}",
       "equipment": "Verfügbare Geräte",
       "members": "Mitglieder",
-      "exercises": "Übungen"
+      "memberRoles": "Mitglieder nach Rolle",
+      "todaySchedule": "Heute",
+      "openingHours": "Öffnungszeiten",
+      "adjustedHours": "Angepasste Öffnungszeiten",
+      "closedToday": "Geschlossen"
     }
   },
   "user": {
