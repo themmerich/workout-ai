@@ -69,6 +69,15 @@
           <i class="pi pi-heart text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
           <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.workouts') }}</span>
         </a>
+        <a
+          routerLink="/medals"
+          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
+          (click)="closeSidebar.emit()"
+        >
+          <i class="pi pi-trophy text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.medals') }}</span>
+        </a>
       }
       @if (authService.isOwner()) {
         <a

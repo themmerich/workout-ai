@@ -34,6 +34,7 @@
     "myCalendar": "Termine",
     "weight": "Gewicht",
     "workouts": "Training",
+    "medals": "Medaillen",
     "settings": "Einstellungen"
   },
   "workout": {
@@ -90,6 +91,56 @@
       "required": "Dieses Feld ist erforderlich",
       "minOneExercise": "Mindestens eine Übung ist erforderlich",
       "minOneSet": "Mindestens ein Satz ist erforderlich"
+    }
+  },
+  "medal": {
+    "title": "Medaillen",
+    "earned": "Verdient",
+    "earnedOn": "Verdient am {{date}}",
+    "earnedCount": "{{earned}} von {{total}} Medaillen verdient",
+    "categories": {
+      "all": "Alle",
+      "strength": "Kraft",
+      "cardio": "Cardio",
+      "general": "Allgemein"
+    },
+    "general": {
+      "firstWorkout": "Erstes Training",
+      "firstWorkoutDesc": "Logge dein erstes Training",
+      "workouts10": "10 Trainings",
+      "workouts10Desc": "Absolviere 10 Trainings",
+      "workouts25": "25 Trainings",
+      "workouts25Desc": "Absolviere 25 Trainings",
+      "workouts50": "50 Trainings",
+      "workouts50Desc": "Absolviere 50 Trainings",
+      "workouts100": "100 Trainings",
+      "workouts100Desc": "Absolviere 100 Trainings",
+      "allMuscleGroups": "Allrounder",
+      "allMuscleGroupsDesc": "Trainiere alle Muskelgruppen"
+    },
+    "strength": {
+      "prPrefix": "PR: ",
+      "prDesc": "Persönlicher Rekord bei {{exercise}}",
+      "first100kg": "100 kg Club",
+      "first100kgDesc": "Hebe zum ersten Mal 100 kg"
+    },
+    "cardio": {
+      "longestRun": "Langstrecke",
+      "longestRunDesc": "Längster Lauf (Gesamtdauer)",
+      "fastestSpeed": "Sprinter",
+      "fastestSpeedDesc": "Höchste erreichte Geschwindigkeit",
+      "mostCalories": "Kalorienverbrenner",
+      "mostCaloriesDesc": "Meiste Kalorien in einer Einheit"
+    },
+    "streak": {
+      "streak3": "3-Tage-Serie",
+      "streak3Desc": "Trainiere 3 Tage in Folge",
+      "streak7": "Wochenserie",
+      "streak7Desc": "Trainiere 7 Tage in Folge",
+      "streak14": "2-Wochen-Serie",
+      "streak14Desc": "Trainiere 14 Tage in Folge",
+      "streak30": "Monatsserie",
+      "streak30Desc": "Trainiere 30 Tage in Folge"
     }
   },
   "myLocation": {
