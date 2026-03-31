@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Tag } from 'primeng/tag';
 import { DataTableComponent } from '../../../shared/ui/data-table';
 import { DataTableTranslations, RowGroupConfig, TableColumn } from '../../../shared/ui/data-table.model';
@@ -10,12 +11,13 @@ import { ExerciseComboService } from '../../exercise-combo/data-access/exercise-
 import { WorkoutService } from '../data-access/workout.service';
 import { Workout } from '../model/workout.model';
 import { WorkoutDialogComponent } from '../ui/workout-dialog';
+import { WorkoutHeatmapComponent } from '../ui/workout-heatmap';
 
 @Component({
   selector: 'app-workout-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-col h-full min-h-0' },
-  imports: [TranslocoDirective, Tag, DataTableComponent, WorkoutDialogComponent],
+  imports: [TranslocoDirective, Tabs, TabList, Tab, TabPanels, TabPanel, Tag, DataTableComponent, WorkoutDialogComponent, WorkoutHeatmapComponent],
   templateUrl: './workout-page.html',
 })
 export default class WorkoutPageComponent {
@@ -42,6 +44,10 @@ export default class WorkoutPageComponent {
       .map((w) => ({ ...w, month: w.date.substring(0, 7) }))
       .sort((a, b) => b.date.localeCompare(a.date));
   });
+
+  protected readonly workoutDates = computed(() =>
+    this.userWorkouts().map((w) => w.date),
+  );
 
   protected readonly rowGroupConfig: RowGroupConfig = {
     groupBy: 'month',

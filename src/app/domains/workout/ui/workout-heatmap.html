@@ -1,0 +1,51 @@
+<div *transloco="let t" class="flex flex-col gap-6">
+  @for (grid of yearGrids(); track grid.year) {
+    <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5 overflow-x-auto">
+      <h2 class="text-lg font-semibold text-surface-900 dark:text-surface-0 mb-3">{{ grid.year }}</h2>
+      <div class="inline-flex flex-col gap-1">
+        <!-- Month labels -->
+        <div class="flex ml-8">
+          @for (label of grid.monthLabels; track label.colStart; let i = $index) {
+            <span
+              class="text-xs text-surface-500 dark:text-surface-400"
+              [style.margin-left.px]="i === 0 ? label.colStart * 18 : 0"
+              [style.width.px]="i < grid.monthLabels.length - 1 ? (grid.monthLabels[i + 1].colStart - label.colStart) * 18 : undefined"
+            >
+              {{ label.label }}
+            </span>
+          }
+        </div>
+
+        <!-- Grid -->
+        <div class="flex gap-0.5">
+          <!-- Day labels -->
+          <div class="flex flex-col gap-0.5 w-7 shrink-0">
+            @for (row of [0,1,2,3,4,5,6]; track row) {
+              <div class="h-3.5 flex items-center">
+                @for (dl of visibleDayLabels(); track dl.row) {
+                  @if (dl.row === row) {
+                    <span class="text-xs text-surface-500 dark:text-surface-400 leading-none">{{ dl.label }}</span>
+                  }
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Week columns -->
+          @for (week of grid.weeks; track $index) {
+            <div class="flex flex-col gap-0.5">
+              @for (day of week.days; track day.date) {
+                <div
+                  class="w-3.5 h-3.5 rounded-sm cursor-default transition-colors"
+                  [class]="getCellClass(day)"
+                  [pTooltip]="day.visible ? getTooltip(day) : ''"
+                  tooltipPosition="top"
+                ></div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</div>
