@@ -29,7 +29,6 @@ export default class DashboardPageComponent {
   private readonly equipmentService = inject(EquipmentService);
   private readonly exerciseService = inject(ExerciseService);
   private readonly transloco = inject(TranslocoService);
-
   protected readonly isAdmin = this.authService.isAdmin;
   protected readonly currentUser = this.authService.currentUser;
 

@@ -35,6 +35,7 @@
     "weight": "Gewicht",
     "workouts": "Training",
     "medals": "Medaillen",
+    "trainingGroups": "Trainingsgruppen",
     "settings": "Einstellungen"
   },
   "workout": {
@@ -95,6 +96,50 @@
       "required": "Dieses Feld ist erforderlich",
       "minOneExercise": "Mindestens eine Übung ist erforderlich",
       "minOneSet": "Mindestens ein Satz ist erforderlich"
+    }
+  },
+  "trainingGroup": {
+    "title": "Trainingsgruppen",
+    "name": "Gruppenname",
+    "members": "Mitglieder",
+    "role": "Rolle",
+    "roles": {
+      "owner": "Ersteller",
+      "member": "Mitglied"
+    },
+    "search": "Suchen...",
+    "columns": "Spalten",
+    "columnsSelected": "{count} Spalten ausgewählt",
+    "addGroup": "Neue Gruppe",
+    "actions": "Aktionen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "filterBy": "Nach {{field}} filtern",
+    "confirmDeleteTitle": "Gruppe löschen",
+    "confirmDelete": "Möchten Sie die Gruppe \"{{name}}\" wirklich löschen?",
+    "createSuccess": "Gruppe wurde erfolgreich angelegt",
+    "updateSuccess": "Gruppe wurde erfolgreich aktualisiert",
+    "deleteSuccess": "Gruppe wurde erfolgreich gelöscht",
+    "deleteError": "Fehler beim Löschen der Gruppe",
+    "clearFilters": "Alle Filter zurücksetzen",
+    "dialog": {
+      "title": "Neue Gruppe anlegen",
+      "editTitle": "Gruppe bearbeiten",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "delete": "Löschen",
+      "uploadImage": "Bild hochladen",
+      "removeImage": "Bild entfernen",
+      "membersSection": "Mitglieder",
+      "inviteUser": "User einladen",
+      "selectUser": "User auswählen",
+      "pendingInvitations": "Offene Einladungen",
+      "inviteSent": "Einladung wurde gesendet",
+      "cancelInvitation": "Einladung zurückziehen",
+      "joined": "Beigetreten"
+    },
+    "validation": {
+      "required": "Dieses Feld ist erforderlich"
     }
   },
   "medal": {
@@ -309,6 +354,14 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "invitations": {
+      "title": "Gruppeneinladungen",
+      "invitedBy": "Eingeladen von {{name}}",
+      "accept": "Annehmen",
+      "reject": "Ablehnen",
+      "accepted": "Einladung angenommen",
+      "rejected": "Einladung abgelehnt"
+    },
     "welcome": "Willkommen",
     "description": "Dein persönlicher Fitness-Assistent",
     "admin": {
