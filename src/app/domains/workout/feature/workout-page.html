@@ -1,38 +1,57 @@
 <div *transloco="let t" class="h-full min-h-0 flex flex-col">
-  <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 shrink-0 mb-6">{{ t('workout.title') }}</h1>
-  <app-data-table
-    #dataTable
-    [data]="userWorkouts()"
-    [columns]="columns()"
-    [translations]="translations"
-    [globalFilterFields]="globalFilterFields"
-    stateKey="workout"
-    [rowGroup]="rowGroupConfig"
-    nameField="date"
-    (itemAdd)="onAdd()"
-    (itemEdit)="onEdit($event)"
-    (itemDelete)="onDelete($event)"
-  >
-    <ng-template #cell let-item let-field="field">
-      @if (field === 'date') {
-        {{ formatDate(item[field]) }}
-      } @else if (field === 'durationMinutes') {
-        @if (item[field]) {
-          {{ item[field] }} min
-        } @else {
-          <span class="text-surface-400">—</span>
-        }
-      } @else if (field === 'locationId') {
-        <p-tag [value]="getLocationName(item[field])" [severity]="item[field] ? 'info' : 'secondary'" />
-      } @else if (field === 'description') {
-        {{ item[field] || '—' }}
-      } @else if (field === 'exercises') {
-        <span class="text-sm">{{ getExerciseSummary(item) }}</span>
-      } @else {
-        {{ item[field] || '—' }}
-      }
-    </ng-template>
-  </app-data-table>
+  <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 shrink-0 mb-4">{{ t('workout.title') }}</h1>
+
+  <p-tabs value="0" class="flex-1 min-h-0 flex flex-col">
+    <p-tablist>
+      <p-tab value="0">{{ t('workout.tabList') }}</p-tab>
+      <p-tab value="1">{{ t('workout.tabCalendar') }}</p-tab>
+    </p-tablist>
+    <p-tabpanels class="flex-1 min-h-0 flex flex-col">
+      <!-- Tab: Liste -->
+      <p-tabpanel value="0" class="flex-1 min-h-0 flex flex-col">
+        <app-data-table
+          #dataTable
+          [data]="userWorkouts()"
+          [columns]="columns()"
+          [translations]="translations"
+          [globalFilterFields]="globalFilterFields"
+          stateKey="workout"
+          [rowGroup]="rowGroupConfig"
+          nameField="date"
+          (itemAdd)="onAdd()"
+          (itemEdit)="onEdit($event)"
+          (itemDelete)="onDelete($event)"
+        >
+          <ng-template #cell let-item let-field="field">
+            @if (field === 'date') {
+              {{ formatDate(item[field]) }}
+            } @else if (field === 'durationMinutes') {
+              @if (item[field]) {
+                {{ item[field] }} min
+              } @else {
+                <span class="text-surface-400">—</span>
+              }
+            } @else if (field === 'locationId') {
+              <p-tag [value]="getLocationName(item[field])" [severity]="item[field] ? 'info' : 'secondary'" />
+            } @else if (field === 'description') {
+              {{ item[field] || '—' }}
+            } @else if (field === 'exercises') {
+              <span class="text-sm">{{ getExerciseSummary(item) }}</span>
+            } @else {
+              {{ item[field] || '—' }}
+            }
+          </ng-template>
+        </app-data-table>
+      </p-tabpanel>
+
+      <!-- Tab: Kalender -->
+      <p-tabpanel value="1">
+        <div class="pt-2">
+          <app-workout-heatmap [workoutDates]="workoutDates()" />
+        </div>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
 
   <app-workout-dialog
     [visible]="dialogVisible()"

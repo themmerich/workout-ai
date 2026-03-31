@@ -39,6 +39,10 @@
   },
   "workout": {
     "title": "Training",
+    "tabList": "Liste",
+    "tabCalendar": "Kalender",
+    "calendarTooltip": "{{count}} Training(s) am {{date}}",
+    "noWorkout": "Kein Training",
     "columns": "Spalten",
     "columnsSelected": "{count} Spalten ausgewählt",
     "search": "Suchen...",
