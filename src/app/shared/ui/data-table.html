@@ -68,13 +68,17 @@
       stateStorage="local"
       [stateKey]="'workout-ai-table-' + stateKey()"
       [tableStyle]="{ 'min-width': minTableWidth() }"
+      [rowGroupMode]="rowGroup() ? 'subheader' : undefined!"
+      [groupRowsBy]="rowGroup()?.groupBy ?? undefined!"
+      [sortField]="rowGroup()?.groupBy ?? undefined!"
+      [sortOrder]="rowGroup()?.sortOrder ?? 1"
     >
       <ng-template #header>
         <tr>
           @for (col of selectedColumns; track col.field) {
-            <th [pSortableColumn]="col.sortable !== false ? col.field : undefined" pResizableColumn [class]="col.headerClass ?? ''">
+            <th [pSortableColumn]="col.sortable !== false && !rowGroup() ? col.field : undefined" pResizableColumn [class]="col.headerClass ?? ''">
               {{ t(col.headerKey) }}
-              @if (col.sortable !== false) {
+              @if (col.sortable !== false && !rowGroup()) {
                 <p-sortIcon [field]="col.field" />
               }
               @if (col.filterable !== false && col.filterMode === 'multiselect' && col.filterOptions) {
@@ -128,6 +132,17 @@
           @if (!readOnly()) {
             <th class="text-center" style="width: 5rem">{{ t(translations().actions) }}</th>
           }
+        </tr>
+      </ng-template>
+      <ng-template #groupheader let-item>
+        <tr pRowGroupHeader>
+          <td [attr.colspan]="selectedColumns.length + (readOnly() ? 0 : 1)" class="font-bold text-surface-700 dark:text-surface-200 bg-surface-100 dark:bg-surface-700 px-4 py-2">
+            @if (rowGroup()?.labelFn) {
+              {{ rowGroup()!.labelFn!($any(item)[rowGroup()!.groupBy]) }}
+            } @else {
+              {{ $any(item)[rowGroup()?.groupBy ?? ''] }}
+            }
+          </td>
         </tr>
       </ng-template>
       <ng-template #body let-item>

@@ -25,7 +25,7 @@ import { Toast } from 'primeng/toast';
 import { Toolbar } from 'primeng/toolbar';
 import { Tooltip } from 'primeng/tooltip';
 import { LocalStorageService } from '../utils/local-storage.service';
-import { DataTableTranslations, TableColumn } from './data-table.model';
+import { DataTableTranslations, RowGroupConfig, TableColumn } from './data-table.model';
 
 @Component({
   selector: 'app-data-table',
@@ -67,6 +67,7 @@ export class DataTableComponent<T extends { id: string } = any> {
   readonly minTableWidth = input('30rem');
   readonly readOnly = input(false);
   readonly showAdd = input(true);
+  readonly rowGroup = input<RowGroupConfig | null>(null);
 
   readonly itemAdd = output<void>();
   readonly itemEdit = output<T>();

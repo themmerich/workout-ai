@@ -25,5 +25,6 @@ export interface Workout {
   time: string;
   durationMinutes?: number;
   locationId: string | null;
+  description?: string;
   exercises: WorkoutExerciseEntry[];
 }
