@@ -35,6 +35,7 @@
     "weight": "Weight",
     "workouts": "Workouts",
     "medals": "Medals",
+    "trainingGroups": "Training Groups",
     "settings": "Settings"
   },
   "workout": {
@@ -95,6 +96,50 @@
       "required": "This field is required",
       "minOneExercise": "At least one exercise is required",
       "minOneSet": "At least one set is required"
+    }
+  },
+  "trainingGroup": {
+    "title": "Training Groups",
+    "name": "Group Name",
+    "members": "Members",
+    "role": "Role",
+    "roles": {
+      "owner": "Owner",
+      "member": "Member"
+    },
+    "search": "Search...",
+    "columns": "Columns",
+    "columnsSelected": "{count} columns selected",
+    "addGroup": "New Group",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "filterBy": "Filter by {{field}}",
+    "confirmDeleteTitle": "Delete Group",
+    "confirmDelete": "Are you sure you want to delete the group \"{{name}}\"?",
+    "createSuccess": "Group was successfully created",
+    "updateSuccess": "Group was successfully updated",
+    "deleteSuccess": "Group was successfully deleted",
+    "deleteError": "Error deleting group",
+    "clearFilters": "Clear all filters",
+    "dialog": {
+      "title": "Create New Group",
+      "editTitle": "Edit Group",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "uploadImage": "Upload Image",
+      "removeImage": "Remove Image",
+      "membersSection": "Members",
+      "inviteUser": "Invite User",
+      "selectUser": "Select user",
+      "pendingInvitations": "Pending Invitations",
+      "inviteSent": "Invitation sent",
+      "cancelInvitation": "Cancel invitation",
+      "joined": "Joined"
+    },
+    "validation": {
+      "required": "This field is required"
     }
   },
   "medal": {
@@ -309,6 +354,14 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "invitations": {
+      "title": "Group Invitations",
+      "invitedBy": "Invited by {{name}}",
+      "accept": "Accept",
+      "reject": "Decline",
+      "accepted": "Invitation accepted",
+      "rejected": "Invitation declined"
+    },
     "welcome": "Welcome",
     "description": "Your personal fitness assistant",
     "admin": {

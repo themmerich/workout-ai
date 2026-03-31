@@ -1,0 +1,37 @@
+<div *transloco="let t" class="h-full min-h-0 flex flex-col">
+  <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 shrink-0 mb-6">{{ t('trainingGroup.title') }}</h1>
+  <app-data-table
+    #dataTable
+    [data]="userGroups()"
+    [columns]="columns()"
+    [translations]="translations"
+    [globalFilterFields]="globalFilterFields"
+    stateKey="training-group"
+    nameField="name"
+    (itemAdd)="onAdd()"
+    (itemEdit)="onEdit($event)"
+    (itemDelete)="onDelete($event)"
+  >
+    <ng-template #cell let-item let-field="field">
+      @if (field === 'name') {
+        <div class="flex items-center gap-2">
+          <app-location-logo [logo]="item.logo" [name]="item.name" [size]="28" />
+          <span>{{ item.name }}</span>
+        </div>
+      } @else if (field === 'members') {
+        {{ item.members.length }}
+      } @else if (field === 'role') {
+        <p-tag [value]="t('trainingGroup.roles.' + getUserRole(item))" [severity]="getUserRole(item) === 'owner' ? 'warn' : 'info'" />
+      } @else {
+        {{ item[field] }}
+      }
+    </ng-template>
+  </app-data-table>
+
+  <app-training-group-dialog
+    [visible]="dialogVisible()"
+    [group]="editingGroup()"
+    (groupSaved)="onSaveGroup($event)"
+    (dialogClosed)="dialogVisible.set(false)"
+  />
+</div>
