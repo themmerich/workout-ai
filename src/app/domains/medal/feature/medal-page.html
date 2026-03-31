@@ -1,0 +1,24 @@
+<div *transloco="let t" class="flex flex-col gap-4 overflow-y-auto h-full">
+  <div class="flex items-center justify-between shrink-0">
+    <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0">{{ t('medal.title') }}</h1>
+    <span class="text-sm text-surface-500 dark:text-surface-400">
+      {{ t('medal.earnedCount', { earned: earnedCount(), total: totalCount() }) }}
+    </span>
+  </div>
+
+  <div class="shrink-0">
+    <p-selectbutton
+      [options]="categoryOptions()"
+      [ngModel]="activeCategory()"
+      (ngModelChange)="activeCategory.set($event)"
+      optionLabel="label"
+      optionValue="value"
+    />
+  </div>
+
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    @for (medal of filteredMedals(); track medal.definition.id) {
+      <app-medal-card [medal]="medal" />
+    }
+  </div>
+</div>

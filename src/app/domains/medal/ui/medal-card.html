@@ -1,0 +1,47 @@
+<div
+  *transloco="let t"
+  class="rounded-xl p-4 flex flex-col items-center text-center gap-2 transition-all"
+  [class]="medal().result.earned
+    ? 'bg-white/60 dark:bg-surface-800/60 backdrop-blur-sm'
+    : 'bg-white/20 dark:bg-surface-800/20 opacity-40 grayscale'"
+>
+  @switch (iconType()) {
+    @case ('trophy') { <app-medal-icon-trophy [size]="48" [color]="iconColor()" /> }
+    @case ('star') { <app-medal-icon-star [size]="48" [color]="iconColor()" /> }
+    @case ('bolt') { <app-medal-icon-bolt [size]="48" [color]="iconColor()" /> }
+    @case ('fire') { <app-medal-icon-fire [size]="48" [color]="iconColor()" /> }
+    @case ('runner') { <app-medal-icon-runner [size]="48" [color]="iconColor()" /> }
+    @case ('speed') { <app-medal-icon-speed [size]="48" [color]="iconColor()" /> }
+    @case ('calendar') { <app-medal-icon-calendar [size]="48" [color]="iconColor()" /> }
+    @case ('weight') { <app-medal-icon-weight [size]="48" [color]="iconColor()" /> }
+    @case ('muscle') { <app-medal-icon-muscle [size]="48" [color]="iconColor()" /> }
+  }
+
+  <span class="text-sm font-semibold text-surface-900 dark:text-surface-0 leading-tight">
+    {{ displayName() }}
+  </span>
+
+  <span class="text-xs text-surface-500 dark:text-surface-400 leading-tight">
+    {{ displayDescription() }}
+  </span>
+
+  @if (medal().result.earned) {
+    @if (medal().result.detail) {
+      <span class="text-xs font-bold text-primary">{{ medal().result.detail }}</span>
+    }
+    @if (medal().result.earnedDate) {
+      <span class="text-xs text-surface-400">{{ t('medal.earnedOn', { date: formatDate(medal().result.earnedDate!) }) }}</span>
+    }
+  } @else if (medal().result.progress != null && medal().result.progress! < 1) {
+    <div class="w-full mt-1">
+      <p-progressbar
+        [value]="medal().result.progress! * 100"
+        [showValue]="false"
+        styleClass="h-1.5"
+      />
+      @if (medal().result.detail) {
+        <span class="text-xs text-surface-400 mt-0.5">{{ medal().result.detail }}</span>
+      }
+    </div>
+  }
+</div>

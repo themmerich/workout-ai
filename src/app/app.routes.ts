@@ -57,6 +57,12 @@ export const routes: Routes = [
           import('./domains/workout/workout.routes').then((m) => m.workoutRoutes),
       },
       {
+        path: 'medals',
+        canActivate: [locationMemberGuard],
+        loadChildren: () =>
+          import('./domains/medal/medal.routes').then((m) => m.medalRoutes),
+      },
+      {
         path: 'my-location',
         canActivate: [locationMemberGuard],
         loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationDetailsRoutes),

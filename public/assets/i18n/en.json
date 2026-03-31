@@ -34,6 +34,7 @@
     "myCalendar": "Schedule",
     "weight": "Weight",
     "workouts": "Workouts",
+    "medals": "Medals",
     "settings": "Settings"
   },
   "workout": {
@@ -90,6 +91,56 @@
       "required": "This field is required",
       "minOneExercise": "At least one exercise is required",
       "minOneSet": "At least one set is required"
+    }
+  },
+  "medal": {
+    "title": "Medals",
+    "earned": "Earned",
+    "earnedOn": "Earned on {{date}}",
+    "earnedCount": "{{earned}} of {{total}} medals earned",
+    "categories": {
+      "all": "All",
+      "strength": "Strength",
+      "cardio": "Cardio",
+      "general": "General"
+    },
+    "general": {
+      "firstWorkout": "First Workout",
+      "firstWorkoutDesc": "Log your first workout",
+      "workouts10": "10 Workouts",
+      "workouts10Desc": "Complete 10 workouts",
+      "workouts25": "25 Workouts",
+      "workouts25Desc": "Complete 25 workouts",
+      "workouts50": "50 Workouts",
+      "workouts50Desc": "Complete 50 workouts",
+      "workouts100": "100 Workouts",
+      "workouts100Desc": "Complete 100 workouts",
+      "allMuscleGroups": "All-Rounder",
+      "allMuscleGroupsDesc": "Train all muscle groups"
+    },
+    "strength": {
+      "prPrefix": "PR: ",
+      "prDesc": "Personal record for {{exercise}}",
+      "first100kg": "100 kg Club",
+      "first100kgDesc": "Lift 100 kg for the first time"
+    },
+    "cardio": {
+      "longestRun": "Long Distance",
+      "longestRunDesc": "Longest run (total duration)",
+      "fastestSpeed": "Sprinter",
+      "fastestSpeedDesc": "Highest speed reached",
+      "mostCalories": "Calorie Burner",
+      "mostCaloriesDesc": "Most calories burned in one session"
+    },
+    "streak": {
+      "streak3": "3-Day Streak",
+      "streak3Desc": "Work out 3 days in a row",
+      "streak7": "Weekly Streak",
+      "streak7Desc": "Work out 7 days in a row",
+      "streak14": "2-Week Streak",
+      "streak14Desc": "Work out 14 days in a row",
+      "streak30": "Monthly Streak",
+      "streak30Desc": "Work out 30 days in a row"
     }
   },
   "myLocation": {
