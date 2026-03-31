@@ -29,4 +29,5 @@ export interface UserProfile {
   city?: string;
   country?: string;
   weightHistory?: WeightEntry[];
+  weightCompareDate?: string;
 }

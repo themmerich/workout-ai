@@ -81,6 +81,10 @@ export const routes: Routes = [
         loadComponent: () => import('./domains/user/feature/profile-page'),
       },
       {
+        path: 'weight',
+        loadComponent: () => import('./domains/user/feature/weight-page'),
+      },
+      {
         path: 'settings',
         canActivate: [adminGuard],
         loadChildren: () => import('./domains/settings/settings.routes').then((m) => m.settingsRoutes),
