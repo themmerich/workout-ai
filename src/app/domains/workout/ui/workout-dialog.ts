@@ -1,47 +1,55 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
+import { Dialog } from 'primeng/dialog';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
-import { Toast } from 'primeng/toast';
 import { AuthService } from '../../../core/auth/auth.service';
 import { LocationService } from '../../location/data-access/location.service';
 import { ExerciseService } from '../../exercise/data-access/exercise.service';
 import { ExerciseComboService } from '../../exercise-combo/data-access/exercise-combo.service';
-import { WorkoutService } from '../data-access/workout.service';
+import { Workout } from '../model/workout.model';
 
 @Component({
-  selector: 'app-new-workout-page',
+  selector: 'app-workout-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { class: 'flex flex-col h-full min-h-0' },
-  providers: [MessageService],
   imports: [
     ReactiveFormsModule,
     TranslocoDirective,
     ButtonModule,
     DatePicker,
+    Dialog,
     FloatLabel,
     InputNumber,
     InputText,
     Select,
-    Toast,
   ],
-  templateUrl: './new-workout-page.html',
+  templateUrl: './workout-dialog.html',
 })
-export default class NewWorkoutPageComponent {
+export class WorkoutDialogComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   private readonly locationService = inject(LocationService);
-  private readonly exerciseService = inject(ExerciseService);
+  protected readonly exerciseService = inject(ExerciseService);
   private readonly comboService = inject(ExerciseComboService);
-  private readonly workoutService = inject(WorkoutService);
-  private readonly messageService = inject(MessageService);
   private readonly transloco = inject(TranslocoService);
+
+  readonly visible = input(false);
+  readonly workout = input<Workout | null>(null);
+  readonly workoutSaved = output<Workout | Omit<Workout, 'id'>>();
+  readonly dialogClosed = output<void>();
 
   protected readonly locationOptions = computed(() => {
     const user = this.authService.currentUser();
@@ -80,11 +88,69 @@ export default class NewWorkoutPageComponent {
     time: [''],
     durationMinutes: [null as number | null, Validators.min(1)],
     locationId: [this.authService.currentUser()?.locationId ?? ''],
+    description: [''],
     exercises: this.fb.array<FormGroup>([], Validators.required),
   });
 
   get exercisesArray(): FormArray<FormGroup> {
     return this.form.controls.exercises;
+  }
+
+  constructor() {
+    effect(() => {
+      const isVisible = this.visible();
+      const data = this.workout();
+      if (!isVisible) return;
+      this.exercisesArray.clear();
+      if (data) {
+        this.form.patchValue({
+          date: new Date(data.date),
+          time: data.time,
+          durationMinutes: data.durationMinutes ?? null,
+          locationId: data.locationId ?? '__outdoor__',
+          description: data.description ?? '',
+        });
+        for (const entry of [...data.exercises].sort((a, b) => a.orderIndex - b.orderIndex)) {
+          const selection = entry.exerciseId
+            ? `exercise:${entry.exerciseId}`
+            : `combo:${entry.exerciseComboId}`;
+          const isCardio = entry.exerciseId
+            ? this.exerciseService.getById(entry.exerciseId)?.type === 'cardio'
+            : false;
+
+          const group = this.fb.nonNullable.group({
+            selection: [selection, Validators.required],
+            sets: this.fb.array<FormGroup>([]),
+            segments: this.fb.array<FormGroup>([]),
+          });
+
+          if (isCardio && entry.segments?.length) {
+            for (const seg of entry.segments) {
+              (group.get('segments') as FormArray).push(this.createSegmentRow(seg.durationMinutes, seg.speedKmh, seg.heartRateBpm, seg.caloriesBurned));
+            }
+          } else if (entry.sets.length) {
+            for (const set of entry.sets) {
+              (group.get('sets') as FormArray).push(this.createSetRow(set.reps, set.weightKg));
+            }
+          } else {
+            (group.get(isCardio ? 'segments' : 'sets') as FormArray).push(
+              isCardio ? this.createSegmentRow() : this.createSetRow(),
+            );
+          }
+
+          this.exercisesArray.push(group);
+        }
+      } else {
+        this.form.reset({
+          date: new Date(),
+          time: '',
+          durationMinutes: null,
+          locationId: this.authService.currentUser()?.locationId ?? '',
+          description: '',
+        });
+        this.addExercise();
+      }
+    });
   }
 
   protected addExercise(): void {
@@ -106,8 +172,7 @@ export default class NewWorkoutPageComponent {
     const selection = this.exercisesArray.at(exerciseIndex).get('selection')?.value as string;
     if (!selection || !selection.startsWith('exercise:')) return false;
     const id = selection.split(':')[1];
-    const exercise = this.exerciseService.getById(id);
-    return exercise?.type === 'cardio';
+    return this.exerciseService.getById(id)?.type === 'cardio';
   }
 
   protected onExerciseSelectionChange(exerciseIndex: number): void {
@@ -198,39 +263,38 @@ export default class NewWorkoutPageComponent {
         },
       );
 
-      this.workoutService.add({
+      const result = {
         userId: user.id,
         date: dateStr,
         time: formValue.time,
         durationMinutes: formValue.durationMinutes ?? undefined,
         locationId: formValue.locationId === '__outdoor__' ? null : formValue.locationId,
+        description: formValue.description || undefined,
         exercises,
-      });
+      };
 
-      this.messageService.add({
-        severity: 'success',
-        summary: this.transloco.translate('workout.saveSuccess'),
-        life: 3000,
-      });
-
-      this.form.reset({ date: null, time: '', durationMinutes: null, locationId: '' });
-      this.exercisesArray.clear();
+      const data = this.workout();
+      if (data) {
+        this.workoutSaved.emit({ id: data.id, ...result });
+      } else {
+        this.workoutSaved.emit(result);
+      }
     }
   }
 
-  private createSetRow(): FormGroup {
+  private createSetRow(reps = 1, weightKg?: number): FormGroup {
     return this.fb.nonNullable.group({
-      reps: [1, [Validators.required, Validators.min(1)]],
-      weightKg: [null as number | null],
+      reps: [reps, [Validators.required, Validators.min(1)]],
+      weightKg: [weightKg ?? (null as number | null)],
     });
   }
 
-  private createSegmentRow(): FormGroup {
+  private createSegmentRow(durationMinutes?: number, speedKmh?: number, heartRateBpm?: number, caloriesBurned?: number): FormGroup {
     return this.fb.nonNullable.group({
-      durationMinutes: [null as number | null],
-      speedKmh: [null as number | null],
-      heartRateBpm: [null as number | null],
-      caloriesBurned: [null as number | null],
+      durationMinutes: [durationMinutes ?? (null as number | null)],
+      speedKmh: [speedKmh ?? (null as number | null)],
+      heartRateBpm: [heartRateBpm ?? (null as number | null)],
+      caloriesBurned: [caloriesBurned ?? (null as number | null)],
     });
   }
 }

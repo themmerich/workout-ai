@@ -16,6 +16,12 @@ export interface CellTemplateContext<T = unknown> {
   field: string;
 }
 
+export interface RowGroupConfig {
+  groupBy: string;
+  sortOrder?: 1 | -1;
+  labelFn?: (value: string) => string;
+}
+
 export interface DataTableTranslations {
   columns: string;
   columnsSelected: string;
