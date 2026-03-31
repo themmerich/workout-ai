@@ -1,0 +1,119 @@
+<div *transloco="let t" class="flex flex-col gap-4 overflow-y-auto h-full">
+  <h1 class="text-3xl font-bold text-surface-900 dark:text-surface-0 shrink-0">{{ t('profile.weightTitle') }}</h1>
+
+  @if (userProfile()) {
+    @if (latestWeight()) {
+      <!-- Current Weight & BMI -->
+      <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <span class="text-xs text-surface-500 dark:text-surface-400">{{ t('profile.currentWeight') }}</span>
+            <div class="text-base font-semibold text-surface-900 dark:text-surface-0">{{ formatNumber(latestWeight()!.weightKg) }} kg</div>
+          </div>
+          <div>
+            <span class="text-xs text-surface-500 dark:text-surface-400">{{ t('profile.bmi') }}</span>
+            <div class="text-base font-semibold">
+              @if (bmi(); as bmiValue) {
+                <span [class]="bmiCategory()!.color" [pTooltip]="bmiTooltip()" tooltipPosition="bottom" [escape]="false" tooltipStyleClass="!max-w-80">
+                  {{ formatNumber(bmiValue) }} ({{ t('profile.bmiCategories.' + bmiCategory()!.key) }})
+                </span>
+              } @else {
+                <span class="text-surface-400 font-normal">—</span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compare -->
+      <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
+        <div class="flex items-center gap-2 mb-4">
+          <i class="pi pi-arrows-h text-base text-surface-500 dark:text-surface-400"></i>
+          <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('profile.compareTo') }}</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <p-datepicker
+            [ngModel]="compareDate()"
+            (ngModelChange)="onCompareDateChange($event)"
+            [ngModelOptions]="{ standalone: true }"
+            inputId="wt-compare-date"
+            styleClass="w-44"
+            dateFormat="dd.mm.yy"
+            appendTo="body"
+            [showClear]="true"
+          />
+          @if (compareDate()) {
+            @if (weightDifference() === undefined) {
+              <span class="text-sm text-surface-400 italic">{{ t('profile.compareNoData') }}</span>
+            } @else if (weightDifference()! < 0) {
+              <span class="text-sm font-semibold text-green-500">{{ formatNumber(weightDifference()! * -1) }} kg {{ t('profile.compareLost') }}</span>
+            } @else if (weightDifference()! > 0) {
+              <span class="text-sm font-semibold text-orange-500">{{ formatNumber(weightDifference()!) }} kg {{ t('profile.compareGained') }}</span>
+            } @else {
+              <span class="text-sm font-semibold text-surface-500">{{ t('profile.compareEqual') }}</span>
+            }
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Weight Tracking -->
+    <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-5">
+      <div class="flex items-center gap-2 mb-4">
+        <i class="pi pi-chart-line text-base text-surface-500 dark:text-surface-400"></i>
+        <span class="text-sm font-semibold text-surface-900 dark:text-surface-0">{{ t('profile.weightTracking') }}</span>
+      </div>
+
+      @if (weightHistory().length > 1) {
+        <div class="h-64 mb-4">
+          <p-chart type="line" [data]="weightChartData()" [options]="weightChartOptions" height="100%" />
+        </div>
+      } @else if (weightHistory().length === 0) {
+        <p class="text-surface-400 text-sm italic mb-4">{{ t('profile.noWeightEntries') }}</p>
+      }
+
+      <div class="flex items-end gap-3">
+        <div class="w-44">
+          <p-floatlabel variant="on">
+            <p-datepicker
+              [ngModel]="weightDate()"
+              (ngModelChange)="onWeightDateChange($event)"
+              [ngModelOptions]="{ standalone: true }"
+              inputId="wt-weight-date"
+              styleClass="w-full"
+              dateFormat="dd.mm.yy"
+              appendTo="body"
+            />
+            <label for="wt-weight-date">{{ t('profile.weightDate') }}</label>
+          </p-floatlabel>
+        </div>
+        <div class="w-36">
+          <p-floatlabel variant="on">
+            <p-inputnumber
+              [ngModel]="weightKg()"
+              (ngModelChange)="weightKg.set($event)"
+              (onBlur)="onWeightBlur()"
+              [ngModelOptions]="{ standalone: true }"
+              inputId="wt-weight-kg"
+              [min]="20"
+              [max]="300"
+              [maxFractionDigits]="2"
+              styleClass="w-full"
+              inputStyleClass="w-full"
+              suffix=" kg"
+            />
+            <label for="wt-weight-kg">{{ t('profile.weightKg') }}</label>
+          </p-floatlabel>
+        </div>
+        <p-button
+          [icon]="hasExistingWeight() ? 'pi pi-minus' : 'pi pi-plus'"
+          [severity]="hasExistingWeight() ? 'danger' : 'primary'"
+          (onClick)="onWeightButtonClick()"
+          [ariaLabel]="hasExistingWeight() ? t('profile.removeWeight') : t('profile.addWeight')"
+        />
+      </div>
+    </div>
+
+    <p-toast />
+  }
+</div>

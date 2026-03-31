@@ -32,6 +32,7 @@
     "myMembers": "Mitglieder",
     "myEquipment": "Geräte",
     "myCalendar": "Termine",
+    "weight": "Gewicht",
     "workouts": "Training",
     "settings": "Einstellungen"
   },
@@ -182,8 +183,7 @@
   },
   "profile": {
     "title": "Mein Profil",
-    "tabData": "Meine Daten",
-    "tabWeight": "Gewicht",
+    "weightTitle": "Gewicht",
     "personalData": "Persönliche Daten",
     "salutation": "Anrede",
     "salutations": {
@@ -215,6 +215,11 @@
     "weightDate": "Datum",
     "weightKg": "Gewicht",
     "currentWeight": "Aktuelles Gewicht",
+    "compareTo": "Vergleichen mit",
+    "compareLost": "abgenommen",
+    "compareGained": "zugenommen",
+    "compareEqual": "Gewicht unverändert",
+    "compareNoData": "Unterschied kann nicht berechnet werden",
     "bmi": "BMI",
     "bmiCategories": {
       "underweight": "Untergewicht",
