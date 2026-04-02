@@ -25,7 +25,7 @@ export const sheriffConfig: SheriffConfig = {
       'domain:*',
     ],
     'domain:*': [sameTag, 'type:shared', 'type:core'],
-    'domain:dashboard': [sameTag, 'domain:user', 'domain:location', 'domain:equipment', 'domain:exercise', 'type:shared', 'type:core'],
+    'domain:dashboard': [sameTag, 'domain:user', 'domain:location', 'domain:equipment', 'domain:exercise', 'domain:habit', 'type:shared', 'type:core'],
     'domain:my-location': [sameTag, 'domain:location', 'domain:equipment', 'domain:user', 'type:shared', 'type:core'],
     'domain:user': [sameTag, 'domain:location', 'type:shared', 'type:core'],
     'domain:exercise': [sameTag, 'domain:equipment', 'type:shared', 'type:core'],

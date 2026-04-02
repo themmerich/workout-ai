@@ -6,6 +6,7 @@ import { CardModule } from 'primeng/card';
 import { AuthService } from '../../../core/auth/auth.service';
 import { EquipmentService } from '../../equipment/data-access/equipment.service';
 import { ExerciseService } from '../../exercise/data-access/exercise.service';
+import { HabitService } from '../../habit/data-access/habit.service';
 import { LocationService } from '../../location/data-access/location.service';
 import { WEEKDAYS } from '../../location/model/location.model';
 import { UserService } from '../../user/data-access/user.service';
@@ -28,9 +29,24 @@ export default class DashboardPageComponent {
   private readonly locationService = inject(LocationService);
   private readonly equipmentService = inject(EquipmentService);
   private readonly exerciseService = inject(ExerciseService);
+  private readonly habitService = inject(HabitService);
   private readonly transloco = inject(TranslocoService);
   protected readonly isAdmin = this.authService.isAdmin;
   protected readonly currentUser = this.authService.currentUser;
+
+  protected readonly todayHabitScore = computed(() => {
+    const today = new Date().toISOString().slice(0, 10);
+    return this.habitService.calculateDayScore(today);
+  });
+
+  protected readonly habitScoreColor = computed(() => {
+    const score = this.todayHabitScore();
+    if (score >= 40) return { bg: 'bg-sky-500/20', text: 'text-sky-500' };
+    if (score >= 30) return { bg: 'bg-green-700/20', text: 'text-green-700 dark:text-green-400' };
+    if (score >= 20) return { bg: 'bg-green-500/20', text: 'text-green-500' };
+    if (score >= 10) return { bg: 'bg-yellow-500/20', text: 'text-yellow-500' };
+    return { bg: 'bg-red-500/20', text: 'text-red-500' };
+  });
 
   protected readonly locationCount = computed(() => this.locationService.locations().length);
   protected readonly userCount = computed(() => this.userService.users().length);

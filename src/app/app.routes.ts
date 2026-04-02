@@ -71,6 +71,12 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'habits',
+        canActivate: [locationMemberGuard],
+        loadChildren: () =>
+          import('./domains/habit/habit.routes').then((m) => m.habitRoutes),
+      },
+      {
         path: 'my-location',
         canActivate: [locationMemberGuard],
         loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationDetailsRoutes),

@@ -1,0 +1,133 @@
+<div *transloco="let t" class="flex-1 min-h-0 overflow-auto border border-surface-200 dark:border-surface-700 rounded-lg">
+  <table class="w-full border-collapse min-w-[700px]">
+    <thead class="sticky top-0 z-10">
+      <tr class="bg-surface-50 dark:bg-surface-800">
+        <th
+          class="text-left p-2 font-semibold text-sm text-surface-700 dark:text-surface-300 border-b border-r border-surface-200 dark:border-surface-700 min-w-[180px] sticky left-0 bg-surface-50 dark:bg-surface-800 z-20"
+        >
+          {{ t('habit.habit') }}
+        </th>
+        @for (day of weekDays(); track day) {
+          <th
+            class="text-center p-2 font-semibold text-sm border-b border-surface-200 dark:border-surface-700 min-w-[90px]"
+            [class.bg-primary-50]="isToday(day)"
+            [class.dark:bg-primary-900/20]="isToday(day)"
+            [class.text-primary-700]="isToday(day)"
+            [class.dark:text-primary-300]="isToday(day)"
+            [class.bg-surface-50]="!isToday(day)"
+            [class.dark:bg-surface-800]="!isToday(day)"
+            [class.text-surface-700]="!isToday(day)"
+            [class.dark:text-surface-300]="!isToday(day)"
+          >
+            <div>{{ getDayLabel(day) }}</div>
+            <div class="text-xs font-normal">{{ getDateLabel(day) }}</div>
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (category of categories(); track category.id) {
+        <!-- Category header row -->
+        <tr
+          class="cursor-pointer select-none hover:bg-surface-100 dark:hover:bg-surface-700/50"
+          (click)="categoryToggled.emit(category.id)"
+        >
+          <td
+            [colSpan]="8"
+            class="p-2 font-semibold text-sm text-surface-800 dark:text-surface-200 bg-surface-100 dark:bg-surface-700/30 border-b border-surface-200 dark:border-surface-700 sticky left-0"
+          >
+            <div class="flex items-center gap-2">
+              <i
+                class="pi text-xs"
+                [class.pi-chevron-down]="!isCategoryCollapsed(category.id)"
+                [class.pi-chevron-right]="isCategoryCollapsed(category.id)"
+              ></i>
+              {{ category.name }}
+            </div>
+          </td>
+        </tr>
+        <!-- Habit rows (if not collapsed) -->
+        @if (!isCategoryCollapsed(category.id)) {
+          @for (habit of getHabitsForCategory(category.id); track habit.id) {
+            <tr class="hover:bg-surface-50 dark:hover:bg-surface-800/50">
+              <td
+                class="p-2 text-sm text-surface-700 dark:text-surface-300 border-b border-r border-surface-200 dark:border-surface-700 sticky left-0 bg-white dark:bg-surface-900"
+              >
+                <span>{{ habit.name }}</span>
+                @if (habit.unit) {
+                  <span class="text-xs text-surface-400 ml-1">({{ habit.unit }})</span>
+                }
+                @if (habit.scoreWeight > 1) {
+                  <span class="text-xs text-primary-500 ml-1">×{{ habit.scoreWeight }}</span>
+                }
+              </td>
+              @for (day of weekDays(); track day) {
+                <td
+                  class="p-1 text-center border-b border-surface-200 dark:border-surface-700"
+                  [class.bg-primary-50/50]="isToday(day)"
+                  [class.dark:bg-primary-900/10]="isToday(day)"
+                >
+                  @switch (habit.type) {
+                    @case ('checkbox') {
+                      <div class="flex justify-center">
+                        <p-checkbox
+                          [binary]="true"
+                          [ngModel]="getCheckValue(habit.id, day)"
+                          (ngModelChange)="onCheckChange(habit.id, day, $event)"
+                        />
+                      </div>
+                    }
+                    @case ('number') {
+                      <p-inputNumber
+                        [ngModel]="getNumberValue(habit.id, day)"
+                        (onBlur)="onNumberBlur(habit.id, day, $event)"
+                        [showButtons]="false"
+                        [inputStyle]="{ width: '70px', textAlign: 'center' }"
+                        inputStyleClass="p-inputtext-sm"
+                        [maxFractionDigits]="2"
+                        locale="de-DE"
+                      />
+                    }
+                    @case ('text') {
+                      <input
+                        pInputText
+                        type="text"
+                        class="p-inputtext-sm w-[70px] text-center"
+                        [value]="getTextValue(habit.id, day)"
+                        (blur)="onTextBlur(habit.id, day, $event)"
+                      />
+                    }
+                  }
+                </td>
+              }
+            </tr>
+          }
+        }
+      }
+    </tbody>
+    <tfoot class="sticky bottom-0 z-10">
+      <tr class="bg-surface-100 dark:bg-surface-700/30 font-semibold">
+        <td
+          class="p-2 text-sm text-surface-800 dark:text-surface-200 border-t border-r border-surface-200 dark:border-surface-700 sticky left-0 bg-surface-100 dark:bg-surface-700/30 z-20"
+        >
+          {{ t('habit.score') }}
+        </td>
+        @for (day of weekDays(); track day) {
+          <td
+            class="p-2 text-center text-sm border-t border-surface-200 dark:border-surface-700"
+            [class.bg-primary-100]="isToday(day)"
+            [class.dark:bg-primary-900/30]="isToday(day)"
+            [class.text-primary-700]="isToday(day)"
+            [class.dark:text-primary-300]="isToday(day)"
+            [class.bg-surface-100]="!isToday(day)"
+            [class.dark:bg-surface-700/30]="!isToday(day)"
+            [class.text-surface-800]="!isToday(day)"
+            [class.dark:text-surface-200]="!isToday(day)"
+          >
+            {{ dayScores().get(day) ?? 0 }}
+          </td>
+        }
+      </tr>
+    </tfoot>
+  </table>
+</div>

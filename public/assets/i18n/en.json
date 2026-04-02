@@ -36,6 +36,7 @@
     "workouts": "Workouts",
     "medals": "Medals",
     "trainingGroups": "Training Groups",
+    "habits": "Habits",
     "settings": "Settings"
   },
   "workout": {
@@ -383,7 +384,8 @@
       "todaySchedule": "Today",
       "openingHours": "Opening Hours",
       "adjustedHours": "Adjusted Hours",
-      "closedToday": "Closed"
+      "closedToday": "Closed",
+      "habitScore": "Habit score today"
     }
   },
   "user": {
@@ -669,6 +671,40 @@
     "validation": {
       "required": "This field is required",
       "email": "Please enter a valid email address"
+    }
+  },
+  "habit": {
+    "title": "Habits",
+    "habit": "Habit",
+    "score": "Score",
+    "manage": "Manage",
+    "weekNavigation": {
+      "previous": "Previous week",
+      "next": "Next week",
+      "today": "Today"
+    },
+    "management": {
+      "title": "Manage Habits",
+      "tabCategories": "Categories",
+      "tabHabits": "Habits",
+      "addCategory": "Add Category",
+      "addHabit": "Add Habit",
+      "newCategory": "New Category",
+      "newHabit": "New Habit",
+      "name": "Name",
+      "type": "Type",
+      "unit": "Unit",
+      "scoreWeight": "Score Weight",
+      "sortOrder": "Sort Order",
+      "active": "Active",
+      "delete": "Delete",
+      "save": "Save",
+      "cancel": "Cancel",
+      "close": "Close",
+      "selectCategory": "Select Category",
+      "confirmDeleteTitle": "Confirm Deletion",
+      "confirmDeleteCategory": "Are you sure you want to delete this category? All associated habits will also be deleted.",
+      "confirmDeleteHabit": "Are you sure you want to delete this habit?"
     }
   },
   "settings": {
