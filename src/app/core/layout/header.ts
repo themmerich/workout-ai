@@ -19,7 +19,6 @@ import { LocationLogoComponent } from '../../domains/location/ui/location-logo';
 })
 export class HeaderComponent {
   protected readonly themeService = inject(ThemeService);
-  private readonly translocoService = inject(TranslocoService);
   private readonly transloco = inject(TranslocoService);
   private readonly authService = inject(AuthService);
   private readonly userService = inject(UserService);
@@ -28,7 +27,7 @@ export class HeaderComponent {
   readonly toggleSidebar = output<void>();
 
   protected readonly langLabel = computed(() => {
-    const lang = this.translocoService.getActiveLang();
+    const lang = this.transloco.getActiveLang();
     return lang.toUpperCase();
   });
 
@@ -45,8 +44,8 @@ export class HeaderComponent {
   });
 
   protected toggleLanguage(): void {
-    const current = this.translocoService.getActiveLang();
-    this.translocoService.setActiveLang(current === 'de' ? 'en' : 'de');
+    const current = this.transloco.getActiveLang();
+    this.transloco.setActiveLang(current === 'de' ? 'en' : 'de');
   }
 
   protected onAcceptInvitation(groupId: string, invitationId: string): void {

@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { generateId } from '../../../shared/utils/id-generator';
 import { Workout } from '../model/workout.model';
 import { MOCK_WORKOUTS } from './workout.mock';
 
@@ -6,10 +7,6 @@ import { MOCK_WORKOUTS } from './workout.mock';
 export class WorkoutService {
   // TODO: Replace mock data with HTTP REST API calls
   readonly workouts = signal<Workout[]>(MOCK_WORKOUTS);
-
-  getAll(): Workout[] {
-    return this.workouts();
-  }
 
   getByUserId(userId: string): Workout[] {
     return this.workouts().filter((w) => w.userId === userId);
@@ -20,8 +17,8 @@ export class WorkoutService {
   }
 
   add(item: Omit<Workout, 'id'>): void {
-    const maxId = this.workouts().reduce((max, w) => Math.max(max, Number(w.id)), 0);
-    this.workouts.update((workouts) => [...workouts, { ...item, id: String(maxId + 1) }]);
+    const id = generateId(this.workouts());
+    this.workouts.update((workouts) => [...workouts, { ...item, id }]);
   }
 
   update(item: Workout): void {

@@ -1,38 +1,35 @@
 import { Injectable, signal } from '@angular/core';
+import { generateId } from '../../../shared/utils/id-generator';
 import { TrainingGroup, GroupInvitation } from '../model/training-group.model';
 import { MOCK_TRAINING_GROUPS } from './training-group.mock';
 
 @Injectable({ providedIn: 'root' })
 export class TrainingGroupService {
-  readonly groups = signal<TrainingGroup[]>(MOCK_TRAINING_GROUPS);
-
-  getAll(): TrainingGroup[] {
-    return this.groups();
-  }
+  readonly trainingGroups = signal<TrainingGroup[]>(MOCK_TRAINING_GROUPS);
 
   getById(id: string): TrainingGroup | undefined {
-    return this.groups().find((g) => g.id === id);
+    return this.trainingGroups().find((g) => g.id === id);
   }
 
   getByUserId(userId: string): TrainingGroup[] {
-    return this.groups().filter((g) => g.members.some((m) => m.userId === userId));
+    return this.trainingGroups().filter((g) => g.members.some((m) => m.userId === userId));
   }
 
   add(item: Omit<TrainingGroup, 'id'>): void {
-    const maxId = this.groups().reduce((max, g) => Math.max(max, Number(g.id)), 0);
-    this.groups.update((groups) => [...groups, { ...item, id: String(maxId + 1) }]);
+    const id = generateId(this.trainingGroups());
+    this.trainingGroups.update((groups) => [...groups, { ...item, id }]);
   }
 
   update(item: TrainingGroup): void {
-    this.groups.update((groups) => groups.map((g) => (g.id === item.id ? item : g)));
+    this.trainingGroups.update((groups) => groups.map((g) => (g.id === item.id ? item : g)));
   }
 
   delete(id: string): void {
-    this.groups.update((groups) => groups.filter((g) => g.id !== id));
+    this.trainingGroups.update((groups) => groups.filter((g) => g.id !== id));
   }
 
   invite(groupId: string, invitedUserId: string, invitedByUserId: string): void {
-    this.groups.update((groups) =>
+    this.trainingGroups.update((groups) =>
       groups.map((g) => {
         if (g.id !== groupId) return g;
         const invitation: GroupInvitation = {
@@ -49,7 +46,7 @@ export class TrainingGroupService {
   }
 
   acceptInvitation(groupId: string, invitationId: string): void {
-    this.groups.update((groups) =>
+    this.trainingGroups.update((groups) =>
       groups.map((g) => {
         if (g.id !== groupId) return g;
         const invitation = g.invitations.find((i) => i.id === invitationId);
@@ -73,7 +70,7 @@ export class TrainingGroupService {
   }
 
   rejectInvitation(groupId: string, invitationId: string): void {
-    this.groups.update((groups) =>
+    this.trainingGroups.update((groups) =>
       groups.map((g) => {
         if (g.id !== groupId) return g;
         return {
@@ -87,7 +84,7 @@ export class TrainingGroupService {
   }
 
   cancelInvitation(groupId: string, invitationId: string): void {
-    this.groups.update((groups) =>
+    this.trainingGroups.update((groups) =>
       groups.map((g) => {
         if (g.id !== groupId) return g;
         return {
@@ -100,7 +97,7 @@ export class TrainingGroupService {
 
   getPendingInvitations(userId: string): { invitation: GroupInvitation; group: TrainingGroup }[] {
     const result: { invitation: GroupInvitation; group: TrainingGroup }[] = [];
-    for (const group of this.groups()) {
+    for (const group of this.trainingGroups()) {
       for (const inv of group.invitations) {
         if (inv.invitedUserId === userId && inv.status === 'pending') {
           result.push({ invitation: inv, group });

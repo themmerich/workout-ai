@@ -53,7 +53,7 @@ export default class LoginPageComponent {
   });
 
   protected onUsernameChange(username: string): void {
-    const user = this.userService.getAll().find((u) => u.username === username);
+    const user = this.userService.users().find((u) => u.username === username);
     this.isAdminUser.set(user?.role === 'admin');
     this.errorKey.set(null);
   }

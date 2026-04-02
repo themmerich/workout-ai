@@ -15,7 +15,7 @@ export class MedalService {
     if (!user) return [];
 
     const workouts = this.workoutService.getByUserId(user.id);
-    const exercises = this.exerciseService.getAll();
+    const exercises = this.exerciseService.exercises();
     const catalog = buildMedalCatalog(exercises, workouts);
     const context = { workouts, exercises };
 

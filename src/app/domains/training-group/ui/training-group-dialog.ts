@@ -78,7 +78,7 @@ export class TrainingGroupDialogComponent {
     const memberIds = new Set(g.members.map((m) => m.userId));
     const pendingIds = new Set(g.invitations.filter((i) => i.status === 'pending').map((i) => i.invitedUserId));
     return this.userService
-      .getAll()
+      .users()
       .filter((u) => u.role !== 'admin' && !memberIds.has(u.id) && !pendingIds.has(u.id))
       .map((u) => ({ label: `${u.firstName} ${u.lastName}`, value: u.id }));
   });

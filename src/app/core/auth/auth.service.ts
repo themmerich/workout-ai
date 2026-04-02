@@ -17,7 +17,7 @@ export class AuthService {
   readonly hasLocation = computed(() => this.currentUser()?.locationId !== null && this.currentUser()?.locationId !== undefined);
 
   login(username: string, password: string, locationId: string | null): string | null {
-    const user = this.userService.getAll().find((u) => u.username === username);
+    const user = this.userService.users().find((u) => u.username === username);
     if (!user) {
       return 'login.errors.userNotFound';
     }

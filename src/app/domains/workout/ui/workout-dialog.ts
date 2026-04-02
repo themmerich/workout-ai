@@ -56,7 +56,7 @@ export class WorkoutDialogComponent {
     if (!user) return [];
 
     const userLocations = this.locationService
-      .getAll()
+      .locations()
       .filter((loc) => loc.members.some((m) => m.userId === user.id))
       .map((loc) => ({ label: loc.name, value: loc.id }));
 
@@ -72,7 +72,7 @@ export class WorkoutDialogComponent {
       value: `exercise:${e.id}`,
     }));
 
-    const combos = this.comboService.combos().map((c) => ({
+    const combos = this.comboService.exerciseCombos().map((c) => ({
       label: c.name,
       value: `combo:${c.id}`,
     }));
