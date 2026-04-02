@@ -19,7 +19,7 @@ import { Select } from 'primeng/select';
 import { AuthService } from '../../../core/auth/auth.service';
 import { LocationService } from '../../location/data-access/location.service';
 import { ExerciseService } from '../../exercise/data-access/exercise.service';
-import { ExerciseComboService } from '../../exercise-combo/data-access/exercise-combo.service';
+import { ExerciseComboService } from '../../exercise/data-access/exercise-combo.service';
 import { Workout } from '../model/workout.model';
 
 @Component({

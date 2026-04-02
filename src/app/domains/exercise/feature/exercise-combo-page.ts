@@ -3,7 +3,7 @@ import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Tag } from 'primeng/tag';
 import { DataTableComponent } from '../../../shared/ui/data-table';
 import { DataTableTranslations, TableColumn } from '../../../shared/ui/data-table.model';
-import { ExerciseService } from '../../exercise/data-access/exercise.service';
+import { ExerciseService } from '../data-access/exercise.service';
 import { ExerciseComboService } from '../data-access/exercise-combo.service';
 import { COMBO_TYPES, ExerciseCombo } from '../model/exercise-combo.model';
 import { ExerciseComboDialogComponent } from '../ui/exercise-combo-dialog';

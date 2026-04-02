@@ -46,7 +46,7 @@ export const routes: Routes = [
         path: 'exercise-combos',
         canActivate: [adminGuard],
         loadChildren: () =>
-          import('./domains/exercise-combo/exercise-combo.routes').then(
+          import('./domains/exercise/exercise.routes').then(
             (m) => m.exerciseComboRoutes,
           ),
       },
@@ -60,7 +60,7 @@ export const routes: Routes = [
         path: 'medals',
         canActivate: [locationMemberGuard],
         loadChildren: () =>
-          import('./domains/medal/medal.routes').then((m) => m.medalRoutes),
+          import('./domains/workout/workout.routes').then((m) => m.medalRoutes),
       },
       {
         path: 'training-groups',
@@ -79,22 +79,22 @@ export const routes: Routes = [
       {
         path: 'my-location',
         canActivate: [locationMemberGuard],
-        loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationDetailsRoutes),
+        loadChildren: () => import('./domains/location/location.routes').then((m) => m.myLocationDetailsRoutes),
       },
       {
         path: 'my-members',
         canActivate: [ownerGuard],
-        loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationMembersRoutes),
+        loadChildren: () => import('./domains/location/location.routes').then((m) => m.myLocationMembersRoutes),
       },
       {
         path: 'my-equipment',
         canActivate: [ownerGuard],
-        loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationEquipmentRoutes),
+        loadChildren: () => import('./domains/location/location.routes').then((m) => m.myLocationEquipmentRoutes),
       },
       {
         path: 'my-calendar',
         canActivate: [locationMemberGuard],
-        loadChildren: () => import('./domains/my-location/my-location.routes').then((m) => m.myLocationCalendarRoutes),
+        loadChildren: () => import('./domains/location/location.routes').then((m) => m.myLocationCalendarRoutes),
       },
       {
         path: 'profile',

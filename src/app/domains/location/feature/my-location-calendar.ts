@@ -18,8 +18,8 @@ import { InputText } from 'primeng/inputtext';
 import { Toast } from 'primeng/toast';
 import { getHolidays } from 'feiertagejs';
 import { AuthService } from '../../../core/auth/auth.service';
-import { LocationService } from '../../location/data-access/location.service';
-import { CalendarException, WEEKDAYS } from '../../location/model/location.model';
+import { LocationService } from '../data-access/location.service';
+import { CalendarException, WEEKDAYS } from '../model/location.model';
 
 @Component({
   selector: 'app-my-location-calendar',

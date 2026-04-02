@@ -1,7 +1,7 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { AuthService } from '../../../core/auth/auth.service';
 import { ExerciseService } from '../../exercise/data-access/exercise.service';
-import { WorkoutService } from '../../workout/data-access/workout.service';
+import { WorkoutService } from './workout.service';
 import { buildMedalCatalog, EarnedMedal } from '../model/medal.model';
 
 @Injectable({ providedIn: 'root' })

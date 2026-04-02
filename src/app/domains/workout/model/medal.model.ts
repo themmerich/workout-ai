@@ -1,5 +1,5 @@
 import { Exercise } from '../../exercise/model/exercise.model';
-import { Workout } from '../../workout/model/workout.model';
+import { Workout } from './workout.model';
 import { MUSCLE_GROUPS } from '../../exercise/model/exercise.model';
 
 export type MedalCategory = 'strength' | 'cardio' | 'general';

@@ -8,12 +8,12 @@ import { DataTableComponent } from '../../../shared/ui/data-table';
 import { DataTableTranslations, TableColumn } from '../../../shared/ui/data-table.model';
 import { EquipmentService } from '../../equipment/data-access/equipment.service';
 import { EquipmentCategory, EQUIPMENT_CATEGORIES } from '../../equipment/model/equipment.model';
-import { LocationService } from '../../location/data-access/location.service';
+import { LocationService } from '../data-access/location.service';
 import {
   EquipmentEntryData,
   EquipmentOptionWithCategory,
   LocationEquipmentEntryDialogComponent,
-} from '../../location/ui/location-equipment-entry-dialog';
+} from '../ui/location-equipment-entry-dialog';
 
 interface EquipmentRow {
   id: string;

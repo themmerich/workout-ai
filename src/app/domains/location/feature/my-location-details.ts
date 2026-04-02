@@ -11,9 +11,9 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { Toast } from 'primeng/toast';
 import { AuthService } from '../../../core/auth/auth.service';
-import { LocationService } from '../../location/data-access/location.service';
-import { BUNDESLAENDER, defaultOpeningHours, LOGO_COLORS, OpeningHour } from '../../location/model/location.model';
-import { LocationLogoComponent } from '../../location/ui/location-logo';
+import { LocationService } from '../data-access/location.service';
+import { BUNDESLAENDER, defaultOpeningHours, LOGO_COLORS, OpeningHour } from '../model/location.model';
+import { LocationLogoComponent } from '../ui/location-logo';
 
 @Component({
   selector: 'app-my-location-details',

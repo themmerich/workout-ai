@@ -16,7 +16,7 @@ import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { Textarea } from 'primeng/textarea';
-import { ExerciseService } from '../../exercise/data-access/exercise.service';
+import { ExerciseService } from '../data-access/exercise.service';
 import { COMBO_TYPES, ComboType, ExerciseCombo } from '../model/exercise-combo.model';
 
 @Component({
