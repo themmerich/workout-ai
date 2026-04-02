@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { generateId } from '../../../shared/utils/id-generator';
 import { Habit, HabitCategory, HabitEntry } from '../model/habit.model';
 import { MOCK_CATEGORIES, MOCK_ENTRIES, MOCK_HABITS } from './habit.mock';
 
@@ -16,7 +17,7 @@ export class HabitService {
   }
 
   addCategory(item: Omit<HabitCategory, 'id'>): void {
-    const id = String(Math.max(0, ...this.categories().map((c) => Number(c.id))) + 1);
+    const id = generateId(this.categories());
     this.categories.update((list) => [...list, { ...item, id }]);
   }
 
@@ -37,7 +38,7 @@ export class HabitService {
   }
 
   addHabit(item: Omit<Habit, 'id'>): void {
-    const id = String(Math.max(0, ...this.habits().map((h) => Number(h.id))) + 1);
+    const id = generateId(this.habits());
     this.habits.update((list) => [...list, { ...item, id }]);
   }
 
@@ -66,7 +67,7 @@ export class HabitService {
         list.map((e) => (e.id === existing.id ? { ...e, ...value } : e)),
       );
     } else {
-      const id = String(Math.max(0, ...this.entries().map((e) => Number(e.id))) + 1);
+      const id = generateId(this.entries());
       this.entries.update((list) => [...list, { id, habitId, date, ...value }]);
     }
   }

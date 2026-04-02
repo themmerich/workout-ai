@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { generateId } from '../../../shared/utils/id-generator';
 import { Exercise } from '../model/exercise.model';
 import { MOCK_EXERCISES } from './exercise.mock';
 
@@ -7,16 +8,12 @@ export class ExerciseService {
   // TODO: Replace with HTTP calls to REST API
   readonly exercises = signal<Exercise[]>(MOCK_EXERCISES);
 
-  getAll(): Exercise[] {
-    return this.exercises();
-  }
-
   getById(id: string): Exercise | undefined {
     return this.exercises().find((e) => e.id === id);
   }
 
   add(item: Omit<Exercise, 'id'>): void {
-    const id = String(Math.max(...this.exercises().map((e) => Number(e.id))) + 1);
+    const id = generateId(this.exercises());
     this.exercises.update((list) => [...list, { ...item, id }]);
   }
 

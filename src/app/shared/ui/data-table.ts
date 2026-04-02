@@ -50,8 +50,7 @@ import { DataTableTranslations, RowGroupConfig, TableColumn } from './data-table
   ],
   templateUrl: './data-table.html',
 })
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export class DataTableComponent<T extends { id: string } = any> {
+export class DataTableComponent<T extends { id: string }> {
   private readonly transloco = inject(TranslocoService);
   private readonly confirmationService = inject(ConfirmationService);
   private readonly messageService = inject(MessageService);

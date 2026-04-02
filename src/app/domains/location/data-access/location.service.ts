@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { generateId } from '../../../shared/utils/id-generator';
 import { Location } from '../model/location.model';
 import { MOCK_LOCATIONS } from './location.mock';
 
@@ -7,16 +8,12 @@ export class LocationService {
   // TODO: Replace with HTTP calls to REST API
   readonly locations = signal<Location[]>(MOCK_LOCATIONS);
 
-  getAll(): Location[] {
-    return this.locations();
-  }
-
   getById(id: string): Location | undefined {
     return this.locations().find((l) => l.id === id);
   }
 
   add(location: Omit<Location, 'id'>): void {
-    const id = String(Math.max(...this.locations().map((l) => Number(l.id))) + 1);
+    const id = generateId(this.locations());
     this.locations.update((locations) => [...locations, { ...location, id }]);
   }
 

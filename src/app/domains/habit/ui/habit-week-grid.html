@@ -1,5 +1,5 @@
 <div *transloco="let t" class="flex-1 min-h-0 overflow-auto border border-surface-200 dark:border-surface-700 rounded-lg">
-  <table class="w-full border-collapse min-w-[700px]">
+  <table class="w-full border-collapse min-w-[700px]" [attr.aria-label]="t('habit.title')">
     <thead class="sticky top-0 z-10">
       <tr class="bg-surface-50 dark:bg-surface-800">
         <th
@@ -30,7 +30,12 @@
         <!-- Category header row -->
         <tr
           class="cursor-pointer select-none hover:bg-surface-100 dark:hover:bg-surface-700/50"
+          role="button"
+          tabindex="0"
+          [attr.aria-expanded]="!isCategoryCollapsed(category.id)"
           (click)="categoryToggled.emit(category.id)"
+          (keydown.enter)="categoryToggled.emit(category.id)"
+          (keydown.space)="$event.preventDefault(); categoryToggled.emit(category.id)"
         >
           <td
             [colSpan]="8"
@@ -74,6 +79,7 @@
                           [binary]="true"
                           [ngModel]="getCheckValue(habit.id, day)"
                           (ngModelChange)="onCheckChange(habit.id, day, $event)"
+                          [ariaLabel]="habit.name + ' — ' + getDateLabel(day)"
                         />
                       </div>
                     }
@@ -86,6 +92,7 @@
                         inputStyleClass="p-inputtext-sm"
                         [maxFractionDigits]="2"
                         locale="de-DE"
+                        [ariaLabel]="habit.name + ' — ' + getDateLabel(day)"
                       />
                     }
                     @case ('text') {
@@ -95,6 +102,7 @@
                         class="p-inputtext-sm w-[70px] text-center"
                         [value]="getTextValue(habit.id, day)"
                         (blur)="onTextBlur(habit.id, day, $event)"
+                        [attr.aria-label]="habit.name + ' — ' + getDateLabel(day)"
                       />
                     }
                   }
