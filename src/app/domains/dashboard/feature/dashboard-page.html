@@ -105,6 +105,18 @@
       </div>
     </div>
 
+    @if (todayHabitScore() >= 1) {
+      <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-3 flex items-center gap-2">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" [class]="habitScoreColor().bg">
+          <i class="pi pi-check-square text-base" [class]="habitScoreColor().text"></i>
+        </div>
+        <div>
+          <div class="text-xl font-bold" [class]="habitScoreColor().text">{{ todayHabitScore() }}</div>
+          <div class="text-surface-500 dark:text-surface-400 text-xs">{{ t('dashboard.member.habitScore') }}</div>
+        </div>
+      </div>
+    }
+
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
       <!-- Today's Schedule -->
       <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-4">

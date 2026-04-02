@@ -36,6 +36,7 @@
     "workouts": "Training",
     "medals": "Medaillen",
     "trainingGroups": "Trainingsgruppen",
+    "habits": "Gewohnheiten",
     "settings": "Einstellungen"
   },
   "workout": {
@@ -383,7 +384,8 @@
       "todaySchedule": "Heute",
       "openingHours": "Öffnungszeiten",
       "adjustedHours": "Angepasste Öffnungszeiten",
-      "closedToday": "Geschlossen"
+      "closedToday": "Geschlossen",
+      "habitScore": "Gewohnheiten-Score heute"
     }
   },
   "user": {
@@ -669,6 +671,40 @@
     "validation": {
       "required": "Dieses Feld ist erforderlich",
       "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
+    }
+  },
+  "habit": {
+    "title": "Gewohnheiten",
+    "habit": "Gewohnheit",
+    "score": "Score",
+    "manage": "Verwalten",
+    "weekNavigation": {
+      "previous": "Vorherige Woche",
+      "next": "Nächste Woche",
+      "today": "Heute"
+    },
+    "management": {
+      "title": "Gewohnheiten verwalten",
+      "tabCategories": "Kategorien",
+      "tabHabits": "Gewohnheiten",
+      "addCategory": "Kategorie hinzufügen",
+      "addHabit": "Gewohnheit hinzufügen",
+      "newCategory": "Neue Kategorie",
+      "newHabit": "Neue Gewohnheit",
+      "name": "Name",
+      "type": "Typ",
+      "unit": "Einheit",
+      "scoreWeight": "Gewichtung",
+      "sortOrder": "Reihenfolge",
+      "active": "Aktiv",
+      "delete": "Löschen",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "close": "Schließen",
+      "selectCategory": "Kategorie wählen",
+      "confirmDeleteTitle": "Löschen bestätigen",
+      "confirmDeleteCategory": "Soll diese Kategorie wirklich gelöscht werden? Alle zugehörigen Gewohnheiten werden ebenfalls gelöscht.",
+      "confirmDeleteHabit": "Soll diese Gewohnheit wirklich gelöscht werden?"
     }
   },
   "settings": {

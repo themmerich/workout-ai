@@ -1,0 +1,64 @@
+<div *transloco="let t" class="flex flex-col gap-4 h-full min-h-0 p-4">
+  <!-- Header -->
+  <div class="flex items-center justify-between shrink-0">
+    <h1 class="text-2xl font-semibold text-surface-800 dark:text-surface-100 m-0">
+      {{ t('habit.title') }}
+    </h1>
+    <p-button
+      icon="pi pi-cog"
+      [rounded]="true"
+      [text]="true"
+      severity="secondary"
+      [ariaLabel]="t('habit.manage')"
+      (onClick)="managementDialogVisible.set(true)"
+    />
+  </div>
+
+  <!-- Week Navigation -->
+  <div class="flex items-center justify-center gap-3 shrink-0">
+    <p-button
+      icon="pi pi-chevron-left"
+      [rounded]="true"
+      [text]="true"
+      severity="secondary"
+      [ariaLabel]="t('habit.weekNavigation.previous')"
+      (onClick)="previousWeek()"
+    />
+    <span class="text-base font-medium text-surface-700 dark:text-surface-300 min-w-[220px] text-center">
+      {{ weekLabel() }}
+    </span>
+    <p-button
+      icon="pi pi-chevron-right"
+      [rounded]="true"
+      [text]="true"
+      severity="secondary"
+      [ariaLabel]="t('habit.weekNavigation.next')"
+      (onClick)="nextWeek()"
+    />
+    <p-button
+      [label]="t('habit.weekNavigation.today')"
+      severity="secondary"
+      [outlined]="true"
+      size="small"
+      (onClick)="goToToday()"
+    />
+  </div>
+
+  <!-- Week Grid -->
+  <app-habit-week-grid
+    [weekDays]="weekDays()"
+    [categories]="activeCategories()"
+    [habitsByCategory]="habitsByCategoryMap()"
+    [entryMap]="entryMap()"
+    [dayScores]="dayScores()"
+    [collapsedCategories]="collapsedCategories()"
+    (entryChanged)="onEntryChanged($event)"
+    (categoryToggled)="toggleCategory($event)"
+  />
+
+  <!-- Management Dialog -->
+  <app-habit-management-dialog
+    [visible]="managementDialogVisible()"
+    (dialogClosed)="managementDialogVisible.set(false)"
+  />
+</div>
