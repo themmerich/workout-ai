@@ -6,3 +6,10 @@ export const exerciseRoutes: Routes = [
     loadComponent: () => import('./feature/exercise-page'),
   },
 ];
+
+export const exerciseComboRoutes: Routes = [
+  {
+    path: '',
+    loadComponent: () => import('./feature/exercise-combo-page'),
+  },
+];

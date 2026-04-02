@@ -7,7 +7,7 @@ import { DataTableTranslations, RowGroupConfig, TableColumn } from '../../../sha
 import { AuthService } from '../../../core/auth/auth.service';
 import { LocationService } from '../../location/data-access/location.service';
 import { ExerciseService } from '../../exercise/data-access/exercise.service';
-import { ExerciseComboService } from '../../exercise-combo/data-access/exercise-combo.service';
+import { ExerciseComboService } from '../../exercise/data-access/exercise-combo.service';
 import { WorkoutService } from '../data-access/workout.service';
 import { Workout } from '../model/workout.model';
 import { WorkoutDialogComponent } from '../ui/workout-dialog';

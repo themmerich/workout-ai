@@ -6,12 +6,12 @@ import { Toast } from 'primeng/toast';
 import { AuthService } from '../../../core/auth/auth.service';
 import { DataTableComponent } from '../../../shared/ui/data-table';
 import { DataTableTranslations, TableColumn } from '../../../shared/ui/data-table.model';
-import { LocationService } from '../../location/data-access/location.service';
-import { LOCATION_MEMBER_ROLES } from '../../location/model/location.model';
+import { LocationService } from '../data-access/location.service';
+import { LOCATION_MEMBER_ROLES } from '../model/location.model';
 import {
   LocationMemberEntryDialogComponent,
   MemberEntryData,
-} from '../../location/ui/location-member-entry-dialog';
+} from '../ui/location-member-entry-dialog';
 import { UserService } from '../../user/data-access/user.service';
 
 interface MemberRow {

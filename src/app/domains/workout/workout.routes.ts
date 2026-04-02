@@ -6,3 +6,10 @@ export const workoutRoutes: Routes = [
     loadComponent: () => import('./feature/workout-page'),
   },
 ];
+
+export const medalRoutes: Routes = [
+  {
+    path: '',
+    loadComponent: () => import('./feature/medal-page'),
+  },
+];
