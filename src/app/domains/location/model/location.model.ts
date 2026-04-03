@@ -76,12 +76,25 @@ export const BUNDESLAENDER: BundeslandOption[] = [
   { code: 'TH', name: 'Thüringen' },
 ];
 
+export type AnnouncementSeverity = 'info' | 'warn' | 'success';
+
+export const ANNOUNCEMENT_SEVERITIES: AnnouncementSeverity[] = ['info', 'warn', 'success'];
+
+export interface LocationAnnouncement {
+  id: string;
+  title: string;
+  message: string;
+  createdDate: string;
+  severity: AnnouncementSeverity;
+}
+
 export interface Location {
   id: string;
   name: string;
   logo: LocationLogo;
   openingHours: OpeningHour[];
   calendarExceptions: CalendarException[];
+  announcements: LocationAnnouncement[];
   bundesland: string;
   street: string;
   zip: string;

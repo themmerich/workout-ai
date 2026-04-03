@@ -380,11 +380,12 @@ export class LocationDialogComponent {
 
       const openingHours = data?.openingHours ?? defaultOpeningHours();
       const calendarExceptions = data?.calendarExceptions ?? [];
+      const announcements = data?.announcements ?? [];
 
       if (data) {
-        this.locationSaved.emit({ ...this.form.getRawValue(), id: data.id, logo, openingHours, calendarExceptions, equipment, members });
+        this.locationSaved.emit({ ...this.form.getRawValue(), id: data.id, logo, openingHours, calendarExceptions, announcements, equipment, members });
       } else {
-        this.locationSaved.emit({ ...this.form.getRawValue(), logo, openingHours, calendarExceptions, equipment, members });
+        this.locationSaved.emit({ ...this.form.getRawValue(), logo, openingHours, calendarExceptions, announcements, equipment, members });
       }
       this.form.reset();
       this.equipmentRows.set([]);
