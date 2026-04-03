@@ -1,0 +1,57 @@
+<p-dialog
+  *transloco="let t"
+  [header]="announcement() ? t('announcement.dialog.editTitle') : t('announcement.dialog.title')"
+  [visible]="visible()"
+  (visibleChange)="onVisibleChange($event)"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+  [breakpoints]="{ '768px': '95vw' }"
+  [draggable]="false"
+>
+  <div class="flex flex-col gap-5 pt-2">
+    <p-floatlabel variant="on">
+      <input pInputText id="title" class="w-full" [formControl]="form.controls.title" />
+      <label for="title">{{ t('announcement.title') }} *</label>
+    </p-floatlabel>
+
+    <p-floatlabel variant="on">
+      <textarea
+        pTextarea
+        id="message"
+        class="w-full"
+        [rows]="4"
+        [formControl]="form.controls.message"
+      ></textarea>
+      <label for="message">{{ t('announcement.message') }} *</label>
+    </p-floatlabel>
+
+    <p-floatlabel variant="on">
+      <p-select
+        id="severity"
+        [options]="severityOptions()"
+        optionLabel="label"
+        optionValue="value"
+        [formControl]="form.controls.severity"
+        styleClass="w-full"
+        appendTo="body"
+      />
+      <label for="severity">{{ t('announcement.severity') }}</label>
+    </p-floatlabel>
+  </div>
+
+  <ng-template #footer>
+    <div class="flex justify-end gap-2">
+      <p-button
+        [label]="t('announcement.dialog.cancel')"
+        severity="secondary"
+        [text]="true"
+        (onClick)="dialogClosed.emit()"
+      />
+      <p-button
+        [label]="t('announcement.dialog.save')"
+        (onClick)="onSave()"
+        [disabled]="form.invalid || !form.dirty"
+      />
+    </div>
+  </ng-template>
+</p-dialog>

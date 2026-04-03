@@ -92,6 +92,11 @@ export const routes: Routes = [
         loadChildren: () => import('./domains/location/location.routes').then((m) => m.myLocationEquipmentRoutes),
       },
       {
+        path: 'my-announcements',
+        canActivate: [ownerGuard],
+        loadChildren: () => import('./domains/location/location.routes').then((m) => m.myLocationAnnouncementsRoutes),
+      },
+      {
         path: 'my-calendar',
         canActivate: [locationMemberGuard],
         loadChildren: () => import('./domains/location/location.routes').then((m) => m.myLocationCalendarRoutes),

@@ -37,6 +37,7 @@
     "medals": "Medals",
     "trainingGroups": "Training Groups",
     "habits": "Habits",
+    "myAnnouncements": "Announcements",
     "settings": "Settings"
   },
   "workout": {
@@ -385,7 +386,8 @@
       "openingHours": "Opening Hours",
       "adjustedHours": "Adjusted Hours",
       "closedToday": "Closed",
-      "habitScore": "Habit score today"
+      "habitScore": "Habit score today",
+      "dismissAnnouncement": "Dismiss announcement"
     }
   },
   "user": {
@@ -671,6 +673,30 @@
     "validation": {
       "required": "This field is required",
       "email": "Please enter a valid email address"
+    }
+  },
+  "announcement": {
+    "title": "Announcements",
+    "message": "Message",
+    "severity": "Priority",
+    "severities": {
+      "info": "Information",
+      "warn": "Warning",
+      "success": "Positive"
+    },
+    "add": "New Announcement",
+    "empty": "No announcements",
+    "confirmDeleteTitle": "Delete Announcement",
+    "confirmDelete": "Are you sure you want to delete \"{{name}}\"?",
+    "createSuccess": "Announcement created",
+    "updateSuccess": "Announcement updated",
+    "deleteSuccess": "Announcement deleted",
+    "dialog": {
+      "title": "New Announcement",
+      "editTitle": "Edit Announcement",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete"
     }
   },
   "habit": {

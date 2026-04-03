@@ -1,14 +1,16 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { getHolidays } from 'feiertagejs';
+import { ButtonModule } from 'primeng/button';
 import { ChartModule } from 'primeng/chart';
 import { CardModule } from 'primeng/card';
 import { AuthService } from '../../../core/auth/auth.service';
+import { LocalStorageService } from '../../../shared/utils/local-storage.service';
 import { EquipmentService } from '../../equipment/data-access/equipment.service';
 import { ExerciseService } from '../../exercise/data-access/exercise.service';
 import { HabitService } from '../../habit/data-access/habit.service';
 import { LocationService } from '../../location/data-access/location.service';
-import { WEEKDAYS } from '../../location/model/location.model';
+import { LocationAnnouncement, WEEKDAYS } from '../../location/model/location.model';
 import { UserService } from '../../user/data-access/user.service';
 
 interface TodayScheduleItem {
@@ -20,7 +22,7 @@ interface TodayScheduleItem {
 @Component({
   selector: 'app-dashboard-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [TranslocoDirective, ChartModule, CardModule],
+  imports: [TranslocoDirective, ChartModule, CardModule, ButtonModule],
   templateUrl: './dashboard-page.html',
 })
 export default class DashboardPageComponent {
@@ -30,9 +32,34 @@ export default class DashboardPageComponent {
   private readonly equipmentService = inject(EquipmentService);
   private readonly exerciseService = inject(ExerciseService);
   private readonly habitService = inject(HabitService);
+  private readonly storage = inject(LocalStorageService);
   private readonly transloco = inject(TranslocoService);
   protected readonly isAdmin = this.authService.isAdmin;
   protected readonly currentUser = this.authService.currentUser;
+
+  // Announcements
+  private static readonly DISMISSED_KEY = 'workout-ai-dismissed-announcements';
+  private readonly dismissedIds = signal<Set<string>>(
+    new Set(this.storage.get<string[]>(DashboardPageComponent.DISMISSED_KEY) ?? []),
+  );
+
+  protected readonly visibleAnnouncements = computed<LocationAnnouncement[]>(() => {
+    const loc = this.currentLocation();
+    if (!loc) return [];
+    const dismissed = this.dismissedIds();
+    return loc.announcements
+      .filter((a) => !dismissed.has(a.id))
+      .sort((a, b) => b.createdDate.localeCompare(a.createdDate));
+  });
+
+  protected dismissAnnouncement(id: string): void {
+    this.dismissedIds.update((set) => {
+      const next = new Set(set);
+      next.add(id);
+      this.storage.set(DashboardPageComponent.DISMISSED_KEY, [...next]);
+      return next;
+    });
+  }
 
   protected readonly todayHabitScore = computed(() => {
     const today = new Date().toISOString().slice(0, 10);

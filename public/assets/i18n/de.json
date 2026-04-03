@@ -37,6 +37,7 @@
     "medals": "Medaillen",
     "trainingGroups": "Trainingsgruppen",
     "habits": "Gewohnheiten",
+    "myAnnouncements": "Ankündigungen",
     "settings": "Einstellungen"
   },
   "workout": {
@@ -385,7 +386,8 @@
       "openingHours": "Öffnungszeiten",
       "adjustedHours": "Angepasste Öffnungszeiten",
       "closedToday": "Geschlossen",
-      "habitScore": "Gewohnheiten-Score heute"
+      "habitScore": "Gewohnheiten-Score heute",
+      "dismissAnnouncement": "Ankündigung schließen"
     }
   },
   "user": {
@@ -671,6 +673,30 @@
     "validation": {
       "required": "Dieses Feld ist erforderlich",
       "email": "Bitte geben Sie eine gültige E-Mail-Adresse ein"
+    }
+  },
+  "announcement": {
+    "title": "Ankündigungen",
+    "message": "Nachricht",
+    "severity": "Priorität",
+    "severities": {
+      "info": "Information",
+      "warn": "Warnung",
+      "success": "Positiv"
+    },
+    "add": "Neue Ankündigung",
+    "empty": "Keine Ankündigungen vorhanden",
+    "confirmDeleteTitle": "Ankündigung löschen",
+    "confirmDelete": "Möchten Sie die Ankündigung \"{{name}}\" wirklich löschen?",
+    "createSuccess": "Ankündigung wurde erstellt",
+    "updateSuccess": "Ankündigung wurde aktualisiert",
+    "deleteSuccess": "Ankündigung wurde gelöscht",
+    "dialog": {
+      "title": "Neue Ankündigung",
+      "editTitle": "Ankündigung bearbeiten",
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "delete": "Löschen"
     }
   },
   "habit": {
