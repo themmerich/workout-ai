@@ -3,13 +3,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LocationService } from '../../domains/location/data-access/location.service';
 import { Location } from '../../domains/location/model/location.model';
-import { LocationLogoComponent } from '../../domains/location/ui/location-logo';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-sidebar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, RouterLinkActive, TranslocoDirective, LocationLogoComponent],
+  imports: [RouterLink, RouterLinkActive, TranslocoDirective],
   templateUrl: './sidebar.html',
 })
 export class SidebarComponent {
@@ -28,8 +27,6 @@ export class SidebarComponent {
       .map((m) => this.locationService.getById(m.locationId))
       .filter((l): l is NonNullable<typeof l> => l !== undefined);
   });
-
-  protected readonly currentLocation = computed(() => this.userLocations()[0] ?? null);
 
   protected isLocationExpanded(locationId: string): boolean {
     return this.expandedLocations().has(locationId);
