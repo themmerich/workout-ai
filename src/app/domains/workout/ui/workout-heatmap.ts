@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Tooltip } from 'primeng/tooltip';
 
@@ -29,11 +29,24 @@ interface YearGrid {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [TranslocoDirective, Tooltip],
   templateUrl: './workout-heatmap.html',
+  host: {
+    '(window:resize)': 'onResize()',
+  },
 })
 export class WorkoutHeatmapComponent {
   private readonly transloco = inject(TranslocoService);
 
   readonly workoutDates = input.required<string[]>();
+
+  private readonly isSmallScreen = signal(typeof window !== 'undefined' && window.innerWidth < 640);
+
+  protected readonly cellSize = computed(() => this.isSmallScreen() ? '10px' : '14px');
+  protected readonly cellStep = computed(() => this.isSmallScreen() ? 12 : 16);
+  protected readonly dayLabelWidth = computed(() => this.isSmallScreen() ? '20px' : '28px');
+
+  protected onResize(): void {
+    this.isSmallScreen.set(window.innerWidth < 640);
+  }
 
   private readonly monthNames = computed(() => {
     return this.transloco.getActiveLang() === 'de'
