@@ -38,6 +38,7 @@
         <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.dashboard') }}</span>
       </a>
       @if (authService.hasLocation()) {
+        <!-- Location section -->
         <a
           routerLink="/my-location"
           routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
@@ -47,19 +48,49 @@
           <i class="pi pi-building text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
           <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myLocation') }}</span>
         </a>
-      }
-      @if (!authService.isAdmin()) {
-      <a
-        routerLink="/weight"
-        routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
-        class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
-        (click)="closeSidebar.emit()"
-      >
-        <i class="pi pi-chart-line text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
-        <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.weight') }}</span>
-      </a>
-      }
-      @if (authService.hasLocation()) {
+        @if (authService.isOwner()) {
+          <a
+            routerLink="/my-members"
+            routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+            class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
+            (click)="closeSidebar.emit()"
+          >
+            <i class="pi pi-users text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+            <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myMembers') }}</span>
+          </a>
+          <a
+            routerLink="/my-equipment"
+            routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+            class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
+            (click)="closeSidebar.emit()"
+          >
+            <i class="pi pi-wrench text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+            <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myEquipment') }}</span>
+          </a>
+          <a
+            routerLink="/my-announcements"
+            routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+            class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
+            (click)="closeSidebar.emit()"
+          >
+            <i class="pi pi-megaphone text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+            <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myAnnouncements') }}</span>
+          </a>
+        }
+        <a
+          routerLink="/my-calendar"
+          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
+          (click)="closeSidebar.emit()"
+        >
+          <i class="pi pi-calendar text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myCalendar') }}</span>
+        </a>
+
+        <!-- Divider -->
+        <div class="border-t border-surface-200 dark:border-surface-700 my-1"></div>
+
+        <!-- Personal section -->
         <a
           routerLink="/workouts"
           routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
@@ -68,15 +99,6 @@
         >
           <i class="pi pi-heart text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
           <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.workouts') }}</span>
-        </a>
-        <a
-          routerLink="/medals"
-          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
-          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
-          (click)="closeSidebar.emit()"
-        >
-          <i class="pi pi-trophy text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
-          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.medals') }}</span>
         </a>
         <a
           routerLink="/training-groups"
@@ -88,6 +110,24 @@
           <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.trainingGroups') }}</span>
         </a>
         <a
+          routerLink="/medals"
+          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
+          (click)="closeSidebar.emit()"
+        >
+          <i class="pi pi-trophy text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.medals') }}</span>
+        </a>
+        <a
+          routerLink="/weight"
+          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
+          (click)="closeSidebar.emit()"
+        >
+          <i class="pi pi-chart-line text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.weight') }}</span>
+        </a>
+        <a
           routerLink="/habits"
           routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
           class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
@@ -95,46 +135,6 @@
         >
           <i class="pi pi-check-square text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
           <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.habits') }}</span>
-        </a>
-      }
-      @if (authService.isOwner()) {
-        <a
-          routerLink="/my-members"
-          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
-          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
-          (click)="closeSidebar.emit()"
-        >
-          <i class="pi pi-users text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
-          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myMembers') }}</span>
-        </a>
-        <a
-          routerLink="/my-equipment"
-          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
-          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
-          (click)="closeSidebar.emit()"
-        >
-          <i class="pi pi-wrench text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
-          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myEquipment') }}</span>
-        </a>
-        <a
-          routerLink="/my-announcements"
-          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
-          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
-          (click)="closeSidebar.emit()"
-        >
-          <i class="pi pi-megaphone text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
-          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myAnnouncements') }}</span>
-        </a>
-      }
-      @if (authService.hasLocation()) {
-        <a
-          routerLink="/my-calendar"
-          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
-          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
-          (click)="closeSidebar.emit()"
-        >
-          <i class="pi pi-calendar text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
-          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.myCalendar') }}</span>
         </a>
       }
       @if (authService.isAdmin()) {
