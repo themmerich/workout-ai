@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { MessageService } from 'primeng/api';
 import { Tag } from 'primeng/tag';
@@ -37,13 +37,12 @@ export default class MyLocationMembersComponent {
   private readonly transloco = inject(TranslocoService);
   private readonly messageService = inject(MessageService);
 
+  readonly locationId = input.required<string>();
   protected readonly dialogVisible = signal(false);
   protected readonly editingMember = signal<MemberEntryData | null>(null);
 
   protected readonly memberRows = computed<MemberRow[]>(() => {
-    const user = this.authService.currentUser();
-    if (!user?.locationId) return [];
-    const location = this.locationService.getById(user.locationId);
+    const location = this.locationService.getById(this.locationId());
     if (!location) return [];
     return location.members.map((m) => {
       const u = this.userService.getById(m.userId);
@@ -128,9 +127,7 @@ export default class MyLocationMembersComponent {
   }
 
   protected onDelete(row: MemberRow): void {
-    const user = this.authService.currentUser();
-    if (!user?.locationId) return;
-    const location = this.locationService.getById(user.locationId);
+    const location = this.locationService.getById(this.locationId());
     if (!location) return;
 
     const updatedMembers = location.members.filter((m) => m.userId !== row.id);
@@ -143,9 +140,7 @@ export default class MyLocationMembersComponent {
   }
 
   protected onMemberSaved(entry: MemberEntryData): void {
-    const user = this.authService.currentUser();
-    if (!user?.locationId) return;
-    const location = this.locationService.getById(user.locationId);
+    const location = this.locationService.getById(this.locationId());
     if (!location) return;
 
     const existing = location.members.findIndex((m) => m.userId === entry.userId);

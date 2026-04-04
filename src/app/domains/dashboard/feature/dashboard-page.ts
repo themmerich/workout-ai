@@ -169,11 +169,12 @@ export default class DashboardPageComponent {
     },
   };
 
-  // Member dashboard data
+  // Member dashboard data — use first location
   protected readonly currentLocation = computed(() => {
     const user = this.currentUser();
-    if (user?.locationId) {
-      return this.locationService.getById(user.locationId) ?? null;
+    const firstLoc = user?.locations[0];
+    if (firstLoc) {
+      return this.locationService.getById(firstLoc.locationId) ?? null;
     }
     return null;
   });

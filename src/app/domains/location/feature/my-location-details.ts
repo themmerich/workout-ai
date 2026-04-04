@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input, signal } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { COUNTRIES, DEFAULT_COUNTRY } from '../../../shared/utils/countries';
 import { emailValidator } from '../../../shared/utils/email.validator';
@@ -38,12 +38,11 @@ export default class MyLocationDetailsComponent {
   protected readonly openingHours = signal<OpeningHour[]>(defaultOpeningHours());
   protected hoursDirty = signal(false);
 
-  protected readonly isOwner = this.authService.isOwner;
+  readonly locationId = input.required<string>();
 
-  protected readonly location = computed(() => {
-    const user = this.authService.currentUser();
-    return user?.locationId ? this.locationService.getById(user.locationId) ?? null : null;
-  });
+  protected readonly isOwner = computed(() => this.authService.isOwnerAt(this.locationId()));
+
+  protected readonly location = computed(() => this.locationService.getById(this.locationId()) ?? null);
 
   protected readonly form = this.fb.nonNullable.group({
     name: ['', Validators.required],

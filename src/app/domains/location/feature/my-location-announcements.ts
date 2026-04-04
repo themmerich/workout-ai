@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Button } from 'primeng/button';
@@ -25,10 +25,9 @@ export default class MyLocationAnnouncementsComponent {
   private readonly messageService = inject(MessageService);
   private readonly transloco = inject(TranslocoService);
 
+  readonly locationId = input.required<string>();
   readonly dialogVisible = signal(false);
   readonly editingAnnouncement = signal<LocationAnnouncement | null>(null);
-
-  private readonly locationId = computed(() => this.authService.currentUser()?.locationId ?? null);
 
   readonly announcements = computed(() => {
     const locId = this.locationId();

@@ -24,30 +24,10 @@
             id="login-username"
             formControlName="username"
             class="w-full"
-            (ngModelChange)="onUsernameChange($event)"
           />
           <label for="login-username">{{ t('login.username') }}</label>
         </p-floatlabel>
       </div>
-
-      @if (!isAdminUser()) {
-        <div>
-          <p-floatlabel variant="on">
-            <p-select
-              formControlName="locationId"
-              [options]="locationOptions()"
-              optionLabel="label"
-              optionValue="value"
-              inputId="login-location"
-              appendTo="body"
-              [showClear]="true"
-              styleClass="w-full"
-              (ngModelChange)="onLocationChange($event)"
-            />
-            <label for="login-location">{{ t('login.location') }}</label>
-          </p-floatlabel>
-        </div>
-      }
 
       <div>
         <p-floatlabel variant="on">

@@ -156,4 +156,16 @@ export const MOCK_LOCATIONS: Location[] = [
       { userId: '31', role: 'member', password: 'hemm' },
     ],
   },
+  {
+    id: '12', name: 'Home Gym Hemmerich', logo: { color: '#6366f1', imageUrl: null }, openingHours: defaultOpeningHours(), calendarExceptions: [], announcements: [], bundesland: 'BY', street: 'Am Garten 7', zip: '97424', city: 'Schweinfurt',
+    country: 'DE', phone: '', email: '', website: '',
+    equipment: [
+      { equipmentId: '1', quantity: 2, weight: 10 }, { equipmentId: '1', quantity: 2, weight: 15 }, { equipmentId: '1', quantity: 2, weight: 20 },
+      { equipmentId: '7', quantity: 1, weight: 20 }, { equipmentId: '22', quantity: 1, weight: null },
+      { equipmentId: '20', quantity: 3, weight: null }, { equipmentId: '24', quantity: 2, weight: null },
+    ],
+    members: [
+      { userId: '31', role: 'owner', password: 'hemm' },
+    ],
+  },
 ];

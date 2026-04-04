@@ -26,10 +26,8 @@ export class HeaderComponent {
   private readonly messageService = inject(MessageService);
   readonly toggleSidebar = output<void>();
 
-  protected readonly langLabel = computed(() => {
-    const lang = this.transloco.getActiveLang();
-    return lang.toUpperCase();
-  });
+  protected readonly activeLang = signal(this.transloco.getActiveLang());
+  protected readonly langLabel = computed(() => this.activeLang().toUpperCase());
 
   protected readonly pendingInvitations = computed(() => {
     const user = this.authService.currentUser();
@@ -44,8 +42,9 @@ export class HeaderComponent {
   });
 
   protected toggleLanguage(): void {
-    const current = this.transloco.getActiveLang();
-    this.transloco.setActiveLang(current === 'de' ? 'en' : 'de');
+    const next = this.transloco.getActiveLang() === 'de' ? 'en' : 'de';
+    this.transloco.setActiveLang(next);
+    this.activeLang.set(next);
   }
 
   protected onAcceptInvitation(groupId: string, invitationId: string): void {

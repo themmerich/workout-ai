@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, output, si
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LocationService } from '../../domains/location/data-access/location.service';
+import { Location } from '../../domains/location/model/location.model';
 import { LocationLogoComponent } from '../../domains/location/ui/location-logo';
 import { AuthService } from '../auth/auth.service';
 
@@ -15,14 +16,37 @@ export class SidebarComponent {
   protected readonly authService = inject(AuthService);
   private readonly locationService = inject(LocationService);
   protected readonly userMenuOpen = signal(false);
+  private readonly expandedLocations = signal(new Set<string>());
   readonly visible = input(false);
   readonly closeSidebar = output<void>();
 
-  protected readonly currentLocation = computed(() => {
+  protected readonly userLocations = computed<Location[]>(() => {
     const user = this.authService.currentUser();
-    if (user?.locationId) {
-      return this.locationService.getById(user.locationId) ?? null;
-    }
-    return null;
+    if (!user) return [];
+    return user.locations
+      .map((m) => this.locationService.getById(m.locationId))
+      .filter((l): l is NonNullable<typeof l> => l !== undefined);
   });
+
+  protected readonly currentLocation = computed(() => this.userLocations()[0] ?? null);
+
+  protected isLocationExpanded(locationId: string): boolean {
+    return this.expandedLocations().has(locationId);
+  }
+
+  protected toggleLocationMenu(locationId: string): void {
+    this.expandedLocations.update((set) => {
+      const next = new Set(set);
+      if (next.has(locationId)) {
+        next.delete(locationId);
+      } else {
+        next.add(locationId);
+      }
+      return next;
+    });
+  }
+
+  protected isOwnerOfLocation(locationId: string): boolean {
+    return this.authService.isOwnerAt(locationId);
+  }
 }
