@@ -81,7 +81,7 @@
     </div>
   } @else {
     <p class="text-surface-600 dark:text-surface-300 text-sm">
-      {{ t('dashboard.member.subtitle', { location: currentUser()?.locationName }) }}
+      {{ t('dashboard.member.subtitle', { location: currentLocation()?.name }) }}
     </p>
 
     @for (a of visibleAnnouncements(); track a.id) {

@@ -87,7 +87,7 @@ export class WorkoutDialogComponent {
     date: [new Date() as Date | null, Validators.required],
     time: [''],
     durationMinutes: [null as number | null, Validators.min(1)],
-    locationId: [this.authService.currentUser()?.locationId ?? ''],
+    locationId: [this.authService.currentUser()?.locations[0]?.locationId ?? ''],
     description: [''],
     exercises: this.fb.array<FormGroup>([], Validators.required),
   });
@@ -145,7 +145,7 @@ export class WorkoutDialogComponent {
           date: new Date(),
           time: '',
           durationMinutes: null,
-          locationId: this.authService.currentUser()?.locationId ?? '',
+          locationId: this.authService.currentUser()?.locations[0]?.locationId ?? '',
           description: '',
         });
         this.addExercise();

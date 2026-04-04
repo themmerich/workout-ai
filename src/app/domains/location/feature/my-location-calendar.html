@@ -67,32 +67,40 @@
         />
         <label for="exc-note">{{ t('myLocation.calendar.note') }}</label>
       </p-floatlabel>
-      <div class="flex justify-between pt-2">
-        <div>
+    </div>
+
+    <ng-template #footer>
+      <div class="flex items-center justify-between">
+        <p-button
+          [label]="t('myLocation.calendar.cancel')"
+          severity="secondary"
+          [text]="true"
+          (onClick)="dialogVisible.set(false)"
+        />
+        <div class="flex gap-2">
           @if (isException()) {
             <p-button
-              [label]="t('myLocation.calendar.removeException')"
-              severity="danger"
-              [text]="true"
               icon="pi pi-trash"
+              severity="danger"
+              [rounded]="true"
+              [text]="true"
+              [ariaLabel]="t('myLocation.calendar.removeException')"
+              [pTooltip]="t('myLocation.calendar.removeException')"
+              tooltipPosition="top"
               (onClick)="onRemoveException()"
             />
           }
-        </div>
-        <div class="flex gap-2">
           <p-button
-            [label]="t('myLocation.calendar.cancel')"
-            severity="secondary"
-            (onClick)="dialogVisible.set(false)"
-          />
-          <p-button
-            [label]="t('myLocation.calendar.saveException')"
             icon="pi pi-check"
+            [rounded]="true"
+            [ariaLabel]="t('myLocation.calendar.saveException')"
+            [pTooltip]="t('myLocation.calendar.saveException')"
+            tooltipPosition="top"
             (onClick)="onSaveException()"
           />
         </div>
       </div>
-    </div>
+    </ng-template>
   </p-dialog>
   <p-toast />
   }

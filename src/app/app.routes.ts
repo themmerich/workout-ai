@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { adminGuard } from './core/auth/admin.guard';
 import { authGuard } from './core/auth/auth.guard';
 import { locationMemberGuard } from './core/auth/location-member.guard';
-import { ownerGuard } from './core/auth/owner.guard';
 import { LayoutComponent } from './core/layout/layout';
 
 export const routes: Routes = [
@@ -77,29 +76,9 @@ export const routes: Routes = [
           import('./domains/habit/habit.routes').then((m) => m.habitRoutes),
       },
       {
-        path: 'my-location',
+        path: 'locations/:locationId',
         canActivate: [locationMemberGuard],
-        loadChildren: () => import('./domains/location/location.routes').then((m) => m.myLocationDetailsRoutes),
-      },
-      {
-        path: 'my-members',
-        canActivate: [ownerGuard],
-        loadChildren: () => import('./domains/location/location.routes').then((m) => m.myLocationMembersRoutes),
-      },
-      {
-        path: 'my-equipment',
-        canActivate: [ownerGuard],
-        loadChildren: () => import('./domains/location/location.routes').then((m) => m.myLocationEquipmentRoutes),
-      },
-      {
-        path: 'my-announcements',
-        canActivate: [ownerGuard],
-        loadChildren: () => import('./domains/location/location.routes').then((m) => m.myLocationAnnouncementsRoutes),
-      },
-      {
-        path: 'my-calendar',
-        canActivate: [locationMemberGuard],
-        loadChildren: () => import('./domains/location/location.routes').then((m) => m.myLocationCalendarRoutes),
+        loadChildren: () => import('./domains/location/location.routes').then((m) => m.myLocationRoutes),
       },
       {
         path: 'profile',

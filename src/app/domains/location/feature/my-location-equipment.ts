@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { MessageService } from 'primeng/api';
 import { Tag } from 'primeng/tag';
@@ -39,13 +39,12 @@ export default class MyLocationEquipmentComponent {
   private readonly transloco = inject(TranslocoService);
   private readonly messageService = inject(MessageService);
 
+  readonly locationId = input.required<string>();
   protected readonly dialogVisible = signal(false);
   protected readonly editingEntry = signal<EquipmentEntryData | null>(null);
 
   protected readonly equipmentRows = computed<EquipmentRow[]>(() => {
-    const user = this.authService.currentUser();
-    if (!user?.locationId) return [];
-    const location = this.locationService.getById(user.locationId);
+    const location = this.locationService.getById(this.locationId());
     if (!location) return [];
     return location.equipment.map((le, index) => {
       const eq = this.equipmentService.getById(le.equipmentId);
@@ -139,9 +138,7 @@ export default class MyLocationEquipmentComponent {
   }
 
   protected onDelete(row: EquipmentRow): void {
-    const user = this.authService.currentUser();
-    if (!user?.locationId) return;
-    const location = this.locationService.getById(user.locationId);
+    const location = this.locationService.getById(this.locationId());
     if (!location) return;
 
     const updatedEquipment = location.equipment.filter((_, i) => String(i) !== row.id);
@@ -154,9 +151,7 @@ export default class MyLocationEquipmentComponent {
   }
 
   protected onEntrySaved(entry: EquipmentEntryData): void {
-    const user = this.authService.currentUser();
-    if (!user?.locationId) return;
-    const location = this.locationService.getById(user.locationId);
+    const location = this.locationService.getById(this.locationId());
     if (!location) return;
 
     const index = parseInt(entry.id, 10);

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -16,6 +16,7 @@ import { Dialog } from 'primeng/dialog';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputText } from 'primeng/inputtext';
 import { Toast } from 'primeng/toast';
+import { Tooltip } from 'primeng/tooltip';
 import { getHolidays } from 'feiertagejs';
 import { AuthService } from '../../../core/auth/auth.service';
 import { LocationService } from '../data-access/location.service';
@@ -26,7 +27,7 @@ import { CalendarException, WEEKDAYS } from '../model/location.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-col h-full min-h-0' },
   providers: [MessageService],
-  imports: [FormsModule, TranslocoDirective, FullCalendarModule, ButtonModule, Checkbox, Dialog, FloatLabel, InputText, Toast],
+  imports: [FormsModule, TranslocoDirective, FullCalendarModule, ButtonModule, Checkbox, Dialog, FloatLabel, InputText, Toast, Tooltip],
   templateUrl: './my-location-calendar.html',
 })
 export default class MyLocationCalendarComponent {
@@ -43,12 +44,11 @@ export default class MyLocationCalendarComponent {
   protected readonly editingNote = signal('');
   protected readonly isException = signal(false);
 
-  protected readonly isOwner = this.authService.isOwner;
+  readonly locationId = input.required<string>();
 
-  private readonly location = computed(() => {
-    const user = this.authService.currentUser();
-    return user?.locationId ? this.locationService.getById(user.locationId) ?? null : null;
-  });
+  protected readonly isOwner = computed(() => this.authService.isOwnerAt(this.locationId()));
+
+  private readonly location = computed(() => this.locationService.getById(this.locationId()) ?? null);
 
   protected readonly calendarEvents = computed<EventInput[]>(() => {
     const loc = this.location();
@@ -101,22 +101,27 @@ export default class MyLocationCalendarComponent {
             extendedProps: { type: 'exception', date: dateStr },
           });
         } else if (exception.open && exception.close) {
+          const label = exception.note
+            ? `⚠ ${exception.note} (${exception.open} – ${exception.close})`
+            : `⚠ ${exception.open} – ${exception.close}`;
           events.push({
-            title: exception.note || `${exception.open} - ${exception.close}`,
-            start: `${dateStr}T${exception.open}`,
-            end: `${dateStr}T${exception.close}`,
+            title: label,
+            start: dateStr,
+            allDay: true,
             backgroundColor: '#f97316',
             borderColor: '#f97316',
+            display: 'block',
             extendedProps: { type: 'exception', date: dateStr },
           });
         }
       } else if (regular && !regular.closed) {
         events.push({
-          title: `${regular.open} - ${regular.close}`,
-          start: `${dateStr}T${regular.open}`,
-          end: `${dateStr}T${regular.close}`,
+          title: `🕐 ${regular.open} – ${regular.close}`,
+          start: dateStr,
+          allDay: true,
           backgroundColor: '#22c55e',
           borderColor: '#22c55e',
+          display: 'block',
           extendedProps: { type: 'regular', date: dateStr },
         });
       } else {

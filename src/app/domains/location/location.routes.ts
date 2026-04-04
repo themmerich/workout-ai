@@ -7,22 +7,10 @@ export const locationRoutes: Routes = [
   },
 ];
 
-export const myLocationDetailsRoutes: Routes = [
+export const myLocationRoutes: Routes = [
   { path: '', loadComponent: () => import('./feature/my-location-details') },
-];
-
-export const myLocationMembersRoutes: Routes = [
-  { path: '', loadComponent: () => import('./feature/my-location-members') },
-];
-
-export const myLocationEquipmentRoutes: Routes = [
-  { path: '', loadComponent: () => import('./feature/my-location-equipment') },
-];
-
-export const myLocationCalendarRoutes: Routes = [
-  { path: '', loadComponent: () => import('./feature/my-location-calendar') },
-];
-
-export const myLocationAnnouncementsRoutes: Routes = [
-  { path: '', loadComponent: () => import('./feature/my-location-announcements') },
+  { path: 'members', loadComponent: () => import('./feature/my-location-members') },
+  { path: 'equipment', loadComponent: () => import('./feature/my-location-equipment') },
+  { path: 'announcements', loadComponent: () => import('./feature/my-location-announcements') },
+  { path: 'calendar', loadComponent: () => import('./feature/my-location-calendar') },
 ];
