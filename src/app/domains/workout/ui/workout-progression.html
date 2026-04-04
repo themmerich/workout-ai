@@ -1,0 +1,122 @@
+<div *transloco="let t" class="flex flex-col gap-4 h-full min-h-0">
+  <!-- Filters -->
+  <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+    <p-floatlabel variant="on" class="flex-1">
+      <p-select
+        id="exercise"
+        [options]="exerciseOptions()"
+        [ngModel]="selectedExerciseId()"
+        (ngModelChange)="selectedExerciseId.set($event)"
+        optionLabel="label"
+        optionValue="value"
+        optionGroupLabel="label"
+        optionGroupChildren="items"
+        [group]="true"
+        [filter]="true"
+        filterBy="label"
+        appendTo="body"
+        styleClass="w-full"
+      >
+        <ng-template #group let-group>
+          <span class="font-bold text-surface-950 dark:text-surface-100">{{ group.label }}</span>
+        </ng-template>
+      </p-select>
+      <label for="exercise">{{ t('workout.progression.exercise') }}</label>
+    </p-floatlabel>
+    <p-floatlabel variant="on">
+      <p-datepicker
+        id="fromDate"
+        [ngModel]="fromDate()"
+        (ngModelChange)="fromDate.set($event)"
+        dateFormat="dd.mm.yy"
+        [showIcon]="true"
+        appendTo="body"
+        styleClass="w-full sm:w-48"
+      />
+      <label for="fromDate">{{ t('workout.progression.fromDate') }}</label>
+    </p-floatlabel>
+  </div>
+
+  @if (selectedExerciseId()) {
+    @if (progressionData().length === 0) {
+      <div class="text-center text-surface-400 py-8">
+        {{ t('workout.progression.noData') }}
+      </div>
+    } @else {
+      <!-- History Table (horizontal: dates as columns) -->
+      <div class="flex-1 min-h-0 overflow-auto border border-surface-200 dark:border-surface-700 rounded-lg">
+        <table class="border-collapse" [attr.aria-label]="t('workout.progression.history')">
+          <thead class="sticky top-0 z-10">
+            <!-- Date headers (colspan 2 each) -->
+            <tr class="bg-surface-50 dark:bg-surface-800">
+              <th class="p-2 text-sm font-semibold text-surface-700 dark:text-surface-300 border-b border-r border-surface-200 dark:border-surface-700 sticky left-0 bg-surface-50 dark:bg-surface-800 z-20 min-w-[50px]">
+                {{ t('workout.sets') }}
+              </th>
+              @for (row of progressionData(); track row.date) {
+                <th
+                  [colSpan]="2"
+                  class="p-2 text-center text-sm font-semibold text-surface-700 dark:text-surface-300 border-b border-surface-200 dark:border-surface-700 min-w-[120px]"
+                >
+                  {{ formatDate(row.date) }}
+                </th>
+              }
+            </tr>
+            <!-- Sub-headers: Wdh | Gewicht -->
+            <tr class="bg-surface-50 dark:bg-surface-800">
+              <th class="p-1 border-b border-r border-surface-200 dark:border-surface-700 sticky left-0 bg-surface-50 dark:bg-surface-800 z-20"></th>
+              @for (row of progressionData(); track row.date) {
+                <th class="p-1 text-center text-xs text-surface-500 dark:text-surface-400 border-b border-surface-200 dark:border-surface-700">
+                  {{ t('workout.reps') }}
+                </th>
+                <th class="p-1 text-center text-xs text-surface-500 dark:text-surface-400 border-b border-r border-surface-200 dark:border-surface-700">
+                  kg
+                </th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (setIdx of setRows(); track setIdx) {
+              <tr class="hover:bg-surface-50 dark:hover:bg-surface-800/50">
+                <td class="p-2 text-xs text-surface-500 dark:text-surface-400 border-b border-r border-surface-200 dark:border-surface-700 text-center sticky left-0 bg-white dark:bg-surface-900 z-10">
+                  {{ setIdx + 1 }}
+                </td>
+                @for (row of progressionData(); track row.date) {
+                  @if (setIdx < row.sets.length) {
+                    <td class="p-2 text-sm text-surface-700 dark:text-surface-300 border-b border-surface-200 dark:border-surface-700 text-center">
+                      {{ row.sets[setIdx].reps }}
+                    </td>
+                    <td class="p-2 text-sm text-surface-700 dark:text-surface-300 border-b border-r border-surface-200 dark:border-surface-700 text-center">
+                      @if (row.sets[setIdx].weightKg) {
+                        {{ row.sets[setIdx].weightKg }}
+                      } @else {
+                        <span class="text-surface-300 dark:text-surface-600">—</span>
+                      }
+                    </td>
+                  } @else {
+                    <td class="p-2 border-b border-surface-200 dark:border-surface-700 text-center">
+                      <span class="text-surface-300 dark:text-surface-600">—</span>
+                    </td>
+                    <td class="p-2 border-b border-r border-surface-200 dark:border-surface-700 text-center">
+                      <span class="text-surface-300 dark:text-surface-600">—</span>
+                    </td>
+                  }
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Chart -->
+      @if (chartData(); as chart) {
+        <div class="rounded-xl bg-white/40 dark:bg-surface-800/40 backdrop-blur-sm p-4 shrink-0" style="height: 250px">
+          <p-chart type="line" [data]="chart" [options]="chartOptions" height="220px" />
+        </div>
+      }
+    }
+  } @else {
+    <div class="text-center text-surface-400 py-8">
+      {{ t('workout.progression.selectExerciseHint') }}
+    </div>
+  }
+</div>

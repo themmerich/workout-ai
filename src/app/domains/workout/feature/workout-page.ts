@@ -12,12 +12,13 @@ import { WorkoutService } from '../data-access/workout.service';
 import { Workout } from '../model/workout.model';
 import { WorkoutDialogComponent } from '../ui/workout-dialog';
 import { WorkoutHeatmapComponent } from '../ui/workout-heatmap';
+import { WorkoutProgressionComponent } from '../ui/workout-progression';
 
 @Component({
   selector: 'app-workout-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-col h-full min-h-0' },
-  imports: [TranslocoDirective, Tabs, TabList, Tab, TabPanels, TabPanel, Tag, DataTableComponent, WorkoutDialogComponent, WorkoutHeatmapComponent],
+  imports: [TranslocoDirective, Tabs, TabList, Tab, TabPanels, TabPanel, Tag, DataTableComponent, WorkoutDialogComponent, WorkoutHeatmapComponent, WorkoutProgressionComponent],
   templateUrl: './workout-page.html',
 })
 export default class WorkoutPageComponent {
@@ -47,6 +48,14 @@ export default class WorkoutPageComponent {
 
   protected readonly workoutDates = computed(() =>
     this.userWorkouts().map((w) => w.date),
+  );
+
+  protected readonly exerciseWorkoutData = computed(() =>
+    this.userWorkouts().flatMap((w) =>
+      w.exercises
+        .filter((e) => e.exerciseId)
+        .map((e) => ({ date: w.date, exerciseId: e.exerciseId!, sets: e.sets })),
+    ),
   );
 
   protected readonly rowGroupConfig: RowGroupConfig = {

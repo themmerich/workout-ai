@@ -5,6 +5,7 @@
     <p-tablist>
       <p-tab value="0">{{ t('workout.tabList') }}</p-tab>
       <p-tab value="1">{{ t('workout.tabCalendar') }}</p-tab>
+      <p-tab value="2">{{ t('workout.tabProgression') }}</p-tab>
     </p-tablist>
     <p-tabpanels class="flex-1 min-h-0 flex flex-col">
       <!-- Tab: Liste -->
@@ -48,6 +49,13 @@
       <p-tabpanel value="1" class="flex-1 min-h-0 overflow-y-auto">
         <div class="pt-2">
           <app-workout-heatmap [workoutDates]="workoutDates()" />
+        </div>
+      </p-tabpanel>
+
+      <!-- Tab: Progression -->
+      <p-tabpanel value="2" class="flex-1 min-h-0 flex flex-col">
+        <div class="pt-2 flex-1 min-h-0 flex flex-col">
+          <app-workout-progression [workoutData]="exerciseWorkoutData()" />
         </div>
       </p-tabpanel>
     </p-tabpanels>
