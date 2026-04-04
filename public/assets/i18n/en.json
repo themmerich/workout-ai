@@ -44,6 +44,7 @@
     "title": "Workouts",
     "tabList": "List",
     "tabCalendar": "Calendar",
+    "tabProgression": "Progression",
     "calendarTooltip": "{{count}} workout(s) on {{date}}",
     "noWorkout": "No workout",
     "columns": "Columns",
@@ -94,6 +95,19 @@
     "calories": "kcal",
     "save": "Save Workout",
     "saveSuccess": "Workout saved successfully",
+    "progression": {
+      "exercise": "Exercise",
+      "selectExercise": "Select exercise",
+      "selectExerciseHint": "Select an exercise to view its progression",
+      "fromDate": "From date",
+      "noData": "No data for this exercise in the selected period",
+      "history": "Training history",
+      "bestSet": "Best set",
+      "totalVolume": "Total volume",
+      "totalReps": "Total reps",
+      "maxWeight": "Max weight",
+      "volume": "Volume"
+    },
     "validation": {
       "required": "This field is required",
       "minOneExercise": "At least one exercise is required",

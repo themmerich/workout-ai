@@ -44,6 +44,7 @@
     "title": "Training",
     "tabList": "Liste",
     "tabCalendar": "Kalender",
+    "tabProgression": "Progression",
     "calendarTooltip": "{{count}} Training(s) am {{date}}",
     "noWorkout": "Kein Training",
     "columns": "Spalten",
@@ -94,6 +95,19 @@
     "calories": "kcal",
     "save": "Training speichern",
     "saveSuccess": "Training wurde erfolgreich gespeichert",
+    "progression": {
+      "exercise": "Übung",
+      "selectExercise": "Übung auswählen",
+      "selectExerciseHint": "Wähle eine Übung aus, um die Progression zu sehen",
+      "fromDate": "Ab Datum",
+      "noData": "Keine Daten für diese Übung im gewählten Zeitraum",
+      "history": "Trainingshistorie",
+      "bestSet": "Bester Satz",
+      "totalVolume": "Gesamtvolumen",
+      "totalReps": "Gesamt-Wdh.",
+      "maxWeight": "Max. Gewicht",
+      "volume": "Volumen"
+    },
     "validation": {
       "required": "Dieses Feld ist erforderlich",
       "minOneExercise": "Mindestens eine Übung ist erforderlich",
