@@ -16,6 +16,7 @@ export class SidebarComponent {
   protected readonly authService = inject(AuthService);
   private readonly locationService = inject(LocationService);
   protected readonly userMenuOpen = signal(false);
+  protected readonly workoutMenuOpen = signal(false);
   private readonly expandedLocations = signal(new Set<string>());
   readonly visible = input(false);
   readonly closeSidebar = output<void>();

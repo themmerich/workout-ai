@@ -1,13 +1,26 @@
-<p-dialog
-  *transloco="let t"
-  [header]="workout() ? t('workout.dialog.editTitle') : t('workout.dialog.title')"
-  [visible]="visible()"
-  (visibleChange)="dialogClosed.emit()"
-  [modal]="true"
-  [focusOnShow]="false"
-  [style]="{ width: '95vw', 'max-width': '1100px' }"
->
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 pt-6">
+<ng-container *transloco="let t">
+@if (inline()) {
+  <div class="flex flex-col gap-4 h-full min-h-0 p-4 overflow-y-auto">
+    <h1 class="text-2xl font-semibold text-surface-800 dark:text-surface-100 m-0 shrink-0">
+      {{ t('workout.dialog.title') }}
+    </h1>
+    <ng-container *ngTemplateOutlet="formTemplate; context: { $implicit: t }" />
+  </div>
+} @else {
+  <p-dialog
+    [header]="workout() ? t('workout.dialog.editTitle') : t('workout.dialog.title')"
+    [visible]="visible()"
+    (visibleChange)="dialogClosed.emit()"
+    [modal]="true"
+    [focusOnShow]="false"
+    [style]="{ width: '95vw', 'max-width': '1100px' }"
+  >
+    <ng-container *ngTemplateOutlet="formTemplate; context: { $implicit: t }" />
+  </p-dialog>
+}
+
+<ng-template #formTemplate let-t>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 pt-4">
     <!-- Metadata -->
     <div class="grid grid-cols-2 gap-4">
       <div class="grid grid-cols-3 gap-3">
@@ -207,4 +220,5 @@
       />
     </div>
   </form>
-</p-dialog>
+</ng-template>
+</ng-container>

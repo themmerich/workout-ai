@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { Tag } from 'primeng/tag';
 import { DataTableComponent } from '../../../shared/ui/data-table';
 import { DataTableTranslations, RowGroupConfig, TableColumn } from '../../../shared/ui/data-table.model';
@@ -11,14 +10,12 @@ import { ExerciseComboService } from '../../exercise/data-access/exercise-combo.
 import { WorkoutService } from '../data-access/workout.service';
 import { Workout } from '../model/workout.model';
 import { WorkoutDialogComponent } from '../ui/workout-dialog';
-import { WorkoutHeatmapComponent } from '../ui/workout-heatmap';
-import { WorkoutProgressionComponent } from '../ui/workout-progression';
 
 @Component({
   selector: 'app-workout-page',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'flex flex-col h-full min-h-0' },
-  imports: [TranslocoDirective, Tabs, TabList, Tab, TabPanels, TabPanel, Tag, DataTableComponent, WorkoutDialogComponent, WorkoutHeatmapComponent, WorkoutProgressionComponent],
+  imports: [TranslocoDirective, Tag, DataTableComponent, WorkoutDialogComponent],
   templateUrl: './workout-page.html',
 })
 export default class WorkoutPageComponent {
@@ -45,18 +42,6 @@ export default class WorkoutPageComponent {
       .map((w) => ({ ...w, month: w.date.substring(0, 7) }))
       .sort((a, b) => b.date.localeCompare(a.date));
   });
-
-  protected readonly workoutDates = computed(() =>
-    this.userWorkouts().map((w) => w.date),
-  );
-
-  protected readonly exerciseWorkoutData = computed(() =>
-    this.userWorkouts().flatMap((w) =>
-      w.exercises
-        .filter((e) => e.exerciseId)
-        .map((e) => ({ date: w.date, exerciseId: e.exerciseId!, sets: e.sets })),
-    ),
-  );
 
   protected readonly rowGroupConfig: RowGroupConfig = {
     groupBy: 'month',
@@ -122,11 +107,6 @@ export default class WorkoutPageComponent {
   protected formatDate(dateStr: string): string {
     const [y, m, d] = dateStr.split('-');
     return `${d}.${m}.${y}`;
-  }
-
-  protected onAdd(): void {
-    this.editingWorkout.set(null);
-    this.dialogVisible.set(true);
   }
 
   protected onEdit(item: Workout): void {
