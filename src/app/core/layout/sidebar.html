@@ -11,20 +11,11 @@
 >
   <div class="flex flex-col h-full">
     <div class="flex items-center p-4 gap-4 shrink-0">
-      @if (currentLocation(); as loc) {
-        <app-location-logo [logo]="loc.logo" [name]="loc.name" [size]="40" />
-        <div class="text-surface-900 dark:text-surface-0 text-lg font-semibold leading-tight">{{ loc.name }}</div>
-      } @else {
-        <svg xmlns="http://www.w3.org/2000/svg" width="43" height="43" viewBox="0 0 43 43" fill="none" class="w-10 h-10">
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M21.5 42.0498C33.098 42.0498 42.5 32.6477 42.5 21.0498C42.5 9.45183 33.098 0.0498047 21.5 0.0498047C9.902 0.0498047 0.5 9.45183 0.5 21.0498C0.5 32.6477 9.902 42.0498 21.5 42.0498ZM28.0513 9.83248C28.3702 8.69975 27.2709 8.02994 26.267 8.74516L12.2528 18.7288C11.164 19.5045 11.3353 21.0498 12.51 21.0498H16.2003V21.0212H23.3926L17.5323 23.089L14.9487 32.2671C14.6299 33.3999 15.729 34.0697 16.733 33.3544L30.7472 23.3708C31.836 22.5951 31.6646 21.0498 30.49 21.0498H24.8937L28.0513 9.83248Z"
-            class="fill-surface-900 dark:fill-surface-0"
-          />
-        </svg>
-        <div class="text-surface-900 dark:text-surface-0 text-lg font-semibold leading-tight">{{ t('app.title') }}</div>
-      }
+      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" class="w-10 h-10">
+        <circle cx="12" cy="12" r="12" class="fill-surface-900 dark:fill-surface-0" />
+        <path d="M5.5 10.5h1.5v3H5.5a1 1 0 0 1-1-1v-1a1 1 0 0 1 1-1Zm13 0h-1.5v3h1.5a1 1 0 0 0 1-1v-1a1 1 0 0 0-1-1ZM7 9.5a1 1 0 0 1 1-1h1v7H8a1 1 0 0 1-1-1v-5Zm8 0v5a1 1 0 0 0 1 1h1v-7h-1a1 1 0 0 0-1 1ZM9 11h6v2H9v-2Z" class="fill-white dark:fill-surface-900" />
+      </svg>
+      <div class="text-surface-900 dark:text-surface-0 text-lg font-semibold leading-tight">{{ t('app.title') }}</div>
     </div>
     <div class="flex-1 overflow-y-auto p-2 flex flex-col gap-1">
       <a
