@@ -113,15 +113,61 @@
         <div class="border-t border-surface-200 dark:border-surface-700 my-1"></div>
 
         <!-- Personal section -->
-        <a
-          routerLink="/workouts"
-          routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
-          class="p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group"
-          (click)="closeSidebar.emit()"
-        >
-          <i class="pi pi-heart text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
-          <span class="flex-1 text-base font-medium leading-tight">{{ t('nav.workouts') }}</span>
-        </a>
+        <div>
+          <button
+            type="button"
+            class="w-full p-3 rounded-lg flex items-center gap-2 cursor-pointer text-surface-700 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group bg-transparent"
+            (click)="workoutMenuOpen.update((v) => !v)"
+          >
+            <i
+              class="pi text-xs leading-tight text-surface-500 dark:text-surface-400"
+              [class.pi-chevron-down]="workoutMenuOpen()"
+              [class.pi-chevron-right]="!workoutMenuOpen()"
+            ></i>
+            <i class="pi pi-heart text-base leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+            <span class="flex-1 text-left text-base font-medium leading-tight text-surface-700 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0">{{ t('nav.workouts') }}</span>
+          </button>
+          @if (workoutMenuOpen()) {
+            <div class="ml-5 flex flex-col gap-0.5">
+              <a
+                routerLink="/workouts/new"
+                routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+                class="p-2 pl-5 rounded-lg flex items-center gap-2 cursor-pointer text-surface-600 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group text-sm"
+                (click)="closeSidebar.emit()"
+              >
+                <i class="pi pi-plus text-sm leading-tight text-surface-500 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+                <span class="flex-1 font-medium leading-tight">{{ t('nav.workoutNew') }}</span>
+              </a>
+              <a
+                routerLink="/workouts/list"
+                routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+                class="p-2 pl-5 rounded-lg flex items-center gap-2 cursor-pointer text-surface-600 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group text-sm"
+                (click)="closeSidebar.emit()"
+              >
+                <i class="pi pi-list text-sm leading-tight text-surface-500 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+                <span class="flex-1 font-medium leading-tight">{{ t('nav.workoutList') }}</span>
+              </a>
+              <a
+                routerLink="/workouts/calendar"
+                routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+                class="p-2 pl-5 rounded-lg flex items-center gap-2 cursor-pointer text-surface-600 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group text-sm"
+                (click)="closeSidebar.emit()"
+              >
+                <i class="pi pi-calendar text-sm leading-tight text-surface-500 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+                <span class="flex-1 font-medium leading-tight">{{ t('nav.workoutCalendar') }}</span>
+              </a>
+              <a
+                routerLink="/workouts/progression"
+                routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"
+                class="p-2 pl-5 rounded-lg flex items-center gap-2 cursor-pointer text-surface-600 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 border border-transparent hover:border-surface-300 dark:hover:border-surface-700 hover:text-surface-900 dark:hover:text-surface-0 duration-150 transition-colors group text-sm"
+                (click)="closeSidebar.emit()"
+              >
+                <i class="pi pi-chart-line text-sm leading-tight text-surface-500 dark:text-surface-400 group-hover:text-surface-900 dark:group-hover:text-surface-0"></i>
+                <span class="flex-1 font-medium leading-tight">{{ t('nav.workoutProgression') }}</span>
+              </a>
+            </div>
+          }
+        </div>
         <a
           routerLink="/training-groups"
           routerLinkActive="bg-surface-100 dark:bg-surface-800 border-surface-300 dark:border-surface-700"

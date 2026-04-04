@@ -1,0 +1,8 @@
+<app-workout-dialog
+  [inline]="true"
+  [visible]="true"
+  [workout]="null"
+  (workoutSaved)="onSaveWorkout($event)"
+  (dialogClosed)="onCancel()"
+/>
+<p-toast />

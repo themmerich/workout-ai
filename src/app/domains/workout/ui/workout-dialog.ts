@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -25,7 +26,9 @@ import { Workout } from '../model/workout.model';
 @Component({
   selector: 'app-workout-dialog',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { '[class]': 'inline() ? "flex flex-col h-full min-h-0" : ""' },
   imports: [
+    NgTemplateOutlet,
     ReactiveFormsModule,
     TranslocoDirective,
     ButtonModule,
@@ -47,6 +50,7 @@ export class WorkoutDialogComponent {
   private readonly transloco = inject(TranslocoService);
 
   readonly visible = input(false);
+  readonly inline = input(false);
   readonly workout = input<Workout | null>(null);
   readonly workoutSaved = output<Workout | Omit<Workout, 'id'>>();
   readonly dialogClosed = output<void>();
